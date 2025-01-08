@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7da81eb9165fd40469697325b04180d0
+timeCreated: 1534412684
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 15600000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 126869
+  packageName: 3D Cartoon Village
+  packageVersion: 1.0
+  assetPath: Assets/3D Cartoon Village/Scene/New Terrain.asset
+  uploadId: 267040
