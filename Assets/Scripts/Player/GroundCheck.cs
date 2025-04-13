@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class GroundCheck : MonoBehaviour
 {
-    public bool grounded;
-    [SerializeField] float groundDistance;
-    Animator animator;
+    [ReadOnly] public bool grounded;
+    [SerializeField] private float groundDistance;
+    private Animator animator;
 
     void Start()
     {
@@ -18,6 +18,7 @@ public class GroundCheck : MonoBehaviour
     {
         grounded = Physics.Raycast(transform.position, Vector3.down, groundDistance);
 
+        //Draw debug ray for editor
         if (grounded)
         {
             Debug.DrawRay(transform.position, Vector3.down * groundDistance, Color.green);

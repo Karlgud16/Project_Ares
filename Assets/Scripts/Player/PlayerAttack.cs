@@ -1,35 +1,50 @@
 //Script that handels the Player Attack (Light, Heavy)
+
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    Animator animator;
+    private Animator _animator;
+    private SpriteRenderer _sR;
 
-    bool canLightAttack, canHeavyAttack;
+    [SerializeField][ReadOnly] public bool CanLightAttack;
+    [SerializeField][ReadOnly] public bool CanHeavyAttack;
 
-    GroundCheck groundCheck;
+    private bool _lightToggle;
+    private bool _heavyToggle;
 
-    public float LightAttack, HeavyAttack;
+    private GameObject _lightAttackCollider, _heavyAttackCollider;
+
+    private GroundCheck _groundCheck;
+
+    void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _groundCheck = gameObject.transform.GetChild(0).GetComponent<GroundCheck>();
+        _sR = GetComponent<SpriteRenderer>();
+        _lightAttackCollider = GameObject.FindGameObjectWithTag("lightAttack");
+    }
 
     void Start()
     {
-        animator = GetComponent<Animator>();
-        groundCheck = gameObject.transform.GetChild(0).GetComponent<GroundCheck>();
-        canLightAttack = true;
-        canHeavyAttack = true;
+        CanLightAttack = true;
+        CanHeavyAttack = true;
+        _lightToggle = true;
+        _heavyToggle = true;
     }
 
-
-    void Update()
+    public void LightAttack()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && groundCheck.grounded && canLightAttack)
+        if(_groundCheck.grounded && CanLightAttack && _lightToggle && GameManager.Instance.PlayerIsDead == false)
         {
             StartCoroutine("PlayerLightAttack");
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse1) && groundCheck.grounded && canHeavyAttack)
+    }
+
+    public void HeavyAttack()
+    {
+        if (_groundCheck.grounded && CanHeavyAttack && _heavyToggle && GameManager.Instance.PlayerIsDead == false)
         {
             StartCoroutine("PlayerHeavyAttack");
         }
@@ -37,28 +52,28 @@ public class PlayerAttack : MonoBehaviour
 
     IEnumerator PlayerLightAttack()
     {
-        canLightAttack = false;
+        _lightToggle = false;
         int randomNum = Random.Range(1, 4);
         if(randomNum >= 2)
         {
-            animator.SetTrigger("Attack1");
+            _animator.SetTrigger("Attack1");
         }
         else
         {
-            animator.SetTrigger("Attack2");
+            _animator.SetTrigger("Attack2");
         }
-        float lightDuration = animator.GetCurrentAnimatorClipInfo(0).Length;
+        float lightDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
         yield return new WaitForSeconds(lightDuration - 0.7f);
-        canLightAttack = true;
-        randomNum = 0;
+        _lightToggle = true;
     }
 
     IEnumerator PlayerHeavyAttack()
     {
-        canHeavyAttack = false;
-        animator.SetTrigger("Attack3");
-        float heavyDuration = animator.GetCurrentAnimatorClipInfo(0).Length;
+        _heavyToggle = false;
+        _animator.SetTrigger("Attack3");
+        float heavyDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
         yield return new WaitForSeconds(heavyDuration - 0.5f);
-        canHeavyAttack = true;
+        CanHeavyAttack = true;
+        _heavyToggle = true;
     }
 }

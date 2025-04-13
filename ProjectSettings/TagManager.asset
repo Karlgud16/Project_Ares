@@ -7,6 +7,18 @@ TagManager:
   - groundCheck
   - BaseEnemy
   - lightAttack
+  - healthSystem
+  - baseAttack
+  - healthBar
+  - heavyAttack
+  - Player1HUD
+  - Summoner
+  - Brute
+  - Mage
+  - Projectile
+  - HUD
+  - GameManager
+  - SwiftSandals
   layers:
   - Default
   - TransparentFX
