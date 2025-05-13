@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [ReadOnly] public bool IsAttacking;
+
     private Animator _animator;
     private SpriteRenderer _sR;
 
@@ -18,12 +20,15 @@ public class PlayerAttack : MonoBehaviour
 
     private GroundCheck _groundCheck;
 
+    private PlayerMovement _playerMove;
+
     void Awake()
     {
         _animator = GetComponent<Animator>();
         _groundCheck = gameObject.transform.GetChild(0).GetComponent<GroundCheck>();
         _sR = GetComponent<SpriteRenderer>();
         _lightAttackCollider = GameObject.FindGameObjectWithTag("lightAttack");
+        _playerMove = GetComponent<PlayerMovement>();
     }
 
     void Start()
@@ -52,7 +57,11 @@ public class PlayerAttack : MonoBehaviour
 
     IEnumerator PlayerLightAttack()
     {
+        IsAttacking = true;
+        float elapsedTime = 0f;
         _lightToggle = false;
+        CanLightAttack = false;
+        _playerMove.StaminaReset = false;
         int randomNum = Random.Range(1, 4);
         if(randomNum >= 2)
         {
@@ -63,17 +72,40 @@ public class PlayerAttack : MonoBehaviour
             _animator.SetTrigger("Attack2");
         }
         float lightDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
-        yield return new WaitForSeconds(lightDuration - 0.7f);
+        float staminaDrainPerSecond = GameManager.Instance.HeavyAttackStaminaDrain / lightDuration - 0.7f;
+        while (elapsedTime < lightDuration - 0.7f)
+        {
+            elapsedTime += Time.deltaTime;
+            _playerMove.Stamina -= staminaDrainPerSecond * Time.deltaTime;
+
+            yield return null;
+        }
+        StartCoroutine(_playerMove.ResetStamina());
+        CanLightAttack = true;
         _lightToggle = true;
+        IsAttacking = false;
     }
 
     IEnumerator PlayerHeavyAttack()
     {
+        IsAttacking = true;
+        float elapsedTime = 0f;
+        _playerMove.StaminaReset = false;
         _heavyToggle = false;
+        CanHeavyAttack = false;
         _animator.SetTrigger("Attack3");
         float heavyDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
-        yield return new WaitForSeconds(heavyDuration - 0.5f);
+        float staminaDrainPerSecond = GameManager.Instance.HeavyAttackStaminaDrain / heavyDuration - 0.5f;
+        while (elapsedTime < heavyDuration - 0.5f)
+        {
+            elapsedTime += Time.deltaTime;
+            _playerMove.Stamina -= staminaDrainPerSecond * Time.deltaTime;
+
+            yield return null;
+        }
+        StartCoroutine(_playerMove.ResetStamina());
         CanHeavyAttack = true;
         _heavyToggle = true;
+        IsAttacking = false;
     }
 }

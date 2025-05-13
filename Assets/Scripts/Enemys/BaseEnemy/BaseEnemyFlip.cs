@@ -8,12 +8,29 @@ public class BaseEnemyFlip : MonoBehaviour
 
     private SpriteRenderer sR;
 
-    private GameObject player, attackCol, playerTrigger, spawnProjectile;
+    private GameObject attackCol, playerTrigger, spawnProjectile;
+
+    public GameObject FindClosestPlayer()
+    {
+        float distance = Mathf.Infinity;
+        Vector3 pos = transform.position;
+        GameObject closest = null;
+        foreach (GameObject player in GameManager.Instance.Players)
+        {
+            Vector3 difference = player.transform.position - pos;
+            float currantDistance = difference.sqrMagnitude;
+            if (currantDistance < distance)
+            {
+                closest = player;
+                distance = currantDistance;
+            }
+        }
+        return closest;
+    }
 
     void Awake()
     {
         sR = GetComponent<SpriteRenderer>();
-        player = GameObject.FindGameObjectWithTag("Player");
         if (gameObject.tag == "BaseEnemy" || gameObject.tag == "Brute" || gameObject.tag == "Mage")
         {
             attackCol = transform.GetChild(1).gameObject;
@@ -36,7 +53,7 @@ public class BaseEnemyFlip : MonoBehaviour
         {
             if(gameObject.tag == "BaseEnemy" || gameObject.tag == "Brute" || gameObject.tag == "Mage")
             {
-                if (player.transform.position.x < transform.position.x)
+                if (FindClosestPlayer().transform.position.x < transform.position.x)
                 {
                     Vector3 newScale = attackCol.transform.localScale;
                     newScale.x = -1;
@@ -58,7 +75,7 @@ public class BaseEnemyFlip : MonoBehaviour
 
             if(gameObject.tag == "Mage")
             {
-                if (player.transform.position.x < transform.position.x)
+                if (FindClosestPlayer().transform.position.x < transform.position.x)
                 {
                     Vector3 newPos = spawnProjectile.transform.localPosition;
                     newPos.x = -0.5f;
@@ -72,7 +89,7 @@ public class BaseEnemyFlip : MonoBehaviour
                 }
             }
 
-            if (player.transform.position.x < transform.position.x)
+            if (FindClosestPlayer().transform.position.x < transform.position.x)
             {
                 sR.flipX = true;
             }

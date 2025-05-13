@@ -14,12 +14,10 @@ public class HUD : MonoBehaviour
 
     void Update()
     {
-        //Checks if the max value is not equal to what the player health should be (Debug Console)
-        if(_healthBar.maxValue != GameManager.Instance.PlayerHealth)
+        if(_healthBar.maxValue != GameManager.Instance.StartHealth)
         {
-            _healthBar.maxValue = GameManager.Instance.PlayerHealth;
+            _healthBar.maxValue = GameManager.Instance.StartHealth;
         }
-
         _healthBar.value = GameManager.Instance.CurrentPlayerHealth;
     }
 }

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10cf274ee7824984dbfdb472172616d0, type: 3}
+  m_Name: Valkyrie'sWingedBoots
+  m_EditorClassIdentifier: 
+  ItemName: Valkyrie's Winged Boots
+  ItemDescription: Increased jump height
+  ItemSprite: {fileID: 21300000, guid: 5170e0068a8cf184fb119834fa7ba0f3, type: 3}
+  ItemObject: {fileID: 2369897063969431065, guid: b142a1b45021bec4caf5db6aa2d25112,
+    type: 3}
+  ItemCost: 0

@@ -17,6 +17,8 @@ public class MageProjectile : MonoBehaviour
 
     private Vector3 _lastPlayerPos;
 
+    public GameObject TargetPlayer;
+
     void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -26,8 +28,8 @@ public class MageProjectile : MonoBehaviour
     void Start()
     {
         _speed = GameManager.Instance.ProjectileSpeed;
-        _currentPlayerTransform = GameManager.Instance.Player.transform;
-        _lastPlayerPos = GameManager.Instance.Player.transform.GetChild(3).position;
+        _currentPlayerTransform = TargetPlayer.transform;
+        _lastPlayerPos = TargetPlayer.transform.GetChild(3).position;
         _hitPlayer = false;
 
 

@@ -82,6 +82,7 @@ public class DebugController : MonoBehaviour
         SET_PLAYER_MOVESPEED = new DebugCommand<float>("set_player_movespeed", "Sets the Player's movement speed (Default = 5)", "set_player_movespeed <float>", (x) =>
         {
             GameManager.Instance.PlayerMoveSpeed = x;
+            GameManager.Instance.DefaultPlayerMoveSpeed = x;
         });
 
         SET_PLAYER_HEALTH = new DebugCommand<float>("set_player_health", "Sets the Player's health (Default = 100)", "set_player_health <float>", (x) =>
@@ -111,8 +112,11 @@ public class DebugController : MonoBehaviour
 
         SET_PLAYER_DODGECOOLDOWN = new DebugCommand<float>("set_player_dodgecooldown", "Sets the Player's dodge speed (Default = 1)", "set_player_dodgecooldown <float>", (x) =>
         {
-            GameManager.Instance.PlayerDodgeCooldown = x;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().DodgeCooldownTimer = x;
+            //GameManager.Instance.PlayerDodgeCooldown = x;
+            foreach (GameObject player in GameManager.Instance.Players)
+            {
+                //player.GetComponent<PlayerMovement>().DodgeCooldownTimer = x;
+            }
         });
 
         SET_PLAYER_DODGEDURATION = new DebugCommand<float>("set_player_dodgeduration", "Sets the Player's dodge speed (Default = 0.5)", "set_player_dodgeduration <float>", (x) =>

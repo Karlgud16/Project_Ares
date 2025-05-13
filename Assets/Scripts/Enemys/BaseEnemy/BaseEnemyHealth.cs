@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class BaseEnemyHealth : MonoBehaviour
 {
-    private PlayerAttack _playerDam;
+    private Section _section;
 
     private Animator _animator;
 
@@ -22,12 +22,20 @@ public class BaseEnemyHealth : MonoBehaviour
 
     private BaseEnemyFlip _enemyFlip;
 
+    private HealthSystem _healthSystem;
+
+    private bool _toggleAnubisAnkh;
+
     void Awake()
     {
-        _playerDam = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAttack>();
+        if(transform.parent != null)
+        {
+            _section = transform.parent.GetComponent<Section>();
+        }
         _animator = GetComponent<Animator>();
         _healthBar = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Slider>();
         _enemyFlip = GetComponent<BaseEnemyFlip>();
+        _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
 
         if (gameObject.tag == "Summoner")
         {
@@ -59,6 +67,7 @@ public class BaseEnemyHealth : MonoBehaviour
         CanMove = true;
         IsDead = false;
         _healthBar.maxValue = CurrentHealth;
+        _toggleAnubisAnkh = true;
     }
 
     void Update()
@@ -95,9 +104,22 @@ public class BaseEnemyHealth : MonoBehaviour
     public IEnumerator Death()
     {
         _animator.SetTrigger("Death");
+        if(_section != null)
+        {
+            _section.EnemyCount--;
+        }
         _enemyFlip.canFlip = false;
         CanMove = false;
         IsDead = true;
+        if(GameManager.Instance.GetComponent<ItemManager>().AnubisAnkh == true && !GameManager.Instance.PlayerIsDead && _toggleAnubisAnkh)
+        {
+            _healthSystem.PlayerCurrentHealth += GameManager.Instance.PlayerHealth / 10f;
+            if(_healthSystem.PlayerCurrentHealth > GameManager.Instance.PlayerHealth)
+            {
+                _healthSystem.PlayerCurrentHealth = GameManager.Instance.PlayerHealth;
+            }
+            _toggleAnubisAnkh = false;
+        }
         switch (gameObject.tag)
         {
             case "BaseEnemy":
@@ -113,6 +135,7 @@ public class BaseEnemyHealth : MonoBehaviour
                 yield return new WaitForSeconds(GameManager.Instance.MageSecondsUntilDelete);
                 break;
         }
+        Instantiate(GameManager.Instance.HealthPickupObject, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

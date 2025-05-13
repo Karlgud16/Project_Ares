@@ -47,23 +47,11 @@ public class DebugFreeCam : MonoBehaviour
                 _speed = _normalSpeed;
             }
             transform.Translate(input * _speed * Time.deltaTime);
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().CanMove = false;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().CanJump = false;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().CanBlock = false;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().DodgeToggle = false;
-            GameManager.Instance.Player.GetComponent<PlayerAttack>().CanLightAttack = false;
-            GameManager.Instance.Player.GetComponent<PlayerAttack>().CanHeavyAttack = false;
         }
         else
         {
             Camera.main.transform.position = _defaultCameraPos;
             Camera.main.transform.rotation = _defaultCameraRot;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().CanMove = true;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().CanJump = true;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().CanBlock = true;
-            GameManager.Instance.Player.GetComponent<PlayerMovement>().DodgeToggle = true;
-            GameManager.Instance.Player.GetComponent<PlayerAttack>().CanLightAttack = true;
-            GameManager.Instance.Player.GetComponent<PlayerAttack>().CanHeavyAttack = true;
         }
     }
 }

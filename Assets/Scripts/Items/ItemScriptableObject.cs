@@ -5,6 +5,8 @@ using UnityEngine;
 public class ItemScriptableObject : ScriptableObject
 {
     public string ItemName;
+    public string ItemDescription;
     public Sprite ItemSprite;
+    public GameObject ItemObject;
     public int ItemCost;
 }

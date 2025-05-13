@@ -11,31 +11,67 @@ public class GameManager : MonoBehaviour
     [ReadOnly] public bool FreeCam;
     public float ComboTimer;
 
+    [Header("Camera")]
+    [ReadOnly] public bool CameraIsLocked;
+    [Range(0, 1)]public float SmoothTime = 0.3f;
+    public float MinZoom = 5f;
+    public float MaxZoom = 12f;
+    public float ZoomLimiter = 50f; // Max expected distance between players
+    public Vector2 DeadZone = new Vector2(1f, 1f); // X and Y deadzone
+    public Vector3 CameraOffset;
+    public BoxCollider LevelBounds;
+    public GameObject PlayerBounds;
+    public float LeashLimitLeft = 10f; // Distance behind camera center on X axis
+    public float LeashPushSpeed = 5f;  // Speed to move players forward
+
     [Header("Items")]
+    public List<GameObject> ItemList;
     public List<ItemScriptableObject> ItemInventory;
+    public List<GameObject> ItemInventoryGameObject;
+    public List<GameObject> ItemHUDInventory;
     public GameObject ItemUIPrefab;
+    public GameObject HealthPickupObject;
     public ItemScriptableObject HermesSwiftSandals;
+    public ItemScriptableObject ValkyriesWingedBoots;
+    public ItemScriptableObject AnubisAnkh;
+    public ItemScriptableObject CursedSpurs;
+    public ItemScriptableObject SlimeArmour;
 
     [Header("ItemsStats")]
+    public GameObject ItemSpawner;
     public float HealthPickup;
     public float HealthPickupMultiplier;
     public float HermesSwiftSandalsMultiplier;
+    public float ValkyriesWingedBootsMultiplier;
+    public float AnubisAnkhHealth;
+    [Range(0.01f, 0.99f)] public float SlimeArmourMultiplier;
+    public float SlimeArmourSecondsUntilNormalSpeed;
 
     [Header("PlayerStats")]
-    [ReadOnly] public GameObject Player;
+    public bool debugPlayer;
+    [ReadOnly] public List<GameObject> Players;
+    private GameObject[] debugPlayersAmount;
     public float PlayerMoveSpeed;
+    [ReadOnly] public float DefaultPlayerMoveSpeed;
     public float PlayerJump;
     public float PlayerHealth;
     [ReadOnly] public float CurrentPlayerHealth;
+    [ReadOnly] public float StartHealth;
     public float PlayerLightAttack;
     public float PlayerHeavyAttack;
     public float PlayerDodgeSpeed;
     public float PlayerDodgeDuration;
-    public float PlayerDodgeCooldown;
+    public float PlayerStamina;
+    public float LightAttackStaminaDrain;
+    public float HeavyAttackStaminaDrain;
+    public float DodgeStaminaDrain;
+    public float PlayerStaminaRegenWait;
+    public float PlayerStaminaRegenSpeed;
     public bool PlayerIsDead;
 
     [Header("BaseEnemyStats")]
     public float BaseEnemyMoveSpeed;
+    [ReadOnly] public float DefaultBaseEnemyMoveSpeed;
     public float BaseEnemyHealth;
     public float BaseEnemyAttack;
     public float BaseEnemySecondsUntilDelete;
@@ -51,6 +87,7 @@ public class GameManager : MonoBehaviour
 
     [Header("BruteStats")]
     public float BruteMoveSpeed;
+    [ReadOnly] public float DefaultBruteMoveSpeed;
     public float BruteHealth;
     public float BruteBaseAttack;
     public float BruteSecondsUntilDelete;
@@ -77,7 +114,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null) 
         {
             Debug.Log("GameManager Made!");
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject);
             Instance = this;
         }
         else if (Instance != this) 
@@ -85,14 +122,33 @@ public class GameManager : MonoBehaviour
             Debug.Log("Deleted a Game Manager as there should only be one Game Manager");
             Destroy(gameObject);
         }
-
-        Player = GameObject.FindGameObjectWithTag("Player");
     }
 
     void Start()
     {
         CurrentTimeScale = Time.timeScale;
         FreeCam = false;
+
+        DefaultPlayerMoveSpeed = PlayerMoveSpeed;
+        DefaultBaseEnemyMoveSpeed = BaseEnemyMoveSpeed;
+        DefaultBruteMoveSpeed = BruteMoveSpeed;
+
+        if(debugPlayer == true)
+        {
+            debugPlayersAmount = GameObject.FindGameObjectsWithTag("Player");
+            if (debugPlayersAmount == null)
+            {
+                return;
+            }
+            else
+            {
+                foreach (GameObject player in debugPlayersAmount)
+                {
+                    Players.Add(player);
+                }
+            }
+
+        }
     }
 
     void Update()
@@ -110,12 +166,15 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0f;
-            Player.GetComponent<PlayerMovement>().CanMove = false;
-            Player.GetComponent<PlayerMovement>().CanJump = false;
-            Player.GetComponent<PlayerMovement>().CanBlock = false;
-            Player.GetComponent<PlayerMovement>().DodgeToggle = false;
-            Player.GetComponent<PlayerAttack>().CanLightAttack = false;
-            Player.GetComponent<PlayerAttack>().CanHeavyAttack = false;
+            foreach(GameObject player in Players)
+            {
+                player.GetComponent<PlayerMovement>().CanMove = false;
+                player.GetComponent<PlayerMovement>().CanJump = false;
+                player.GetComponent<PlayerMovement>().CanBlock = false;
+                player.GetComponent<PlayerMovement>().DodgeToggle = false;
+                player.GetComponent<PlayerAttack>().CanLightAttack = false;
+                player.GetComponent<PlayerAttack>().CanHeavyAttack = false;
+            }
         }
         //Else if IsPaused is not true and FreeCam is true(Player is using FreeCam) or the player has less than/equal to 0 health
         else if (!IsPaused && FreeCam || CurrentPlayerHealth <= 0)
@@ -123,12 +182,15 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             Time.timeScale = CurrentTimeScale;
-            Player.GetComponent<PlayerMovement>().CanMove = false;
-            Player.GetComponent<PlayerMovement>().CanJump = false;
-            Player.GetComponent<PlayerMovement>().CanBlock = false;
-            Player.GetComponent<PlayerMovement>().DodgeToggle = false;
-            Player.GetComponent<PlayerAttack>().CanLightAttack = false;
-            Player.GetComponent<PlayerAttack>().CanHeavyAttack = false;
+            foreach (GameObject player in Players)
+            {
+                player.GetComponent<PlayerMovement>().CanMove = false;
+                player.GetComponent<PlayerMovement>().CanJump = false;
+                player.GetComponent<PlayerMovement>().CanBlock = false;
+                player.GetComponent<PlayerMovement>().DodgeToggle = false;
+                player.GetComponent<PlayerAttack>().CanLightAttack = false;
+                player.GetComponent<PlayerAttack>().CanHeavyAttack = false;
+            }
         }
         //Else if IsPaused is not true and FreeCam is not true (Normal Game Play)
         else
@@ -136,12 +198,15 @@ public class GameManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             Time.timeScale = CurrentTimeScale;
-            Player.GetComponent<PlayerMovement>().CanMove = true;
-            Player.GetComponent<PlayerMovement>().CanJump = true;
-            Player.GetComponent<PlayerMovement>().CanBlock = true;
-            Player.GetComponent<PlayerMovement>().DodgeToggle = true;
-            Player.GetComponent<PlayerAttack>().CanLightAttack = true;
-            Player.GetComponent<PlayerAttack>().CanHeavyAttack = true;
+            foreach (GameObject player in Players)
+            {
+                player.GetComponent<PlayerMovement>().CanMove = true;
+                player.GetComponent<PlayerMovement>().CanJump = true;
+                player.GetComponent<PlayerMovement>().CanBlock = true;
+                player.GetComponent<PlayerMovement>().DodgeToggle = true;
+                player.GetComponent<PlayerAttack>().CanLightAttack = true;
+                player.GetComponent<PlayerAttack>().CanHeavyAttack = true;
+            }
         }
     }
 }

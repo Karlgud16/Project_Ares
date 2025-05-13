@@ -1,6 +1,7 @@
 //Handles all of the Base Enemies Attacks
 
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BaseEnemyAttack : MonoBehaviour
@@ -28,7 +29,7 @@ public class BaseEnemyAttack : MonoBehaviour
         //If the enemy is in the players collider and is not attacking
         if (other.gameObject.tag == "Player" && _isAttacking == false && _health.IsDead == false && GameManager.Instance.PlayerIsDead == false)
         {
-            StartCoroutine("Attack");
+            StartCoroutine(Attack());
         }
     }
 
@@ -36,7 +37,7 @@ public class BaseEnemyAttack : MonoBehaviour
     {
         //Play attack animation and set isAttacking to true. After animation is done, set isAttacking to false
 
-        if(transform.root.gameObject.tag == "Brute")
+        if (transform.root.gameObject.tag == "Brute")
         {
             int randomNum = Random.Range(1, 4);
             if (randomNum >= 2)
@@ -55,5 +56,18 @@ public class BaseEnemyAttack : MonoBehaviour
         _isAttacking = true;
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorClipInfo(0).Length);
         _isAttacking = false;
+        if (GameManager.Instance.GetComponent<ItemManager>().SlimeArmour)
+        {
+            StartCoroutine(SlimeArmour());
+        }
+    }
+
+    IEnumerator SlimeArmour()
+    {
+        GameManager.Instance.BaseEnemyMoveSpeed = GameManager.Instance.DefaultBaseEnemyMoveSpeed * GameManager.Instance.SlimeArmourMultiplier;
+        GameManager.Instance.BruteMoveSpeed = GameManager.Instance.DefaultBruteMoveSpeed * GameManager.Instance.SlimeArmourMultiplier;
+        yield return new WaitForSeconds(GameManager.Instance.SlimeArmourSecondsUntilNormalSpeed);
+        GameManager.Instance.BaseEnemyMoveSpeed = GameManager.Instance.DefaultBaseEnemyMoveSpeed;
+        GameManager.Instance.BruteMoveSpeed = GameManager.Instance.DefaultBruteMoveSpeed;
     }
 }

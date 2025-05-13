@@ -6,13 +6,25 @@ public class MageAttack : MonoBehaviour
 {
     private Vector3 _spawnProjectilePosition;
 
-    void Start()
+    private BaseEnemyFlip _baseEnemyFlip;
+
+    private void Awake()
+    {
+        _baseEnemyFlip = GetComponent<BaseEnemyFlip>();
+    }
+
+    private void Update()
     {
         _spawnProjectilePosition = transform.GetChild(4).position;
+        if(_spawnProjectilePosition == transform.GetChild(4).position)
+        {
+            return;
+        }
     }
 
     public void SpawnProjectile()
     {
-        Instantiate(GameManager.Instance.Projectile, _spawnProjectilePosition, Quaternion.identity);
+        var projectile = Instantiate(GameManager.Instance.Projectile, _spawnProjectilePosition, Quaternion.identity);
+        projectile.GetComponent<MageProjectile>().TargetPlayer = _baseEnemyFlip.FindClosestPlayer();
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ComboSystem : MonoBehaviour
 {
-
     [ReadOnly] public float ComboTimer;
 
     private TextMeshProUGUI _comboText;
@@ -14,7 +13,7 @@ public class ComboSystem : MonoBehaviour
 
     void Awake()
     {
-        _comboText = GameObject.FindGameObjectWithTag("HUD").transform.GetChild(2).GetComponent<TextMeshProUGUI>();
+        _comboText = GameObject.FindGameObjectWithTag("HUD").transform.GetChild(5).GetComponent<TextMeshProUGUI>();
     }
 
     void Start()

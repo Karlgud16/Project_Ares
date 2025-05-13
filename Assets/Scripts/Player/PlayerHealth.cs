@@ -24,12 +24,9 @@ public class PlayerHealth : MonoBehaviour
             if (other.gameObject.tag == "baseAttack")
             {
                 _animator.SetTrigger("Hurt");
-                switch (other.transform.root.tag) 
+                switch (other.transform.parent.tag) 
                 {
                     case "BaseEnemy":
-                        _healthSystem.PlayerCurrentHealth -= GameManager.Instance.BaseEnemyAttack;
-                        break;
-                    case "Summoner":
                         _healthSystem.PlayerCurrentHealth -= GameManager.Instance.BaseEnemyAttack;
                         break;
                     case "Brute":

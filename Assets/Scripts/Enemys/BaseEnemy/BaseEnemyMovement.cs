@@ -13,16 +13,21 @@ public class BaseEnemyMovement : MonoBehaviour
 
     private BaseEnemyStartMove _moveTrigger;
 
+    private GameObject TargetPlayer;
+
+    private BaseEnemyFlip _baseEnemyFlip;
+
     void Awake()
     {
         _enemyNav = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         _baseHealth = GetComponent<BaseEnemyHealth>();
+        _baseEnemyFlip = GetComponent<BaseEnemyFlip>();
         _moveTrigger = transform.GetChild(3).GetComponent<BaseEnemyStartMove>();
     }
     void Update()
     {
-         BaseEnemyFollow();
+        BaseEnemyFollow();
     }
 
     void BaseEnemyFollow()
@@ -40,9 +45,9 @@ public class BaseEnemyMovement : MonoBehaviour
                 break;
         }
 
-        if (_baseHealth.CanMove == true && _moveTrigger.StartMove && GameManager.Instance.Player.GetComponent<PlayerMovement>().CanMove)
+        if (_baseHealth.CanMove == true && _moveTrigger.StartMove && _baseEnemyFlip.FindClosestPlayer().GetComponent<PlayerMovement>().CanMove)
         {
-            _enemyNav.SetDestination(GameManager.Instance.Player.transform.position);
+            _enemyNav.SetDestination(_baseEnemyFlip.FindClosestPlayer().transform.position);
         }
 
         if (transform.hasChanged)
