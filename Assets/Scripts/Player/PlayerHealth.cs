@@ -10,15 +10,28 @@ public class PlayerHealth : MonoBehaviour
 
     Animator _animator;
 
+    private ItemManager _itemManager;
+
+    private PlayerManager _playerManager;
+
+    private EnemyManager _enemyManager;
+
     void Awake()
     {
         _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
         _animator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        _itemManager = GameManager.Instance.GetComponent<ItemManager>();
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+        _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (_healthSystem.CanTakeDamage && GameManager.Instance.PlayerIsDead == false)
+        if (_healthSystem.CanTakeDamage && _playerManager.PlayerIsDead == false)
         {
             //If the player is hit by enemy's attack
             if (other.gameObject.tag == "baseAttack")
@@ -27,10 +40,10 @@ public class PlayerHealth : MonoBehaviour
                 switch (other.transform.parent.tag) 
                 {
                     case "BaseEnemy":
-                        _healthSystem.PlayerCurrentHealth -= GameManager.Instance.BaseEnemyAttack;
+                        _healthSystem.PlayerCurrentHealth -= _enemyManager.BaseEnemyAttack;
                         break;
                     case "Brute":
-                        _healthSystem.PlayerCurrentHealth -= GameManager.Instance.BruteBaseAttack;
+                        _healthSystem.PlayerCurrentHealth -= _enemyManager.BruteBaseAttack;
                         break;
                 }
             }
@@ -38,27 +51,27 @@ public class PlayerHealth : MonoBehaviour
             else if (other.gameObject.tag == "Projectile")
             {
                 _animator.SetTrigger("Hurt");
-                _healthSystem.PlayerCurrentHealth -= GameManager.Instance.ProjectileAttack;
+                _healthSystem.PlayerCurrentHealth -= _enemyManager.ProjectileAttack;
             }
         }
 
-        if(other.name.Contains("HealthMultiplier") && GameManager.Instance.PlayerIsDead == false)
+        if(other.name.Contains("HealthMultiplier") && _playerManager.PlayerIsDead == false)
         {
-            GameManager.Instance.HealthPickup += GameManager.Instance.HealthPickupMultiplier;
+            _itemManager.HealthPickup += _itemManager.HealthPickupMultiplier;
             Destroy(other.gameObject);
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.name.Contains("HealthPickup") && GameManager.Instance.PlayerIsDead == false)
+        if (other.name.Contains("HealthPickup") && _playerManager.PlayerIsDead == false)
         {
-            if(_healthSystem.PlayerCurrentHealth > 0 && _healthSystem.PlayerCurrentHealth < GameManager.Instance.PlayerHealth)
+            if(_healthSystem.PlayerCurrentHealth > 0 && _healthSystem.PlayerCurrentHealth < _playerManager.PlayerHealth)
             {
-                _healthSystem.PlayerCurrentHealth += GameManager.Instance.HealthPickup;
-                if(_healthSystem.PlayerCurrentHealth > GameManager.Instance.PlayerHealth)
+                _healthSystem.PlayerCurrentHealth += _itemManager.HealthPickup;
+                if(_healthSystem.PlayerCurrentHealth > _playerManager.PlayerHealth)
                 {
-                    _healthSystem.PlayerCurrentHealth = GameManager.Instance.PlayerHealth;
+                    _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
                 }
                 Destroy(other.gameObject);
             }

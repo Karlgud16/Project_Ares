@@ -8,9 +8,16 @@ public class MageAttack : MonoBehaviour
 
     private BaseEnemyFlip _baseEnemyFlip;
 
+    private EnemyManager _enemyManager;
+
     private void Awake()
     {
         _baseEnemyFlip = GetComponent<BaseEnemyFlip>();
+    }
+
+    private void Start()
+    {
+        _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
     }
 
     private void Update()
@@ -24,7 +31,7 @@ public class MageAttack : MonoBehaviour
 
     public void SpawnProjectile()
     {
-        var projectile = Instantiate(GameManager.Instance.Projectile, _spawnProjectilePosition, Quaternion.identity);
+        var projectile = Instantiate(_enemyManager.Projectile, _spawnProjectilePosition, Quaternion.identity);
         projectile.GetComponent<MageProjectile>().TargetPlayer = _baseEnemyFlip.FindClosestPlayer();
     }
 }

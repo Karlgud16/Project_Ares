@@ -14,39 +14,43 @@ public class HealthSystem : MonoBehaviour
 
     private bool debugSetHealth;
 
+    private PlayerManager _playerManager;
+
     void Start()
     {
         CanTakeDamage = true;
         debugSetHealth = false;
+
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
     }
 
     void Update()
     {
-        if (GameManager.Instance.debugPlayer == true && debugSetHealth == false)
+        if (_playerManager.debugPlayer == true && debugSetHealth == false)
         {
-            switch (GameManager.Instance.Players.Count)
+            switch (_playerManager.Players.Count)
             {
                 case 1:
-                    PlayerCurrentHealth = GameManager.Instance.PlayerHealth;
-                    GameManager.Instance.StartHealth = PlayerCurrentHealth;
+                    PlayerCurrentHealth = _playerManager.PlayerHealth;
+                    _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
                     Debug.Log("There is 1 player in the game");
                     break;
                 case 2:
-                    PlayerCurrentHealth = GameManager.Instance.PlayerHealth * 2;
-                    GameManager.Instance.StartHealth = PlayerCurrentHealth;
+                    PlayerCurrentHealth = _playerManager.PlayerHealth * 2;
+                    _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
                     Debug.Log("There is 2 players in the game");
                     break;
                 case 3:
-                    PlayerCurrentHealth = GameManager.Instance.PlayerHealth * 3;
-                    GameManager.Instance.StartHealth = PlayerCurrentHealth;
+                    PlayerCurrentHealth = _playerManager.PlayerHealth * 3;
+                    _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
                     Debug.Log("There is 3 players in the game");
                     break;
                 case 4:
-                    PlayerCurrentHealth = GameManager.Instance.PlayerHealth * 4;
-                    GameManager.Instance.StartHealth = PlayerCurrentHealth;
+                    PlayerCurrentHealth = _playerManager.PlayerHealth * 4;
+                    _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
                     Debug.Log("There is 4 players in the game");
                     break;
@@ -57,18 +61,18 @@ public class HealthSystem : MonoBehaviour
             }
         }
 
-        GameManager.Instance.CurrentPlayerHealth = PlayerCurrentHealth;
+        _playerManager.CurrentPlayerHealth = PlayerCurrentHealth;
 
         //If player health is less than or equal to 0
         if (PlayerCurrentHealth <= 0)
         {
-            if(GameManager.Instance.debugPlayer == true)
+            if(_playerManager.debugPlayer == true)
             {
-                foreach (GameObject player in GameManager.Instance.Players)
+                foreach (GameObject player in _playerManager.Players)
                 {
                     //Play death animation and disable the players actions
                     player.GetComponent<Animator>().SetTrigger("Death");
-                    GameManager.Instance.PlayerIsDead = true;
+                    _playerManager.PlayerIsDead = true;
                     player.GetComponent<PlayerMovement>().CanMove = false;
                     player.GetComponent<PlayerMovement>().CanBlock = false;
                     player.GetComponent<PlayerMovement>().CanJump = false;
@@ -83,7 +87,7 @@ public class HealthSystem : MonoBehaviour
                 {
                     //Play death animation and disable the players actions
                     player.GetComponent<Animator>().SetTrigger("Death");
-                    GameManager.Instance.PlayerIsDead = true;
+                    _playerManager.PlayerIsDead = true;
                     player.GetComponent<PlayerMovement>().CanMove = false;
                     player.GetComponent<PlayerMovement>().CanBlock = false;
                     player.GetComponent<PlayerMovement>().CanJump = false;

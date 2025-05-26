@@ -6,14 +6,16 @@ public class ItemSpawner : MonoBehaviour
 {
     [ReadOnly] public int ItemCount;
 
+    [ReadOnly] public bool itemPicked;
+
     void Start()
     {
-        ItemCount = 2;
+        itemPicked = false;
     }
 
     void Update()
     {
-        if (ItemCount >= 1)
+        if (itemPicked)
         {
             Destroy(gameObject);
         }

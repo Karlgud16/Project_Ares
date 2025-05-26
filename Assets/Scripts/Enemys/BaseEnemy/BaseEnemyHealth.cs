@@ -26,6 +26,12 @@ public class BaseEnemyHealth : MonoBehaviour
 
     private bool _toggleAnubisAnkh;
 
+    private ItemManager _itemManager;
+
+    private PlayerManager _playerManager;
+
+    private EnemyManager _enemyManager;
+
     void Awake()
     {
         if(transform.parent != null)
@@ -45,23 +51,27 @@ public class BaseEnemyHealth : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.AmountOfEnemies.Add(gameObject);
+        _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+        _enemyManager.AmountOfEnemies.Add(gameObject);
+
+        _itemManager = GameManager.Instance.GetComponent<ItemManager>();
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
 
         //Applies the right health towards the certain enemy
         switch (gameObject.tag) 
         {
             case "BaseEnemy":
-                CurrentHealth = GameManager.Instance.BaseEnemyHealth;
-                GameManager.Instance.ListOfBaseEnemies.Add(gameObject);
+                CurrentHealth = _enemyManager.BaseEnemyHealth;
+                _enemyManager.ListOfBaseEnemies.Add(gameObject);
                 break;
             case "Summoner":
-                CurrentHealth = GameManager.Instance.SummonerHealth;
+                CurrentHealth = _enemyManager.SummonerHealth;
                 break;
             case "Brute":
-                CurrentHealth = GameManager.Instance.BruteHealth;
+                CurrentHealth = _enemyManager.BruteHealth;
                 break;
             case "Mage":
-                CurrentHealth = GameManager.Instance.MageHealth;
+                CurrentHealth = _enemyManager.MageHealth;
                 break;
         }
         CanMove = true;
@@ -88,15 +98,15 @@ public class BaseEnemyHealth : MonoBehaviour
     {
         if (other.gameObject.tag == "lightAttack" && !IsDead)
         {
-            CurrentHealth -= GameManager.Instance.PlayerLightAttack;
-            GameManager.Instance.gameObject.GetComponent<ComboSystem>().ComboAmount++;
-            GameManager.Instance.gameObject.GetComponent<ComboSystem>().ComboTimer = 0;
+            CurrentHealth -= _playerManager.PlayerLightAttack;
+            _enemyManager.gameObject.GetComponent<ComboSystem>().ComboAmount++;
+            _enemyManager.gameObject.GetComponent<ComboSystem>().ComboTimer = 0;
             _animator.SetTrigger("Hit");
         }
         else if (other.gameObject.tag == "heavyAttack" && !IsDead)
         {
-            CurrentHealth -= GameManager.Instance.PlayerHeavyAttack;
-            GameManager.Instance.gameObject.GetComponent<ComboSystem>().ComboAmount++;
+            CurrentHealth -= _playerManager.PlayerHeavyAttack;
+            _enemyManager.gameObject.GetComponent<ComboSystem>().ComboAmount++;
             _animator.SetTrigger("Hit");
         }
     }
@@ -111,31 +121,31 @@ public class BaseEnemyHealth : MonoBehaviour
         _enemyFlip.canFlip = false;
         CanMove = false;
         IsDead = true;
-        if(GameManager.Instance.GetComponent<ItemManager>().AnubisAnkh == true && !GameManager.Instance.PlayerIsDead && _toggleAnubisAnkh)
+        if(_enemyManager.GetComponent<ItemManager>().AnubisAnkh == true && !_playerManager.PlayerIsDead && _toggleAnubisAnkh)
         {
-            _healthSystem.PlayerCurrentHealth += GameManager.Instance.PlayerHealth / 10f;
-            if(_healthSystem.PlayerCurrentHealth > GameManager.Instance.PlayerHealth)
+            _healthSystem.PlayerCurrentHealth += _playerManager.PlayerHealth / 10f;
+            if(_healthSystem.PlayerCurrentHealth > _playerManager.PlayerHealth)
             {
-                _healthSystem.PlayerCurrentHealth = GameManager.Instance.PlayerHealth;
+                _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
             }
             _toggleAnubisAnkh = false;
         }
         switch (gameObject.tag)
         {
             case "BaseEnemy":
-                yield return new WaitForSeconds(GameManager.Instance.BaseEnemySecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.BaseEnemySecondsUntilDelete);
                 break;
             case "Summoner":
-                yield return new WaitForSeconds(GameManager.Instance.SummonerSecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.SummonerSecondsUntilDelete);
                 break;
             case "Brute":
-                yield return new WaitForSeconds(GameManager.Instance.BruteSecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.BruteSecondsUntilDelete);
                 break;
             case "Mage":
-                yield return new WaitForSeconds(GameManager.Instance.MageSecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.MageSecondsUntilDelete);
                 break;
         }
-        Instantiate(GameManager.Instance.HealthPickupObject, transform.position, Quaternion.identity);
+        Instantiate(_itemManager.HealthPickupObject, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
@@ -197,20 +207,20 @@ public class BaseEnemyHealth : MonoBehaviour
 
     void OnDestroy()
     {
-        GameManager.Instance.AmountOfEnemies.Remove(gameObject);
+        _enemyManager.AmountOfEnemies.Remove(gameObject);
         switch (gameObject.tag)
         {
             case "BaseEnemy":
-                GameManager.Instance.ListOfBaseEnemies.Remove(gameObject);
+                _enemyManager.ListOfBaseEnemies.Remove(gameObject);
                 break;
             case "Summoner":
-                GameManager.Instance.ListOfSummoners.Remove(gameObject);
+                _enemyManager.ListOfSummoners.Remove(gameObject);
                 break;
             case "Brute":
-                GameManager.Instance.ListOfBrutes.Remove(gameObject);
+                _enemyManager.ListOfBrutes.Remove(gameObject);
                 break;
             case "Mage":
-                GameManager.Instance.ListOfMages.Remove(gameObject);
+                _enemyManager.ListOfMages.Remove(gameObject);
                 break;
         }
     }
@@ -221,20 +231,20 @@ public class BaseEnemyHealth : MonoBehaviour
         switch (gameObject.tag)
         {
             case "BaseEnemy":
-                CurrentHealth = GameManager.Instance.BaseEnemyHealth;
-                _healthBar.maxValue = GameManager.Instance.BaseEnemyHealth;
+                CurrentHealth = _enemyManager.BaseEnemyHealth;
+                _healthBar.maxValue = _enemyManager.BaseEnemyHealth;
                 break;
             case "Summoner":
-                CurrentHealth = GameManager.Instance.SummonerHealth;
-                _healthBar.maxValue = GameManager.Instance.SummonerHealth;
+                CurrentHealth = _enemyManager.SummonerHealth;
+                _healthBar.maxValue = _enemyManager.SummonerHealth;
                 break;
             case "Brute":
-                CurrentHealth = GameManager.Instance.BruteHealth;
-                _healthBar.maxValue = GameManager.Instance.BruteHealth;
+                CurrentHealth = _enemyManager.BruteHealth;
+                _healthBar.maxValue = _enemyManager.BruteHealth;
                 break;
             case "Mage":
-                CurrentHealth = GameManager.Instance.MageHealth;
-                _healthBar.maxValue = GameManager.Instance.MageHealth;
+                CurrentHealth = _enemyManager.MageHealth;
+                _healthBar.maxValue = _enemyManager.MageHealth;
                 break;
         }
     }

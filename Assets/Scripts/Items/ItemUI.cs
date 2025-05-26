@@ -5,18 +5,41 @@ using UnityEngine.UI;
 
 public class ItemUI : MonoBehaviour
 {
-    private Transform _background;
+    public Transform Background;
+
+    private ItemManager _itemManager;
+
+    void Awake()
+    {
+        Background = transform.GetChild(0);
+    }
 
     void Start()
     {
-        _background = transform.GetChild(0);
+        _itemManager = GameManager.Instance.GetComponent<ItemManager>();
     }
 
     public void AddToInventory(ItemScriptableObject item)
     {
-        GameObject _itemUI = Instantiate(GameManager.Instance.ItemUIPrefab, _background);
-        GameManager.Instance.ItemHUDInventory.Add(_itemUI);
+        GameObject _itemUI = Instantiate(_itemManager.ItemUIPrefab, Background);
+        _itemManager.ItemHUDInventory.Add(_itemUI);
         _itemUI.GetComponent<Image>().sprite = item.ItemSprite;
+        _itemUI.GetComponent<Image>().color = Color.white;
         _itemUI.name = item.ItemName;
+
+        if(_itemUI.transform.childCount > 0)
+        {
+            foreach (Transform child in _itemUI.transform)
+            {
+                if(child.gameObject.name.Contains("Multiplier"))
+                {
+                    return;
+                }
+                else
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
     }
 }

@@ -39,6 +39,11 @@ public class PlayerMovement : MonoBehaviour
 
     private HealthSystem _healthSystem;
     private bool _toggleCursedSpurs;
+
+    private CameraManager _cameraManager;
+
+    private PlayerManager _playerManager;
+
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -46,15 +51,15 @@ public class PlayerMovement : MonoBehaviour
         _animator = GetComponent<Animator>();
         _groundCheck = gameObject.transform.GetChild(0).GetComponent<GroundCheck>();
         _playerControls = GetComponent<PlayerInput>();
-        if(_playerControls.user.id == 0)
+        if(_playerControls.playerIndex == 0)
         {
             _staminaCooldownSlider = GameObject.FindGameObjectWithTag("Player1HUD").transform.GetChild(0).GetComponent<Slider>();
         }
-        else if(_playerControls.user.id == 1)
+        else if(_playerControls.playerIndex == 1)
         {
             _staminaCooldownSlider = GameObject.FindGameObjectWithTag("Player2HUD").transform.GetChild(0).GetComponent<Slider>();
         }
-        else if (_playerControls.user.id == 3)
+        else if (_playerControls.playerIndex == 2)
         {
             _staminaCooldownSlider = GameObject.FindGameObjectWithTag("Player3HUD").transform.GetChild(0).GetComponent<Slider>();
         }
@@ -68,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+
         CanMove = true;
         CanBlock = true;
         CanDodge = true;
@@ -75,9 +82,11 @@ public class PlayerMovement : MonoBehaviour
         CanJump = true;
         StaminaReset = false;
         _dodgeDirection = Vector3.right;
-        Stamina = GameManager.Instance.PlayerStamina;
+        Stamina = _playerManager.PlayerStamina;
         _staminaCooldownSlider.maxValue = Stamina;
         _staminaCooldownSlider.value = Stamina;
+
+        _cameraManager = _playerManager.GetComponent<CameraManager>();
     }
 
     void Update()
@@ -88,7 +97,6 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerMove();
             PlayerFlip();
-            CursedSpurs();
         }
         PlayerAnimation();
         StaminaUpdate();
@@ -104,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
     void PlayerMove()
     {
         //Apply the playerInput to the Rigidbody
-        _moveVector = transform.TransformDirection(_playerInput) * GameManager.Instance.PlayerMoveSpeed;
+        _moveVector = transform.TransformDirection(_playerInput) * _playerManager.PlayerMoveSpeed;
         _rb.velocity = new Vector3(_moveVector.x, _rb.velocity.y, _moveVector.z);
 
         //If the player if going Diagonally,
@@ -127,14 +135,14 @@ public class PlayerMovement : MonoBehaviour
         //add a force upwards and set animation trigger of Jump
         if (CanJump && _groundCheck.grounded)
         {
-            _rb.AddForce(Vector3.up * GameManager.Instance.PlayerJump, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * _playerManager.PlayerJump, ForceMode.Impulse);
             _animator.SetTrigger("Jump");
         }
     }
 
     public void PlayerDodge()
     {
-        if(CanDodge && DodgeToggle && Stamina >= GameManager.Instance.DodgeStaminaDrain)
+        if(CanDodge && DodgeToggle && Stamina >= _playerManager.DodgeStaminaDrain)
         {
             StartCoroutine(DodgeRoll());
         }
@@ -147,13 +155,13 @@ public class PlayerMovement : MonoBehaviour
         CanMove = false;
         StaminaReset = false;
         float startTime = Time.time;
-        float endTime = startTime + GameManager.Instance.PlayerDodgeDuration;
+        float endTime = startTime + _playerManager.PlayerDodgeDuration;
         while (Time.time < endTime)
         {
-            Vector3 move = _dodgeDirection * GameManager.Instance.PlayerDodgeSpeed;
+            Vector3 move = _dodgeDirection * _playerManager.PlayerDodgeSpeed;
 
             // Get leash limit (based on camera position)
-            float leashLeftX = Camera.main.transform.position.x - GameManager.Instance.LeashLimitLeft;
+            float leashLeftX = Camera.main.transform.position.x - _cameraManager.LeashLimitLeft;
 
             // Check if this move would push the player too far left
             /*if (_dodgeDirection.x < 0 && transform.position.x + move.x < leashLeftX)
@@ -167,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
             }*/
 
             transform.Translate(move * Time.deltaTime, Space.World);
-            float staminaDrainPerSecond = GameManager.Instance.DodgeStaminaDrain / GameManager.Instance.PlayerDodgeDuration;
+            float staminaDrainPerSecond = _playerManager.DodgeStaminaDrain / _playerManager.PlayerDodgeDuration;
             Stamina -= staminaDrainPerSecond * Time.deltaTime;
             yield return null;
         }
@@ -187,9 +195,9 @@ public class PlayerMovement : MonoBehaviour
 
         if (StaminaReset)
         {
-            Stamina += GameManager.Instance.PlayerStaminaRegenSpeed * Time.deltaTime;
+            Stamina += _playerManager.PlayerStaminaRegenSpeed * Time.deltaTime;
 
-            if (Stamina >= GameManager.Instance.PlayerStamina)
+            if (Stamina >= _playerManager.PlayerStamina)
             {
                 StaminaReset = false;
             }
@@ -198,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ResetStamina()
     {
-        yield return new WaitForSeconds(GameManager.Instance.PlayerStaminaRegenWait);
+        yield return new WaitForSeconds(_playerManager.PlayerStaminaRegenWait);
         if (_playerAttack.IsAttacking)
         {
             yield break;
@@ -224,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _animator.SetFloat("AnimState", 1);
             _animator.SetBool("IdleBlock", false);
-            _animator.SetFloat("walkSpeed", _playerSpeed / GameManager.Instance.PlayerMoveSpeed); //Dividing the current player speed by the target player speed to slow down animation
+            _animator.SetFloat("walkSpeed", _playerSpeed / _playerManager.PlayerMoveSpeed); //Dividing the current player speed by the target player speed to slow down animation
         }
         else
         {
@@ -264,49 +272,6 @@ public class PlayerMovement : MonoBehaviour
             theScale.x *= -1;
             transform.localScale = theScale;
             _facingRight = !_facingRight;
-        }
-    }
-
-    void CursedSpurs()
-    {
-        if (GameManager.Instance.GetComponent<ItemManager>().CursedSpurs)
-        {
-            if (GameManager.Instance.CurrentPlayerHealth > GameManager.Instance.PlayerHealth * 0.75)
-            {
-                GameManager.Instance.PlayerMoveSpeed = GameManager.Instance.DefaultPlayerMoveSpeed * 1f;
-                if(GameManager.Instance.PlayerMoveSpeed == GameManager.Instance.DefaultPlayerMoveSpeed * 1f)
-                {
-                    Debug.Log("Health is bigger than 75%");
-                    return;
-                }
-            }
-            else if (GameManager.Instance.CurrentPlayerHealth < GameManager.Instance.PlayerHealth * 0.75 && GameManager.Instance.CurrentPlayerHealth > GameManager.Instance.PlayerHealth * 0.5)
-            {
-                GameManager.Instance.PlayerMoveSpeed = GameManager.Instance.DefaultPlayerMoveSpeed * 1.1f;
-                if(GameManager.Instance.PlayerMoveSpeed == GameManager.Instance.DefaultPlayerMoveSpeed * 1.1f)
-                {
-                    Debug.Log("Health is less than 75%");
-                    return;
-                }
-            }
-            else if(GameManager.Instance.CurrentPlayerHealth < GameManager.Instance.PlayerHealth * 0.5 && GameManager.Instance.CurrentPlayerHealth > GameManager.Instance.PlayerHealth * 0.25)
-            {
-                GameManager.Instance.PlayerMoveSpeed = GameManager.Instance.DefaultPlayerMoveSpeed * 1.2f;
-                if (GameManager.Instance.PlayerMoveSpeed == GameManager.Instance.DefaultPlayerMoveSpeed * 1.2f)
-                {
-                    Debug.Log("Health is less than 50%");
-                    return;
-                }
-            }
-            else if (GameManager.Instance.CurrentPlayerHealth < GameManager.Instance.PlayerHealth * 0.25)
-            {
-                GameManager.Instance.PlayerMoveSpeed = GameManager.Instance.DefaultPlayerMoveSpeed * 1.3f;
-                if (GameManager.Instance.PlayerMoveSpeed == GameManager.Instance.DefaultPlayerMoveSpeed * 1.3f)
-                {
-                    Debug.Log("Health is less than 25%");
-                    return;
-                }
-            }
         }
     }
 }

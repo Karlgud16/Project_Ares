@@ -10,12 +10,14 @@ public class BaseEnemyFlip : MonoBehaviour
 
     private GameObject attackCol, playerTrigger, spawnProjectile;
 
+    private PlayerManager _playerManager;
+
     public GameObject FindClosestPlayer()
     {
         float distance = Mathf.Infinity;
         Vector3 pos = transform.position;
         GameObject closest = null;
-        foreach (GameObject player in GameManager.Instance.Players)
+        foreach (GameObject player in _playerManager.Players)
         {
             Vector3 difference = player.transform.position - pos;
             float currantDistance = difference.sqrMagnitude;
@@ -45,6 +47,8 @@ public class BaseEnemyFlip : MonoBehaviour
     void Start()
     {
         canFlip = true;
+
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
     }
 
     void Update()

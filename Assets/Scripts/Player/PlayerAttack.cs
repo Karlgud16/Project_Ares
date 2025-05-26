@@ -22,6 +22,8 @@ public class PlayerAttack : MonoBehaviour
 
     private PlayerMovement _playerMove;
 
+    private PlayerManager _playerManager;
+
     void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -33,6 +35,8 @@ public class PlayerAttack : MonoBehaviour
 
     void Start()
     {
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+
         CanLightAttack = true;
         CanHeavyAttack = true;
         _lightToggle = true;
@@ -41,7 +45,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void LightAttack()
     {
-        if(_groundCheck.grounded && CanLightAttack && _lightToggle && GameManager.Instance.PlayerIsDead == false)
+        if(_groundCheck.grounded && CanLightAttack && _lightToggle && _playerManager.PlayerIsDead == false)
         {
             StartCoroutine("PlayerLightAttack");
         }
@@ -49,7 +53,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void HeavyAttack()
     {
-        if (_groundCheck.grounded && CanHeavyAttack && _heavyToggle && GameManager.Instance.PlayerIsDead == false)
+        if (_groundCheck.grounded && CanHeavyAttack && _heavyToggle && _playerManager.PlayerIsDead == false)
         {
             StartCoroutine("PlayerHeavyAttack");
         }
@@ -72,7 +76,7 @@ public class PlayerAttack : MonoBehaviour
             _animator.SetTrigger("Attack2");
         }
         float lightDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
-        float staminaDrainPerSecond = GameManager.Instance.HeavyAttackStaminaDrain / lightDuration - 0.7f;
+        float staminaDrainPerSecond = _playerManager.HeavyAttackStaminaDrain / lightDuration - 0.7f;
         while (elapsedTime < lightDuration - 0.7f)
         {
             elapsedTime += Time.deltaTime;
@@ -95,7 +99,7 @@ public class PlayerAttack : MonoBehaviour
         CanHeavyAttack = false;
         _animator.SetTrigger("Attack3");
         float heavyDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
-        float staminaDrainPerSecond = GameManager.Instance.HeavyAttackStaminaDrain / heavyDuration - 0.5f;
+        float staminaDrainPerSecond = _playerManager.HeavyAttackStaminaDrain / heavyDuration - 0.5f;
         while (elapsedTime < heavyDuration - 0.5f)
         {
             elapsedTime += Time.deltaTime;

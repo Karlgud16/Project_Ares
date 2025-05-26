@@ -22,6 +22,10 @@ public class SummonEnemies : MonoBehaviour
 
     private Animator _animator;
 
+    private PlayerManager _playerManager;
+
+    private EnemyManager _enemyManager;
+
     void Awake()
     {
         _spawnPointIndex = gameObject.transform.GetChild(1).gameObject;
@@ -31,6 +35,9 @@ public class SummonEnemies : MonoBehaviour
 
     void Start()
     {
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+        _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+
         StartSummon = false;
         CanSummon = false;
 
@@ -69,7 +76,7 @@ public class SummonEnemies : MonoBehaviour
     void Update()
     {
         //Stops summoning if the max amount of base enemies has been reached
-        if (GameManager.Instance.AmountOfBaseEnemies >= GameManager.Instance.AmountOfBaseEnemiesAtOnce)
+        if (_enemyManager.AmountOfBaseEnemies >= _enemyManager.AmountOfBaseEnemiesAtOnce)
         {
             CanSummon = false;
         }
@@ -79,7 +86,7 @@ public class SummonEnemies : MonoBehaviour
         }
 
         //If the summoner has triggered its summon, it can summon and the summoner and player is not dead
-        if (StartSummon && CanSummon && !_health.IsDead && !GameManager.Instance.PlayerIsDead)
+        if (StartSummon && CanSummon && !_health.IsDead && !_playerManager.PlayerIsDead)
         {
             _animator.SetBool("isSummoning", true);
 
@@ -102,22 +109,22 @@ public class SummonEnemies : MonoBehaviour
         switch (AmountOfEnemies)
         {
             case 1:
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[0].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[0].transform);
                 break;
             case 2:
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[0].transform);
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[1].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[0].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[1].transform);
                 break;
             case 3:
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[0].transform);
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[1].transform);
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[2].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[0].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[1].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[2].transform);
                 break;
             case 4:
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[0].transform);
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[1].transform);
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[2].transform);
-                Instantiate(GameManager.Instance.BaseEnemyPrefab, SpawnPoints[3].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[0].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[1].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[2].transform);
+                Instantiate(_enemyManager.BaseEnemyPrefab, SpawnPoints[3].transform);
                 break;
         }
     }

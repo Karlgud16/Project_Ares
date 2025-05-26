@@ -19,6 +19,8 @@ public class MageProjectile : MonoBehaviour
 
     public GameObject TargetPlayer;
 
+    private EnemyManager _enemyManager;
+
     void Awake()
     {
         _animator = GetComponent<Animator>();
@@ -27,7 +29,8 @@ public class MageProjectile : MonoBehaviour
 
     void Start()
     {
-        _speed = GameManager.Instance.ProjectileSpeed;
+        _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+        _speed = _enemyManager.ProjectileSpeed;
         _currentPlayerTransform = TargetPlayer.transform;
         _lastPlayerPos = TargetPlayer.transform.GetChild(3).position;
         _hitPlayer = false;

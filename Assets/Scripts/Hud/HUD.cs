@@ -5,19 +5,23 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    Slider _healthBar;
+    private Slider _healthBar;
+
+    private PlayerManager _playerManager;
 
     void Start()
     {
         _healthBar = gameObject.transform.GetChild(0).GetComponent<Slider>();
+
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
     }
 
     void Update()
     {
-        if(_healthBar.maxValue != GameManager.Instance.StartHealth)
+        if(_healthBar.maxValue != _playerManager.StartHealth)
         {
-            _healthBar.maxValue = GameManager.Instance.StartHealth;
+            _healthBar.maxValue = _playerManager.StartHealth;
         }
-        _healthBar.value = GameManager.Instance.CurrentPlayerHealth;
+        _healthBar.value = _playerManager.CurrentPlayerHealth;
     }
 }

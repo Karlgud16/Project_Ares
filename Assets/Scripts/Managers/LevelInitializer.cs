@@ -9,6 +9,8 @@ public class LevelInitializer : MonoBehaviour
 
     private HealthSystem _healthSystem;
 
+    private PlayerManager _playerManager;
+
     private void Awake()
     {
         _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
@@ -16,32 +18,34 @@ public class LevelInitializer : MonoBehaviour
 
     void Start()
     {
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+
         var playerConfigs = PlayerConfigManager.Instance.GetPlayerConfigs().ToArray();
         for (int i = 0; i < playerConfigs.Length; i++)
         {
             var player = Instantiate(PlayerConfigManager.Instance.BaseEnemy, _playerSpawns[i].position, _playerSpawns[i].rotation, gameObject.transform);
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
             _healthSystem.Players.Add(player);
-            GameManager.Instance.Players.Add(player);
+            _playerManager.Players.Add(player);
         }
 
         //Set how much health the player/s should have
-        switch (GameManager.Instance.Players.Count)
+        switch (_playerManager.Players.Count)
         {
             case 1:
-                _healthSystem.PlayerCurrentHealth = GameManager.Instance.PlayerHealth;
+                _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
                 Debug.Log("There is 1 player in the game");
                 break;
             case 2:
-                _healthSystem.PlayerCurrentHealth = GameManager.Instance.PlayerHealth * 2;
+                _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 2;
                 Debug.Log("There is 2 players in the game");
                 break;
             case 3:
-                _healthSystem.PlayerCurrentHealth = GameManager.Instance.PlayerHealth * 3;
+                _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 3;
                 Debug.Log("There is 3 players in the game");
                 break;
             case 4:
-                _healthSystem.PlayerCurrentHealth = GameManager.Instance.PlayerHealth * 4;
+                _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 4;
                 Debug.Log("There is 4 players in the game");
                 break;
             case 0:

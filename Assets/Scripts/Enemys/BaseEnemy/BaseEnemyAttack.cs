@@ -13,6 +13,13 @@ public class BaseEnemyAttack : MonoBehaviour
     private GameManager _gameMan;
 
     private bool _isAttacking;
+
+    private ItemManager _itemManager;
+
+    private PlayerManager _playerManager;
+
+    private EnemyManager _enemyManager;
+
     void Awake()
     {
         _animator = transform.parent.parent.GetComponent<Animator>();
@@ -21,13 +28,17 @@ public class BaseEnemyAttack : MonoBehaviour
 
     void Start()
     {
+        _itemManager = GameManager.Instance.GetComponent<ItemManager>();
+        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+        _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+
         _isAttacking = false;
     }
 
     private void OnTriggerStay(Collider other)
     {
         //If the enemy is in the players collider and is not attacking
-        if (other.gameObject.tag == "Player" && _isAttacking == false && _health.IsDead == false && GameManager.Instance.PlayerIsDead == false)
+        if (other.gameObject.tag == "Player" && _isAttacking == false && _health.IsDead == false && _playerManager.PlayerIsDead == false)
         {
             StartCoroutine(Attack());
         }
@@ -64,10 +75,10 @@ public class BaseEnemyAttack : MonoBehaviour
 
     IEnumerator SlimeArmour()
     {
-        GameManager.Instance.BaseEnemyMoveSpeed = GameManager.Instance.DefaultBaseEnemyMoveSpeed * GameManager.Instance.SlimeArmourMultiplier;
-        GameManager.Instance.BruteMoveSpeed = GameManager.Instance.DefaultBruteMoveSpeed * GameManager.Instance.SlimeArmourMultiplier;
-        yield return new WaitForSeconds(GameManager.Instance.SlimeArmourSecondsUntilNormalSpeed);
-        GameManager.Instance.BaseEnemyMoveSpeed = GameManager.Instance.DefaultBaseEnemyMoveSpeed;
-        GameManager.Instance.BruteMoveSpeed = GameManager.Instance.DefaultBruteMoveSpeed;
+        _enemyManager.BaseEnemyMoveSpeed = _enemyManager.DefaultBaseEnemyMoveSpeed * _itemManager.SlimeArmourMultiplier;
+        _enemyManager.BruteMoveSpeed = _enemyManager.DefaultBruteMoveSpeed * _itemManager.SlimeArmourMultiplier;
+        yield return new WaitForSeconds(_itemManager.SlimeArmourSecondsUntilNormalSpeed);
+        _enemyManager.BaseEnemyMoveSpeed = _enemyManager.DefaultBaseEnemyMoveSpeed;
+        _enemyManager.BruteMoveSpeed = _enemyManager.DefaultBruteMoveSpeed;
     }
 }

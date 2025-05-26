@@ -17,6 +17,8 @@ public class BaseEnemyMovement : MonoBehaviour
 
     private BaseEnemyFlip _baseEnemyFlip;
 
+    private EnemyManager _enemyManager;
+
     void Awake()
     {
         _enemyNav = GetComponent<NavMeshAgent>();
@@ -25,6 +27,12 @@ public class BaseEnemyMovement : MonoBehaviour
         _baseEnemyFlip = GetComponent<BaseEnemyFlip>();
         _moveTrigger = transform.GetChild(3).GetComponent<BaseEnemyStartMove>();
     }
+
+    private void Start()
+    {
+        _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+    }
+
     void Update()
     {
         BaseEnemyFollow();
@@ -35,13 +43,13 @@ public class BaseEnemyMovement : MonoBehaviour
         switch (gameObject.tag) 
         {
             case "BaseEnemy":
-                _enemyNav.speed = GameManager.Instance.BaseEnemyMoveSpeed;
+                _enemyNav.speed = _enemyManager.BaseEnemyMoveSpeed;
                 break;
             case "Brute":
-                _enemyNav.speed = GameManager.Instance.BruteMoveSpeed;
+                _enemyNav.speed = _enemyManager.BruteMoveSpeed;
                 break;
             case "Mage":
-                _enemyNav.speed = GameManager.Instance.MageMoveSpeed;
+                _enemyNav.speed = _enemyManager.MageMoveSpeed;
                 break;
         }
 
@@ -67,13 +75,13 @@ public class BaseEnemyMovement : MonoBehaviour
         switch (gameObject.tag)
         {
             case "BaseEnemy":
-                _enemyNav.speed = GameManager.Instance.BaseEnemyMoveSpeed;
+                _enemyNav.speed = _enemyManager.BaseEnemyMoveSpeed;
                 break;
             case "Brute":
-                _enemyNav.speed = GameManager.Instance.BruteMoveSpeed;
+                _enemyNav.speed = _enemyManager.BruteMoveSpeed;
                 break;
             case "Mage":
-                _enemyNav.speed = GameManager.Instance.MageMoveSpeed;
+                _enemyNav.speed = _enemyManager.MageMoveSpeed;
                 break;
         }
     }

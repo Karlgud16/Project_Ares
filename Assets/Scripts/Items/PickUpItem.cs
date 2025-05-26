@@ -8,39 +8,47 @@ public class PickUpItem : MonoBehaviour
 
     private ItemUI _itemUI;
 
-    private ItemSpawner _spawner;
+    [ReadOnly][SerializeField] private ItemSpawner _spawner;
+
+    private ItemManager _itemManager;
 
     private void Awake()
     {
         _itemUI = GameObject.FindGameObjectWithTag("HUD").transform.Find("OwnedItems").GetComponent<ItemUI>();
 
-        if (transform.parent.transform.parent.name.Contains("ItemSpawner"))
+        if (transform.root.name.Contains("ItemSpawner"))
         {
-            _spawner = transform.parent.transform.parent.GetComponent<ItemSpawner>();
+            _spawner = transform.root.GetComponent<ItemSpawner>();
+        }
+        else
+        {
+            return;
         }
     }
 
     private void Start()
     {
+        _itemManager = GameManager.Instance.GetComponent<ItemManager>();
+
         if (gameObject.name.Contains("Hermes' Swift Sandals"))
         {
-            scriptItem = GameManager.Instance.HermesSwiftSandals;
+            scriptItem = _itemManager.HermesSwiftSandals;
         }
         else if (gameObject.name.Contains("Valkyrie's Winged Boots"))
         {
-            scriptItem = GameManager.Instance.ValkyriesWingedBoots;
+            scriptItem = _itemManager.ValkyriesWingedBoots;
         }
         else if (gameObject.name.Contains("Anubis Ankh"))
         {
-            scriptItem = GameManager.Instance.AnubisAnkh;
+            scriptItem = _itemManager.AnubisAnkh;
         }
         else if (gameObject.name.Contains("Cursed Spurs"))
         {
-            scriptItem = GameManager.Instance.CursedSpurs;
+            scriptItem = _itemManager.CursedSpurs;
         }
         else if (gameObject.name.Contains("Slime Armour"))
         {
-            scriptItem = GameManager.Instance.SlimeArmour;
+            scriptItem = _itemManager.SlimeArmour;
         }
     }
 
@@ -48,26 +56,36 @@ public class PickUpItem : MonoBehaviour
     {
         if(other.tag == "Player" && other.GetComponent<PlayerMovement>().CanInteract)
         {
+            foreach (Transform child in _itemUI.Background)
+            {
+                if (child.gameObject.name == scriptItem.ItemName)
+                {
+                    GameObject text = child.GetChild(0).gameObject;
+                    text.GetComponent<DisplayMultiplier>().Multiplier++;
+                    _itemManager.SameItemCheck(scriptItem.ItemName);
+                    Destroy(gameObject);
+                    return;
+                }
+            }
             Debug.Log(scriptItem.ItemName);
-            GameManager.Instance.ItemInventory.Add(scriptItem);
-            GameManager.Instance.ItemInventoryGameObject.Add(scriptItem.ItemObject);
             _itemUI.AddToInventory(scriptItem);
+            _itemManager.ItemInventory.Add(scriptItem);
             switch (scriptItem.ItemName) 
             {
                 case "Hermes' Swift Sandals":
-                    GameManager.Instance.GetComponent<ItemManager>().HermesSwitchSandals = true;
+                    _itemManager.HermesSwitchSandals = true;
                     break;
                 case "Valkyrie's Winged Boots":
-                    GameManager.Instance.GetComponent<ItemManager>().ValkyriesWingedBoots = true;
+                    _itemManager.ValkyriesWingedBootsBool = true;
                     break;
                 case "Anubis Ankh":
-                    GameManager.Instance.GetComponent<ItemManager>().AnubisAnkh = true;
+                    _itemManager.AnubisAnkhBool = true;
                     break;
                 case "Cursed Spurs":
-                    GameManager.Instance.GetComponent<ItemManager>().CursedSpurs = true;
+                    _itemManager.CursedSpursBool = true;
                     break;
                 case "Slime Armour":
-                    GameManager.Instance.GetComponent<ItemManager>().SlimeArmour = true;
+                    _itemManager.SlimeArmourBool = true;
                     break;
                 default:
                     Debug.LogError("Item does not exist in script manager :( ( Make sure the case in PickUpItem is the same as the ItemScriptableObject.ItemName :) )");
@@ -76,7 +94,7 @@ public class PickUpItem : MonoBehaviour
 
             if(_spawner != null)
             {
-                _spawner.ItemCount--;
+                _spawner.itemPicked = true;
             }
 
             Destroy(gameObject);
