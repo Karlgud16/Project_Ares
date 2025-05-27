@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -57,6 +54,10 @@ public class PlayerInputHandler : MonoBehaviour
         {
             OnInteract(obj);
         }
+        else if (obj.action.name == _controls.PlayerMovement.Pause.name)
+        {
+            OnPause(obj);
+        }
     }
 
     public void OnMove(CallbackContext context)
@@ -108,6 +109,21 @@ public class PlayerInputHandler : MonoBehaviour
         if (context.performed)
         {
             StartCoroutine(Interact());
+        }
+    }
+
+    public void OnPause(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            if (GameManager.Instance.IsPaused)
+            {
+                GameManager.Instance.MenuManager.Resume();
+            }
+            else
+            {
+                GameManager.Instance.PauseState = true;
+            }
         }
     }
 

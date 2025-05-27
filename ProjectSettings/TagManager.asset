@@ -24,6 +24,7 @@ TagManager:
   - Player4HUD
   - LevelInitializer
   - Section
+  - Menu
   layers:
   - Default
   - TransparentFX

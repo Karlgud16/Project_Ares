@@ -1,11 +1,13 @@
 //Script that handles the stats for the player and the enemies as well as gameplay values and logic
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Gameplay")]
     public bool IsPaused;
+    [ReadOnly] public bool PauseState;
     [ReadOnly] public float CurrentTimeScale;
     [ReadOnly] public bool FreeCam;
     public float ComboTimer;
@@ -13,6 +15,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance; 
 
     private PlayerManager _playerManager;
+
+    [ReadOnly] public MenuManager MenuManager;
+    private EventSystem _eventSystem;
 
     void Awake()
     {
@@ -30,6 +35,8 @@ public class GameManager : MonoBehaviour
         }
 
         _playerManager = GetComponent<PlayerManager>();
+        MenuManager = GameObject.FindGameObjectWithTag("Menu").GetComponent<MenuManager>();
+        _eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
     }
 
     void Start()
@@ -41,6 +48,15 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         PauseLogic();
+
+        if(PauseState == true)
+        {
+            IsPaused = true;
+            MenuManager.PauseMenu.SetActive(true);
+            MenuManager.Hud.SetActive(false);
+            _eventSystem.SetSelectedGameObject(MenuManager.ResumeButton);
+            PauseState = false;
+        }
     }
 
     void PauseLogic()
