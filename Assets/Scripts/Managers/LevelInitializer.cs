@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+//Handles the spawning of the players in each level
+
 using UnityEngine;
 
 public class LevelInitializer : MonoBehaviour
@@ -25,6 +25,7 @@ public class LevelInitializer : MonoBehaviour
         {
             var player = Instantiate(PlayerConfigManager.Instance.BaseEnemy, _playerSpawns[i].position, _playerSpawns[i].rotation, gameObject.transform);
             player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
+            player.GetComponent<PlayerMovement>().PlayerID = i;
             _healthSystem.Players.Add(player);
             _playerManager.Players.Add(player);
         }
@@ -34,18 +35,26 @@ public class LevelInitializer : MonoBehaviour
         {
             case 1:
                 _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
+                _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
+                GameManager.Instance.GameStarted = true;
                 Debug.Log("There is 1 player in the game");
                 break;
             case 2:
                 _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 2;
+                _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
+                GameManager.Instance.GameStarted = true;
                 Debug.Log("There is 2 players in the game");
                 break;
             case 3:
                 _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 3;
+                _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
+                GameManager.Instance.GameStarted = true;
                 Debug.Log("There is 3 players in the game");
                 break;
             case 4:
                 _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 4;
+                _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
+                GameManager.Instance.GameStarted = true;
                 Debug.Log("There is 4 players in the game");
                 break;
             case 0:

@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+//Handles the Main Menu Logic
+
 using UnityEngine;
 
 public class MainMenuButtons : MonoBehaviour

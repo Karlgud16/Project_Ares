@@ -1,0 +1,253 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7846677911531760891
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2844565111299943634}
+  - component: {fileID: 887403472424592196}
+  - component: {fileID: 4766545835993525893}
+  - component: {fileID: 674837341750827088}
+  - component: {fileID: 6309014952676926750}
+  - component: {fileID: 2724844485079790573}
+  - component: {fileID: 8505317368106477983}
+  - component: {fileID: 7655946817767089696}
+  - component: {fileID: 3440840042919036195}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: GameManager
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2844565111299943634
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &887403472424592196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcba5f95a8d70234ab3d435f01d2d8ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsPaused: 0
+  PauseState: 0
+  CanPause: 0
+  CurrentTimeScale: 0
+  FreeCam: 0
+  GameStarted: 0
+  GameWon: 0
+  ComboTimer: 5
+  MenuManager: {fileID: 0}
+--- !u!114 &4766545835993525893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b28b1fa5adf03a4c823150ae32e89e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HermesSwitchSandals: 0
+  ValkyriesWingedBootsBool: 0
+  AnubisAnkhBool: 0
+  CursedSpursBool: 0
+  SlimeArmourBool: 0
+  ItemList:
+  - {fileID: 5736009134794394729, guid: 500757dd80cf98440aeddbcbc1536332, type: 3}
+  - {fileID: 3633786323413047474, guid: 9cf658f013c1ec94b943542492e600f8, type: 3}
+  - {fileID: 1659519766466754246, guid: b263937ece41e1e48a60925adaaf98c4, type: 3}
+  - {fileID: 3489065752007332059, guid: f40aa1e8d4feb4840b94282eb75d9775, type: 3}
+  - {fileID: 2369897063969431065, guid: b142a1b45021bec4caf5db6aa2d25112, type: 3}
+  ItemInventory: []
+  ItemHUDInventory: []
+  ItemUIPrefab: {fileID: 8685480405611341087, guid: f5b73bfc1cbb74040bce9f211860c268,
+    type: 3}
+  HealthPickupObject: {fileID: 4761922858116811519, guid: d39bf19dbd4ea324787461909c6446df,
+    type: 3}
+  HermesSwiftSandals: {fileID: 11400000, guid: a8f7dbdb77c64a3429041cf9cb6069e1, type: 2}
+  ValkyriesWingedBoots: {fileID: 11400000, guid: 24ce32493d812454b9d14fba6ed2af98,
+    type: 2}
+  AnubisAnkh: {fileID: 11400000, guid: 3300d4e2b8547ac49ab280bf3cc73507, type: 2}
+  CursedSpurs: {fileID: 11400000, guid: a54aacbea9b079e42b068be0c2a92646, type: 2}
+  SlimeArmour: {fileID: 11400000, guid: 3f2536b961bc15a4c85715b5fd3340a7, type: 2}
+  ItemSpawner: {fileID: 4118487631509276221, guid: c41b1552df45edb41ad160ee7dbefacf,
+    type: 3}
+  HealthPickup: 20
+  HealthPickupMultiplier: 10
+  HermesSwiftSandalsMultiplier: 2
+  _hermesSameItemMultiplier: 1.2
+  ValkyriesWingedBootsMultiplier: 2
+  _ValkyriesSameItemMultiplier: 1
+  CursedSpursMultiplier: 1.2
+  _cursedSpursSameItemMultiplier: 1.5
+  AnubisAnkhHealth: 0
+  SlimeArmourMultiplier: 0.5
+  _SlimeArmourSameItemMultiplier: 0.9
+  SlimeArmourSecondsUntilNormalSpeed: 1
+--- !u!114 &674837341750827088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c20e931859037174292031b2f94c9a2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CameraMove: 0
+  SmoothTime: 0.3
+  MinZoom: 60
+  MaxZoom: 80
+  ZoomLimiter: 10
+  DeadZone: {x: 2, y: 2.5}
+  CameraOffset: {x: 0, y: 3, z: -10}
+  LevelBounds: {fileID: 0}
+  LeashLimitLeft: 10
+  LeashPushSpeed: 5
+--- !u!114 &6309014952676926750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42e2067756f59904b9121545e34765a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugPlayer: 0
+  Players: []
+  PlayerMoveSpeed: 5
+  DefaultPlayerMoveSpeed: 0
+  PlayerJump: 5
+  PlayerHealth: 150
+  CurrentPlayerHealth: 0
+  StartHealth: 0
+  PlayerLightAttack: 20
+  PlayerHeavyAttack: 30
+  PlayerDodgeSpeed: 10
+  PlayerDodgeDuration: 0.5
+  PlayerStamina: 100
+  LightAttackStaminaDrain: 10
+  HeavyAttackStaminaDrain: 15
+  DodgeStaminaDrain: 20
+  PlayerStaminaRegenWait: 1
+  PlayerStaminaRegenSpeed: 30
+  Player1StaminaSlider: {fileID: 0}
+  Player2StaminaSlider: {fileID: 0}
+  Player3StaminaSlider: {fileID: 0}
+  Player4StaminaSlider: {fileID: 0}
+  PlayerIsDead: 0
+--- !u!114 &2724844485079790573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43380d3fe9dce724eb842489a90b9ad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseEnemyMoveSpeed: 2.5
+  DefaultBaseEnemyMoveSpeed: 0
+  BaseEnemyHealth: 100
+  BaseEnemyAttack: 10
+  BaseEnemySecondsUntilDelete: 4
+  BaseEnemyPrefab: {fileID: 3668777963716848008, guid: 5ef942a8c4d542d468ff0d5a332534a9,
+    type: 3}
+  AmountOfBaseEnemiesAtOnce: 10
+  AmountOfBaseEnemies: 0
+  ListOfBaseEnemies: []
+  SummonerHealth: 100
+  SummonerSecondsUntilDelete: 4
+  ListOfSummoners: []
+  BruteMoveSpeed: 1.75
+  DefaultBruteMoveSpeed: 0
+  BruteHealth: 200
+  BruteBaseAttack: 20
+  BruteSecondsUntilDelete: 4
+  ListOfBrutes: []
+  MageMoveSpeed: 1
+  MageHealth: 100
+  MageSecondsUntilDelete: 4
+  Projectile: {fileID: 4625592308439695052, guid: 226721afeb85bad4ea1843ed5e898a8a,
+    type: 3}
+  ProjectileSpeed: 1
+  ProjectileAttack: 10
+  ProjectileSecondsUntilDelete: 2
+  ListOfMages: []
+  AmountOfEnemies: []
+--- !u!114 &8505317368106477983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c339eda2feaeb4f46ac964e32bf6a561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7655946817767089696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a9c9b9ce12f8c4f9cf06cc68627d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ComboTimer: 0
+  _comboText: {fileID: 0}
+  ComboAmount: 0
+--- !u!114 &3440840042919036195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c179331aa82ff514da583e542ca02156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BorrekHealth: 350
+  BorrekMoveSpeed: 1.5
+  DefaultBorrekMoveSpeed: 0
+  BorrekAttack: 30
+  BorrekSecondsUntilDelete: 4

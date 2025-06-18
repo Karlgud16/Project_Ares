@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a525b61c30a73804788ae66de53553a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerID: 0
   _dodgeDirection: {x: 0, y: 0, z: 0}
   CanMove: 0
   CanBlock: 0
@@ -161,6 +162,7 @@ MonoBehaviour:
   CanJump: 0
   StaminaReset: 0
   _playerSpeed: 0
+  _staminaCooldownSlider: {fileID: 0}
   Stamina: 0
 --- !u!114 &3593726251650062457
 MonoBehaviour:
@@ -299,7 +301,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8068285089998299183}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 24340fee5fe04c949a02316c95586f06, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -493,6 +495,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: b9825ad0-4ac2-47df-afac-db77d7fdb9a4
     m_ActionName: 'PlayerMovement/UISelect[/Mouse/leftButton,/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0ab8e04f-da37-48ba-b411-d9bf5ff13229
+    m_ActionName: 'PlayerMovement/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerMovement

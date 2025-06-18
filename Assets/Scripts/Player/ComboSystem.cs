@@ -2,18 +2,27 @@
 
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ComboSystem : MonoBehaviour
 {
     [ReadOnly] public float ComboTimer;
 
-    private TextMeshProUGUI _comboText;
+    [SerializeField] private TextMeshProUGUI _comboText;
 
     [ReadOnly] public int ComboAmount;
 
-    void Awake()
+    private void Awake()
     {
-        _comboText = GameObject.FindGameObjectWithTag("HUD").transform.GetChild(5).GetComponent<TextMeshProUGUI>();
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        if(scene.name != "MainMenu")
+        {
+            _comboText = GameObject.FindGameObjectWithTag("HUD").transform.GetChild(5).GetComponent<TextMeshProUGUI>();
+        }
     }
 
     void Start()

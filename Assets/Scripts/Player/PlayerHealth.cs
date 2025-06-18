@@ -1,4 +1,4 @@
-//Handles the player taking damage
+//Handles the player taking damage and picking up health
 
 using UnityEngine;
 
@@ -16,6 +16,8 @@ public class PlayerHealth : MonoBehaviour
 
     private EnemyManager _enemyManager;
 
+    private MiniBossManager _miniBossManager;
+
     void Awake()
     {
         _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
@@ -27,6 +29,7 @@ public class PlayerHealth : MonoBehaviour
         _itemManager = GameManager.Instance.GetComponent<ItemManager>();
         _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
         _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+        _miniBossManager = GameManager.Instance.GetComponent<MiniBossManager>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -37,16 +40,21 @@ public class PlayerHealth : MonoBehaviour
             if (other.gameObject.tag == "baseAttack")
             {
                 _animator.SetTrigger("Hurt");
-                switch (other.transform.parent.tag) 
+
+                switch (other.transform.parent.name)
                 {
-                    case "BaseEnemy":
+                    case string a when a.Contains("BaseEnemy"):
                         _healthSystem.PlayerCurrentHealth -= _enemyManager.BaseEnemyAttack;
                         break;
-                    case "Brute":
+                    case string a when a.Contains("Brute"):
                         _healthSystem.PlayerCurrentHealth -= _enemyManager.BruteBaseAttack;
+                        break;
+                    case string a when a.Contains("Borrek"):
+                        _healthSystem.PlayerCurrentHealth -= _miniBossManager.BorrekAttack;
                         break;
                 }
             }
+
             //If the player is hit by the Mage Projectile
             else if (other.gameObject.tag == "Projectile")
             {
@@ -55,6 +63,7 @@ public class PlayerHealth : MonoBehaviour
             }
         }
 
+        //Adds the health multiplier to the health pickup
         if(other.name.Contains("HealthMultiplier") && _playerManager.PlayerIsDead == false)
         {
             _itemManager.HealthPickup += _itemManager.HealthPickupMultiplier;
@@ -64,17 +73,15 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.name.Contains("HealthPickup") && _playerManager.PlayerIsDead == false)
+        //Adds health to the player when the player is colliding with health pickup 
+        if (other.name.Contains("HealthPickup") && _playerManager.PlayerIsDead == false && _healthSystem.PlayerCurrentHealth > 0 && _healthSystem.PlayerCurrentHealth < _playerManager.PlayerHealth)
         {
-            if(_healthSystem.PlayerCurrentHealth > 0 && _healthSystem.PlayerCurrentHealth < _playerManager.PlayerHealth)
+            _healthSystem.PlayerCurrentHealth += _itemManager.HealthPickup;
+            if(_healthSystem.PlayerCurrentHealth > _playerManager.PlayerHealth)
             {
-                _healthSystem.PlayerCurrentHealth += _itemManager.HealthPickup;
-                if(_healthSystem.PlayerCurrentHealth > _playerManager.PlayerHealth)
-                {
-                    _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
-                }
-                Destroy(other.gameObject);
+                _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
             }
+            Destroy(other.gameObject);
         }
     }
 }

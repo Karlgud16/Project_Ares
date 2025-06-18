@@ -1,24 +1,23 @@
 //Handles all of the Base Enemies Attacks
 
 using System.Collections;
-using Unity.VisualScripting;
+//Handles the Base Enemy Attack
+
 using UnityEngine;
 
 public class BaseEnemyAttack : MonoBehaviour
 {
-    private Animator _animator;
+    [SerializeField] private Animator _animator;
 
-    private BaseEnemyHealth _health;
+    [SerializeField] private BaseEnemyHealth _health;
 
-    private GameManager _gameMan;
+    [SerializeField] private bool _isAttacking;
 
-    private bool _isAttacking;
+    [SerializeField] private ItemManager _itemManager;
 
-    private ItemManager _itemManager;
+    [SerializeField] private PlayerManager _playerManager;
 
-    private PlayerManager _playerManager;
-
-    private EnemyManager _enemyManager;
+    [SerializeField] private EnemyManager _enemyManager;
 
     void Awake()
     {
@@ -73,6 +72,7 @@ public class BaseEnemyAttack : MonoBehaviour
         }
     }
 
+    //Slows down the enemy when the player has the Slime Armour Item
     IEnumerator SlimeArmour()
     {
         _enemyManager.BaseEnemyMoveSpeed = _enemyManager.DefaultBaseEnemyMoveSpeed * _itemManager.SlimeArmourMultiplier;

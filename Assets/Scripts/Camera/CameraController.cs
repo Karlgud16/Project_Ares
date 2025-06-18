@@ -1,3 +1,5 @@
+//Script that handles the camera movement
+
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -20,7 +22,7 @@ public class CameraController : MonoBehaviour
 
     }
 
-    void LateUpdate()
+    void Update()
     {
         if (_cameraManager.CameraMove || _playerManager.Players.Count > 0)
         {

@@ -1,3 +1,5 @@
+//Spawns in the Item Spawner + moves the camera again when all enemys are dead in a section
+
 using UnityEngine;
 
 public class Section : MonoBehaviour

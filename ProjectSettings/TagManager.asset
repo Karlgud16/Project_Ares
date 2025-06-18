@@ -25,6 +25,7 @@ TagManager:
   - LevelInitializer
   - Section
   - Menu
+  - PlayableArea
   layers:
   - Default
   - TransparentFX

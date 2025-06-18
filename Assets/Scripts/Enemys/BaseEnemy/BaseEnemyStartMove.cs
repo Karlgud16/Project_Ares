@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+//Starts the enemy movement if the player is close enough
+
 using UnityEngine;
 
 public class BaseEnemyStartMove : MonoBehaviour

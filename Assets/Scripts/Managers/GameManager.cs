@@ -1,18 +1,24 @@
-//Script that handles the stats for the player and the enemies as well as gameplay values and logic
+//Script that logic for the game state
 
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Gameplay")]
     public bool IsPaused;
     [ReadOnly] public bool PauseState;
+    [ReadOnly] public bool CanPause;
     [ReadOnly] public float CurrentTimeScale;
     [ReadOnly] public bool FreeCam;
+    [ReadOnly] public bool GameStarted;
+    [ReadOnly] public bool GameWon;
+    private bool _startWonScreen;
     public float ComboTimer;
 
-    public static GameManager Instance; 
+    public static GameManager Instance;
 
     private PlayerManager _playerManager;
 
@@ -22,27 +28,42 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         //Make itself an instance so it is easier to referance in scripts, deletes itself if the script is already in the scene
-        if (Instance == null) 
+        if (Instance == null)
         {
             Debug.Log("GameManager Made!");
             DontDestroyOnLoad(gameObject);
             Instance = this;
         }
-        else if (Instance != this) 
+        else if (Instance != this)
         {
             Debug.Log("Deleted a Game Manager as there should only be one Game Manager");
             Destroy(gameObject);
         }
 
         _playerManager = GetComponent<PlayerManager>();
-        MenuManager = GameObject.FindGameObjectWithTag("Menu").GetComponent<MenuManager>();
         _eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
     }
 
     void Start()
     {
         CurrentTimeScale = Time.timeScale;
         FreeCam = false;
+        CanPause = true;
+        GameStarted = false;
+        GameWon = false;
+        _startWonScreen = false;
+    }
+
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        if(scene.name != "MainMenu")
+        {
+            MenuManager = GameObject.FindGameObjectWithTag("Menu").GetComponent<MenuManager>();
+            CanPause = true;
+            GameStarted = false;
+        }
     }
 
     void Update()
@@ -57,6 +78,24 @@ public class GameManager : MonoBehaviour
             _eventSystem.SetSelectedGameObject(MenuManager.ResumeButton);
             PauseState = false;
         }
+
+        if(_playerManager.PlayerIsDead)
+        {
+            if(CanPause == true)
+            {
+                StartCoroutine(LoseMenu());
+                CanPause = false;
+            }
+        }
+
+        if (GameWon && _startWonScreen == false)
+        {
+            MenuManager.WonMenu.SetActive(true);
+            MenuManager.Hud.SetActive(false);
+            _eventSystem.SetSelectedGameObject(MenuManager.NextLevelButton);
+            IsPaused = true;
+            _startWonScreen = true;
+        }
     }
 
     void PauseLogic()
@@ -66,7 +105,6 @@ public class GameManager : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            Time.timeScale = 0f;
             foreach(GameObject player in _playerManager.Players)
             {
                 player.GetComponent<PlayerMovement>().CanMove = false;
@@ -80,9 +118,6 @@ public class GameManager : MonoBehaviour
         //Else if IsPaused is not true and FreeCam is true(Player is using FreeCam) or the player has less than/equal to 0 health
         else if (!IsPaused && FreeCam || _playerManager.CurrentPlayerHealth <= 0)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            Time.timeScale = CurrentTimeScale;
             foreach (GameObject player in _playerManager.Players)
             {
                 player.GetComponent<PlayerMovement>().CanMove = false;
@@ -109,5 +144,16 @@ public class GameManager : MonoBehaviour
                 player.GetComponent<PlayerAttack>().CanHeavyAttack = true;
             }
         }
+    }
+
+    IEnumerator LoseMenu()
+    {
+        yield return new WaitForSeconds(1.5f);
+        MenuManager.LoseMenu.SetActive(true);
+        MenuManager.Hud.SetActive(false);
+        _eventSystem.SetSelectedGameObject(MenuManager.RestartButton);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0f;
     }
 }

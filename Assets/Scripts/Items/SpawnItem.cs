@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+//Handles the spawning of items in the item spawner
+
 using UnityEngine;
 
 public class SpawnItem : MonoBehaviour
@@ -15,6 +15,7 @@ public class SpawnItem : MonoBehaviour
     {
         _itemManager = GameManager.Instance.GetComponent<ItemManager>();
 
+        //Gets the opposite spawn game object
         if(gameObject.transform.root.GetChild(0).name != gameObject.name)
         {
             _otherSpawn = gameObject.transform.root.GetChild(0).gameObject;

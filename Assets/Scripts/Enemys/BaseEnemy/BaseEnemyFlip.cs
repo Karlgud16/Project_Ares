@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+//Handles flipping left or right on the enemy depending on where the nearest player is
+
 using UnityEngine;
 
 public class BaseEnemyFlip : MonoBehaviour

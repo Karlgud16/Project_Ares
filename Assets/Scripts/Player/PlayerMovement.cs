@@ -3,10 +3,13 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [ReadOnly] public int PlayerID;
+
     private PlayerAttack _playerAttack;
 
     private PlayerInput _playerControls;
@@ -34,8 +37,9 @@ public class PlayerMovement : MonoBehaviour
     [ReadOnly] public bool StaminaReset; //Starts the cooldown inbetween dodges
     [ReadOnly][SerializeField] private float _playerSpeed; //Current player speed
 
-    private Slider _staminaCooldownSlider;
+    [SerializeField] private Slider _staminaCooldownSlider;
     [ReadOnly] public float Stamina;
+    private bool _staminaSet;
 
     private HealthSystem _healthSystem;
     private bool _toggleCursedSpurs;
@@ -50,29 +54,13 @@ public class PlayerMovement : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _groundCheck = gameObject.transform.GetChild(0).GetComponent<GroundCheck>();
-        _playerControls = GetComponent<PlayerInput>();
-        if(_playerControls.playerIndex == 0)
-        {
-            _staminaCooldownSlider = GameObject.FindGameObjectWithTag("Player1HUD").transform.GetChild(0).GetComponent<Slider>();
-        }
-        else if(_playerControls.playerIndex == 1)
-        {
-            _staminaCooldownSlider = GameObject.FindGameObjectWithTag("Player2HUD").transform.GetChild(0).GetComponent<Slider>();
-        }
-        else if (_playerControls.playerIndex == 2)
-        {
-            _staminaCooldownSlider = GameObject.FindGameObjectWithTag("Player3HUD").transform.GetChild(0).GetComponent<Slider>();
-        }
-        else
-        {
-            _staminaCooldownSlider = GameObject.FindGameObjectWithTag("Player4HUD").transform.GetChild(0).GetComponent<Slider>();
-        }
         _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
         _playerAttack = GetComponent<PlayerAttack>();
     }
 
     void Start()
     {
+        _staminaSet = false;
         _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
 
         CanMove = true;
@@ -82,15 +70,59 @@ public class PlayerMovement : MonoBehaviour
         CanJump = true;
         StaminaReset = false;
         _dodgeDirection = Vector3.right;
-        Stamina = _playerManager.PlayerStamina;
-        _staminaCooldownSlider.maxValue = Stamina;
-        _staminaCooldownSlider.value = Stamina;
 
         _cameraManager = _playerManager.GetComponent<CameraManager>();
+
+        if (GameManager.Instance.GetComponent<PlayerManager>().debugPlayer)
+        {
+            _playerControls = GetComponent<PlayerInput>();
+            if (_playerControls.playerIndex == 0)
+            {
+                _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player1StaminaSlider;
+            }
+            else if (_playerControls.playerIndex == 1)
+            {
+                _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player2StaminaSlider;
+            }
+            else if (_playerControls.playerIndex == 2)
+            {
+                _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player3StaminaSlider;
+            }
+            else
+            {
+                _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player4StaminaSlider;
+            }
+        }
     }
 
     void Update()
     {
+        if(_staminaSet == false)
+        {
+            switch (PlayerID)
+            {
+                case 0:
+                    _staminaCooldownSlider = _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player1StaminaSlider;
+                    break;
+                case 1:
+                    _staminaCooldownSlider = _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player2StaminaSlider;
+                    break;
+                case 2:
+                    _staminaCooldownSlider = _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player3StaminaSlider;
+                    break;
+                case 3:
+                    _staminaCooldownSlider = _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player4StaminaSlider;
+                    break;
+                default:
+                    _staminaCooldownSlider = _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player1StaminaSlider;
+                    break;
+            }
+            Stamina = _playerManager.PlayerStamina;
+            _staminaCooldownSlider.maxValue = Stamina;
+            _staminaCooldownSlider.value = Stamina;
+            _staminaSet = true;
+        }
+
         _playerSpeed = _rb.velocity.magnitude;
 
         if (CanMove)
@@ -182,6 +214,7 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(ResetStamina());
         CanMove = true;
         CanDodge = true;
+        yield return null;
     }
 
     void StaminaUpdate()

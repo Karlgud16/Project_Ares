@@ -1,3 +1,5 @@
+//Handles what input the player is doing depending on the action from the Input System
+
 using System.Collections;
 using UnityEngine;
 using static UnityEngine.InputSystem.InputAction;
@@ -120,7 +122,7 @@ public class PlayerInputHandler : MonoBehaviour
             {
                 GameManager.Instance.MenuManager.Resume();
             }
-            else
+            else if (GameManager.Instance.CanPause)
             {
                 GameManager.Instance.PauseState = true;
             }

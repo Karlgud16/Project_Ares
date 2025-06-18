@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+//Handles the spawning of the player select for local co-op
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;

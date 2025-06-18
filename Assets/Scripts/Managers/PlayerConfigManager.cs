@@ -1,4 +1,5 @@
-using System.Collections;
+//Handles local co-op logic (saves how many players there are and their player type)
+
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -44,7 +45,7 @@ public class PlayerConfigManager : MonoBehaviour
         _playerConfigs[index].IsReady = true;
         if(_playerConfigs.All(p => p.IsReady == true))
         {
-            SceneManager.LoadScene("TestScene");
+            SceneManager.LoadScene("LevelLookInspo 1");
         }
     }
 

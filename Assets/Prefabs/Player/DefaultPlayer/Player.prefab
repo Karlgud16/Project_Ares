@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a525b61c30a73804788ae66de53553a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerID: 0
   _dodgeDirection: {x: 0, y: 0, z: 0}
   CanMove: 0
   CanBlock: 0
@@ -127,9 +128,10 @@ MonoBehaviour:
   CanInteract: 0
   CanDodge: 0
   CanJump: 0
-  DodgeCooldownStart: 0
+  StaminaReset: 0
   _playerSpeed: 0
-  DodgeCooldownTimer: 0
+  _staminaCooldownSlider: {fileID: 0}
+  Stamina: 0
 --- !u!114 &2522446871330560299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a560fda1aeede4794e739068b809b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsAttacking: 0
   CanLightAttack: 0
   CanHeavyAttack: 0
 --- !u!114 &5866940995422468621
@@ -266,7 +269,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 607569359483335486}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 24340fee5fe04c949a02316c95586f06, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

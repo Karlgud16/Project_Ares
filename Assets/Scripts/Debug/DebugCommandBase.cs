@@ -1,7 +1,6 @@
+//Handles the classes to make debug commands
+
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class DebugCommandBase
 {

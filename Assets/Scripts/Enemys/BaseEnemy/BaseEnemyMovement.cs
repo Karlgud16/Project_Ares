@@ -19,6 +19,8 @@ public class BaseEnemyMovement : MonoBehaviour
 
     private EnemyManager _enemyManager;
 
+    private MiniBossManager _miniBossManager;
+
     void Awake()
     {
         _enemyNav = GetComponent<NavMeshAgent>();
@@ -31,6 +33,12 @@ public class BaseEnemyMovement : MonoBehaviour
     private void Start()
     {
         _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+        _miniBossManager = GameManager.Instance.GetComponent<MiniBossManager>();
+
+        if (gameObject.name.Contains("Borrek"))
+        {
+            _animator.speed = 0.75f;
+        }
     }
 
     void Update()
@@ -40,19 +48,24 @@ public class BaseEnemyMovement : MonoBehaviour
 
     void BaseEnemyFollow()
     {
-        switch (gameObject.tag) 
+        //Sets the enemy move speed by comparing the name of the game object
+        switch (gameObject.name)
         {
-            case "BaseEnemy":
+            case string a when a.Contains("BaseEnemy"):
                 _enemyNav.speed = _enemyManager.BaseEnemyMoveSpeed;
                 break;
-            case "Brute":
+            case string a when a.Contains("Brute"):
                 _enemyNav.speed = _enemyManager.BruteMoveSpeed;
                 break;
-            case "Mage":
+            case string a when a.Contains("Mage"):
                 _enemyNav.speed = _enemyManager.MageMoveSpeed;
+                break;
+            case string a when a.Contains("Borrek"):
+                _enemyNav.speed = _miniBossManager.BorrekMoveSpeed;
                 break;
         }
 
+        //Move to the closest player if it can do so
         if (_baseHealth.CanMove == true && _moveTrigger.StartMove && _baseEnemyFlip.FindClosestPlayer().GetComponent<PlayerMovement>().CanMove)
         {
             _enemyNav.SetDestination(_baseEnemyFlip.FindClosestPlayer().transform.position);
@@ -72,16 +85,19 @@ public class BaseEnemyMovement : MonoBehaviour
     //Changes the movement speed of the enemy (Debug)
     public void DebugMoveSpeed()
     {
-        switch (gameObject.tag)
+        switch (gameObject.name)
         {
-            case "BaseEnemy":
+            case string a when a.Contains("BaseEnemy"):
                 _enemyNav.speed = _enemyManager.BaseEnemyMoveSpeed;
                 break;
-            case "Brute":
+            case string a when a.Contains("Brute"):
                 _enemyNav.speed = _enemyManager.BruteMoveSpeed;
                 break;
-            case "Mage":
+            case string a when a.Contains("Mage"):
                 _enemyNav.speed = _enemyManager.MageMoveSpeed;
+                break;
+            case string a when a.Contains("Borrek"):
+                _enemyNav.speed = _miniBossManager.BorrekMoveSpeed;
                 break;
         }
     }

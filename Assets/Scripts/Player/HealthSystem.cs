@@ -34,29 +34,34 @@ public class HealthSystem : MonoBehaviour
                     PlayerCurrentHealth = _playerManager.PlayerHealth;
                     _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
+                    GameManager.Instance.GameStarted = true;
                     Debug.Log("There is 1 player in the game");
                     break;
                 case 2:
                     PlayerCurrentHealth = _playerManager.PlayerHealth * 2;
                     _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
+                    GameManager.Instance.GameStarted = true;
                     Debug.Log("There is 2 players in the game");
                     break;
                 case 3:
                     PlayerCurrentHealth = _playerManager.PlayerHealth * 3;
                     _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
+                    GameManager.Instance.GameStarted = true;
                     Debug.Log("There is 3 players in the game");
                     break;
                 case 4:
                     PlayerCurrentHealth = _playerManager.PlayerHealth * 4;
                     _playerManager.StartHealth = PlayerCurrentHealth;
                     debugSetHealth = true;
+                    GameManager.Instance.GameStarted = true;
                     Debug.Log("There is 4 players in the game");
                     break;
                 case 0:
                     Debug.Log("There is 0 players in the game");
                     debugSetHealth = true;
+                    GameManager.Instance.GameStarted = true;
                     break;
             }
         }

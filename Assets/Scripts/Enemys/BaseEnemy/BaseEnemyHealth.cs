@@ -16,7 +16,7 @@ public class BaseEnemyHealth : MonoBehaviour
 
     [ReadOnly] public bool IsDead;
 
-    [ReadOnly] [SerializeField] public float CurrentHealth;
+    [ReadOnly] public float CurrentHealth;
 
     private SummonEnemies _summonEnemies;
 
@@ -31,6 +31,8 @@ public class BaseEnemyHealth : MonoBehaviour
     private PlayerManager _playerManager;
 
     private EnemyManager _enemyManager;
+
+    private MiniBossManager _miniBossManager;
 
     void Awake()
     {
@@ -54,26 +56,32 @@ public class BaseEnemyHealth : MonoBehaviour
         _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
         _enemyManager.AmountOfEnemies.Add(gameObject);
 
+        _miniBossManager = GameManager.Instance.GetComponent<MiniBossManager>();
+
         _itemManager = GameManager.Instance.GetComponent<ItemManager>();
         _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
 
         //Applies the right health towards the certain enemy
-        switch (gameObject.tag) 
+        switch (gameObject.name)
         {
-            case "BaseEnemy":
+            case string a when a.Contains("BaseEnemy"):
                 CurrentHealth = _enemyManager.BaseEnemyHealth;
                 _enemyManager.ListOfBaseEnemies.Add(gameObject);
                 break;
-            case "Summoner":
+            case string a when a.Contains("Summoner"):
                 CurrentHealth = _enemyManager.SummonerHealth;
                 break;
-            case "Brute":
+            case string a when a.Contains("Brute"):
                 CurrentHealth = _enemyManager.BruteHealth;
                 break;
-            case "Mage":
+            case string a when a.Contains("Mage"):
                 CurrentHealth = _enemyManager.MageHealth;
                 break;
+            case string a when a.Contains("Borrek"):
+                CurrentHealth = _miniBossManager.BorrekHealth;
+                break;
         }
+
         CanMove = true;
         IsDead = false;
         _healthBar.maxValue = CurrentHealth;
@@ -130,19 +138,23 @@ public class BaseEnemyHealth : MonoBehaviour
             }
             _toggleAnubisAnkh = false;
         }
-        switch (gameObject.tag)
+
+        switch (gameObject.name)
         {
-            case "BaseEnemy":
+            case string a when a.Contains("BaseEnemy"):
                 yield return new WaitForSeconds(_enemyManager.BaseEnemySecondsUntilDelete);
                 break;
-            case "Summoner":
+            case string a when a.Contains("Summoner"):
                 yield return new WaitForSeconds(_enemyManager.SummonerSecondsUntilDelete);
                 break;
-            case "Brute":
+            case string a when a.Contains("Brute"):
                 yield return new WaitForSeconds(_enemyManager.BruteSecondsUntilDelete);
                 break;
-            case "Mage":
+            case string a when a.Contains("Mage"):
                 yield return new WaitForSeconds(_enemyManager.MageSecondsUntilDelete);
+                break;
+            case string a when a.Contains("Borrek"):
+                yield return new WaitForSeconds(_miniBossManager.BorrekSecondsUntilDelete);
                 break;
         }
         Instantiate(_itemManager.HealthPickupObject, transform.position, Quaternion.identity);

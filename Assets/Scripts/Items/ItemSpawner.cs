@@ -1,5 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+//If an item is picked in the item spawner, delete the spawner
+
 using UnityEngine;
 
 public class ItemSpawner : MonoBehaviour
