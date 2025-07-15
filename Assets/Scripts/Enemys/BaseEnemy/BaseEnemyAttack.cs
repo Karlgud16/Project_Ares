@@ -7,17 +7,17 @@ using UnityEngine;
 
 public class BaseEnemyAttack : MonoBehaviour
 {
-    [SerializeField] private Animator _animator;
+    private Animator _animator;
 
-    [SerializeField] private BaseEnemyHealth _health;
+    private BaseEnemyHealth _health;
 
     [SerializeField] private bool _isAttacking;
 
-    [SerializeField] private ItemManager _itemManager;
+    private ItemManager _itemManager;
 
-    [SerializeField] private PlayerManager _playerManager;
+    private PlayerManager _playerManager;
 
-    [SerializeField] private EnemyManager _enemyManager;
+    private EnemyManager _enemyManager;
 
     void Awake()
     {
@@ -36,7 +36,7 @@ public class BaseEnemyAttack : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        //If the enemy is in the players collider and is not attacking
+        //If the enemy is in the players collider and is not attacking and both the player and the enemy are not dead
         if (other.gameObject.tag == "Player" && _isAttacking == false && _health.IsDead == false && _playerManager.PlayerIsDead == false)
         {
             StartCoroutine(Attack());
@@ -46,7 +46,6 @@ public class BaseEnemyAttack : MonoBehaviour
     IEnumerator Attack()
     {
         //Play attack animation and set isAttacking to true. After animation is done, set isAttacking to false
-
         if (transform.root.gameObject.tag == "Brute")
         {
             int randomNum = Random.Range(1, 4);
@@ -63,6 +62,7 @@ public class BaseEnemyAttack : MonoBehaviour
         {
             _animator.SetTrigger("Attack");
         }
+
         _isAttacking = true;
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorClipInfo(0).Length);
         _isAttacking = false;

@@ -12,6 +12,10 @@ public class BaseEnemyFlip : MonoBehaviour
 
     private PlayerManager _playerManager;
 
+    /// <summary>
+    /// Finds the nearest player from the enemy's position
+    /// </summary>
+    /// <returns></returns>
     public GameObject FindClosestPlayer()
     {
         float distance = Mathf.Infinity;
@@ -55,42 +59,43 @@ public class BaseEnemyFlip : MonoBehaviour
     {
         if (canFlip)
         {
-            if(gameObject.tag == "BaseEnemy" || gameObject.tag == "Brute" || gameObject.tag == "Mage")
+            switch (gameObject.tag)
             {
-                if (FindClosestPlayer().transform.position.x < transform.position.x)
-                {
-                    Vector3 newScale = attackCol.transform.localScale;
-                    newScale.x = -1;
-                    attackCol.transform.localScale = newScale;
-                    Vector3 newScaleTrigger = playerTrigger.transform.localScale;
-                    newScaleTrigger.x = -1;
-                    playerTrigger.transform.localScale = newScaleTrigger;
-                }
-                else
-                {
-                    Vector3 newScaleCol = attackCol.transform.localScale;
-                    newScaleCol.x = 1;
-                    attackCol.transform.localScale = newScaleCol;
-                    Vector3 newScaleTrigger = playerTrigger.transform.localScale;
-                    newScaleTrigger.x = 1;
-                    playerTrigger.transform.localScale = newScaleTrigger;
-                }
-            }
+                case "Mage":
+                    if (FindClosestPlayer().transform.position.x < transform.position.x && spawnProjectile.transform.localPosition.x != -0.5f)
+                    {
+                        Vector3 newPos = spawnProjectile.transform.localPosition;
+                        newPos.x = -0.5f;
+                        spawnProjectile.transform.localPosition = newPos;
+                    }
+                    else if (FindClosestPlayer().transform.position.x < transform.position.x && spawnProjectile.transform.localPosition.x != 0.5f)
+                    {
+                        Vector3 newScale = spawnProjectile.transform.localPosition;
+                        newScale.x = 0.5f;
+                        spawnProjectile.transform.localPosition = newScale;
+                    }
+                    break;
 
-            if(gameObject.tag == "Mage")
-            {
-                if (FindClosestPlayer().transform.position.x < transform.position.x)
-                {
-                    Vector3 newPos = spawnProjectile.transform.localPosition;
-                    newPos.x = -0.5f;
-                    spawnProjectile.transform.localPosition = newPos;
-                }
-                else
-                {
-                    Vector3 newScale = spawnProjectile.transform.localPosition;
-                    newScale.x = 0.5f;
-                    spawnProjectile.transform.localPosition = newScale;
-                }
+                default:
+                    if (FindClosestPlayer().transform.position.x < transform.position.x && attackCol.transform.localScale.x != -1)
+                    {
+                        Vector3 newScale = attackCol.transform.localScale;
+                        newScale.x = -1;
+                        attackCol.transform.localScale = newScale;
+                        Vector3 newScaleTrigger = playerTrigger.transform.localScale;
+                        newScaleTrigger.x = -1;
+                        playerTrigger.transform.localScale = newScaleTrigger;
+                    }
+                    else if (FindClosestPlayer().transform.position.x > transform.position.x && attackCol.transform.localScale.x != 1)
+                    {
+                        Vector3 newScaleCol = attackCol.transform.localScale;
+                        newScaleCol.x = 1;
+                        attackCol.transform.localScale = newScaleCol;
+                        Vector3 newScaleTrigger = playerTrigger.transform.localScale;
+                        newScaleTrigger.x = 1;
+                        playerTrigger.transform.localScale = newScaleTrigger;
+                    }
+                    break;
             }
 
             if (FindClosestPlayer().transform.position.x < transform.position.x)

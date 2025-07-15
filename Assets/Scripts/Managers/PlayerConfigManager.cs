@@ -20,7 +20,7 @@ public class PlayerConfigManager : MonoBehaviour
     {
         if(Instance != null)
         {
-            Debug.LogWarning("There should only be one 'PlayerConfigManager' at once (Stop the scene and delete other 'PlayerConfigManager's :))");
+            Debug.LogWarning("There should only be one 'PlayerConfigManager' (Stop the scene and delete other 'PlayerConfigManager's :))");
         }
         else
         {
@@ -30,16 +30,28 @@ public class PlayerConfigManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns the list of Player Configs
+    /// </summary>
     public List<PlayerConfig> GetPlayerConfigs()
     {
         return _playerConfigs;
     }
 
+    /// <summary>
+    /// Sets what type of Character the player is
+    /// </summary>
+    /// <param name="index"></param>
+    /// <param name="player"></param>
     public void SetPlayerType(int index, GameObject player)
     {
         _playerConfigs[index].PlayerType = player;
     }
 
+    /// <summary>
+    /// Sets IsReady to True to that specific player
+    /// </summary>
+    /// <param name="index"></param>
     public void ReadyPlayer(int index)
     {
         _playerConfigs[index].IsReady = true;
