@@ -1,4 +1,4 @@
-//Script that logic for the game state
+//Script that handles logic for the game state
 
 using System.Collections;
 using UnityEngine;

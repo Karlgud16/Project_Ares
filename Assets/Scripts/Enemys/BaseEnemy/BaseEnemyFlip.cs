@@ -16,7 +16,7 @@ public class BaseEnemyFlip : MonoBehaviour
     /// Finds the nearest player from the enemy's position
     /// </summary>
     /// <returns></returns>
-    public GameObject FindClosestPlayer()
+    [SerializeField] public GameObject FindClosestPlayer()
     {
         float distance = Mathf.Infinity;
         Vector3 pos = transform.position;
