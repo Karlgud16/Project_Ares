@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
             _staminaSet = true;
         }
 
-        _playerSpeed = _rb.velocity.magnitude;
+        _playerSpeed = _rb.linearVelocity.magnitude;
 
         if (CanMove)
         {
@@ -145,11 +145,11 @@ public class PlayerMovement : MonoBehaviour
     {
         //Apply the playerInput to the Rigidbody
         _moveVector = transform.TransformDirection(_playerInput) * _playerManager.PlayerMoveSpeed;
-        _rb.velocity = new Vector3(_moveVector.x, _rb.velocity.y, _moveVector.z);
+        _rb.linearVelocity = new Vector3(_moveVector.x, _rb.linearVelocity.y, _moveVector.z);
 
         //If the player if going Diagonally,
         //set the moveVector to the original speed and not double it
-        if (_rb.velocity.magnitude > 1)
+        if (_rb.linearVelocity.magnitude > 1)
         {
             _moveVector.Normalize();
         }
@@ -285,7 +285,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Set AirSpeedY to the players Y velocity to check if the player is fallling
-        _animator.SetFloat("AirSpeedY", _rb.velocity.y);
+        _animator.SetFloat("AirSpeedY", _rb.linearVelocity.y);
     }
 
     void PlayerFlip()
