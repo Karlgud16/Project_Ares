@@ -62,7 +62,7 @@ public class PickUpItem : MonoBehaviour
                 {
                     GameObject text = child.GetChild(0).gameObject;
                     text.GetComponent<DisplayMultiplier>().Multiplier++;
-                    _itemManager.SameItemCheck(scriptItem.ItemName);
+                    //_itemManager.SameItemCheck(scriptItem.ItemName);
                     Destroy(gameObject);
                     return;
                 }

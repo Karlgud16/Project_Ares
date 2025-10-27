@@ -106,14 +106,14 @@ public class BaseEnemyHealth : MonoBehaviour
     {
         if (other.gameObject.tag == "lightAttack" && !IsDead)
         {
-            CurrentHealth -= _playerManager.PlayerLightAttack;
+            CurrentHealth -= _playerManager.DefaultPlayer.LightAttack;
             _enemyManager.gameObject.GetComponent<ComboSystem>().ComboAmount++;
             _enemyManager.gameObject.GetComponent<ComboSystem>().ComboTimer = 0;
             _animator.SetTrigger("Hit");
         }
         else if (other.gameObject.tag == "heavyAttack" && !IsDead)
         {
-            CurrentHealth -= _playerManager.PlayerHeavyAttack;
+            CurrentHealth -= _playerManager.DefaultPlayer.HeavyAttack;
             _enemyManager.gameObject.GetComponent<ComboSystem>().ComboAmount++;
             _animator.SetTrigger("Hit");
         }

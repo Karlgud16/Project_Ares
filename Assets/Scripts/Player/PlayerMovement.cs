@@ -117,7 +117,7 @@ public class PlayerMovement : MonoBehaviour
                     _staminaCooldownSlider = _staminaCooldownSlider = GameManager.Instance.GetComponent<PlayerManager>().Player1StaminaSlider;
                     break;
             }
-            Stamina = _playerManager.PlayerStamina;
+            Stamina = _playerManager.DefaultPlayer.Stamina;
             _staminaCooldownSlider.maxValue = Stamina;
             _staminaCooldownSlider.value = Stamina;
             _staminaSet = true;
@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
     void PlayerMove()
     {
         //Apply the playerInput to the Rigidbody
-        _moveVector = transform.TransformDirection(_playerInput) * _playerManager.PlayerMoveSpeed;
+        _moveVector = transform.TransformDirection(_playerInput) * _playerManager.DefaultPlayer.Speed;
         _rb.linearVelocity = new Vector3(_moveVector.x, _rb.linearVelocity.y, _moveVector.z);
 
         //If the player if going Diagonally,
@@ -167,14 +167,14 @@ public class PlayerMovement : MonoBehaviour
         //add a force upwards and set animation trigger of Jump
         if (CanJump && _groundCheck.grounded)
         {
-            _rb.AddForce(Vector3.up * _playerManager.PlayerJump, ForceMode.Impulse);
+            _rb.AddForce(Vector3.up * _playerManager.DefaultPlayer.Jump, ForceMode.Impulse);
             _animator.SetTrigger("Jump");
         }
     }
 
     public void PlayerDodge()
     {
-        if(CanDodge && DodgeToggle && Stamina >= _playerManager.DodgeStaminaDrain)
+        if(CanDodge && DodgeToggle && Stamina >= _playerManager.DefaultPlayer.DodgeStaminaDrain)
         {
             StartCoroutine(DodgeRoll());
         }
@@ -187,10 +187,10 @@ public class PlayerMovement : MonoBehaviour
         CanMove = false;
         StaminaReset = false;
         float startTime = Time.time;
-        float endTime = startTime + _playerManager.PlayerDodgeDuration;
+        float endTime = startTime + _playerManager.DefaultPlayer.DodgeDuration;
         while (Time.time < endTime)
         {
-            Vector3 move = _dodgeDirection * _playerManager.PlayerDodgeSpeed;
+            Vector3 move = _dodgeDirection * _playerManager.DefaultPlayer.DodgeSpeed;
 
             // Get leash limit (based on camera position)
             float leashLeftX = Camera.main.transform.position.x - _cameraManager.LeashLimitLeft;
@@ -207,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
             }*/
 
             transform.Translate(move * Time.deltaTime, Space.World);
-            float staminaDrainPerSecond = _playerManager.DodgeStaminaDrain / _playerManager.PlayerDodgeDuration;
+            float staminaDrainPerSecond = _playerManager.DefaultPlayer.DodgeStaminaDrain / _playerManager.DefaultPlayer.DodgeDuration;
             Stamina -= staminaDrainPerSecond * Time.deltaTime;
             yield return null;
         }
@@ -228,10 +228,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (StaminaReset)
         {
-            Stamina += _playerManager.PlayerStaminaRegenSpeed * Time.deltaTime;
+            Stamina += _playerManager.DefaultPlayer.StaminaRegen * Time.deltaTime;
 
-            if (Stamina >= _playerManager.PlayerStamina)
+            if (Stamina >= _playerManager.DefaultPlayer.Stamina)
             {
+                Stamina = _playerManager.DefaultPlayer.Stamina;
                 StaminaReset = false;
             }
         }
@@ -239,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
 
     public IEnumerator ResetStamina()
     {
-        yield return new WaitForSeconds(_playerManager.PlayerStaminaRegenWait);
+        yield return new WaitForSeconds(_playerManager.DefaultPlayer.StaminaWait);
         if (_playerAttack.IsAttacking)
         {
             yield break;
@@ -265,7 +266,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _animator.SetFloat("AnimState", 1);
             _animator.SetBool("IdleBlock", false);
-            _animator.SetFloat("walkSpeed", _playerSpeed / _playerManager.PlayerMoveSpeed); //Dividing the current player speed by the target player speed to slow down animation
+            _animator.SetFloat("walkSpeed", _playerSpeed / _playerManager.DefaultPlayer.Speed); //Dividing the current player speed by the target player speed to slow down animation
         }
         else
         {

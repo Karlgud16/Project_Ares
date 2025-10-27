@@ -76,7 +76,7 @@ public class PlayerAttack : MonoBehaviour
             _animator.SetTrigger("Attack2");
         }
         float lightDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
-        float staminaDrainPerSecond = _playerManager.HeavyAttackStaminaDrain / lightDuration - 0.7f;
+        float staminaDrainPerSecond = _playerManager.DefaultPlayer.LightAttackDrain / lightDuration - 0.7f;
         while (elapsedTime < lightDuration - 0.7f)
         {
             elapsedTime += Time.deltaTime;
@@ -99,7 +99,7 @@ public class PlayerAttack : MonoBehaviour
         CanHeavyAttack = false;
         _animator.SetTrigger("Attack3");
         float heavyDuration = _animator.GetCurrentAnimatorClipInfo(0).Length;
-        float staminaDrainPerSecond = _playerManager.HeavyAttackStaminaDrain / heavyDuration - 0.5f;
+        float staminaDrainPerSecond = _playerManager.DefaultPlayer.HeavyAttackDrain / heavyDuration - 0.5f;
         while (elapsedTime < heavyDuration - 0.5f)
         {
             elapsedTime += Time.deltaTime;

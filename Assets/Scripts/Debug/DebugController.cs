@@ -65,7 +65,7 @@ public class DebugController : MonoBehaviour
 
         HELP = new DebugCommand("help", "Shows full list of commands", "help", () =>
         {
-            _showHelp = true;
+            _showHelp = !_showHelp;
         });
 
         KILL_ALL = new DebugCommand("kill_all", "Removes all enemies from the level", "kill_all", () =>
@@ -88,8 +88,7 @@ public class DebugController : MonoBehaviour
 
         SET_PLAYER_MOVESPEED = new DebugCommand<float>("set_player_movespeed", "Sets the Player's movement speed (Default = 5)", "set_player_movespeed <float>", (x) =>
         {
-            _playerManager.PlayerMoveSpeed = x;
-            _playerManager.DefaultPlayerMoveSpeed = x;
+            _playerManager.DefaultPlayer.Speed = x;
         });
 
         SET_PLAYER_HEALTH = new DebugCommand<float>("set_player_health", "Sets the Player's health (Default = 100)", "set_player_health <float>", (x) =>
@@ -99,22 +98,22 @@ public class DebugController : MonoBehaviour
 
         SET_PLAYER_JUMPFORCE = new DebugCommand<float>("set_player_jumpforce", "Sets the Player's jump force (Default = 5)", "set_player_jumpforce <float>", (x) =>
         {
-            _playerManager.PlayerJump = x;
+            _playerManager.DefaultPlayer.Jump = x;
         });
 
         SET_PLAYER_LIGHTATTACK = new DebugCommand<float>("set_player_lightattack", "Sets the Player's light attack (Default = 20)", "set_player_lightattack <float>", (x) =>
         {
-            _playerManager.PlayerLightAttack = x;
+            _playerManager.DefaultPlayer.LightAttack = x;
         });
 
         SET_PLAYER_HEAVYATTACK = new DebugCommand<float>("set_player_heavyattack", "Sets the Player's heavy attack (Default = 30)", "set_player_heavyattack <float>", (x) =>
         {
-            _playerManager.PlayerHeavyAttack = x;
+            _playerManager.DefaultPlayer.HeavyAttack = x;
         });
 
         SET_PLAYER_DODGESPEED = new DebugCommand<float>("set_player_dodgespeed", "Sets the Player's dodge speed (Default = 10)", "set_player_dodgespeed <float>", (x) =>
         {
-            _playerManager.PlayerDodgeSpeed = x;
+            _playerManager.DefaultPlayer.DodgeSpeed = x;
         });
 
         SET_PLAYER_DODGECOOLDOWN = new DebugCommand<float>("set_player_dodgecooldown", "Sets the Player's dodge speed (Default = 1)", "set_player_dodgecooldown <float>", (x) =>
@@ -128,7 +127,7 @@ public class DebugController : MonoBehaviour
 
         SET_PLAYER_DODGEDURATION = new DebugCommand<float>("set_player_dodgeduration", "Sets the Player's dodge speed (Default = 0.5)", "set_player_dodgeduration <float>", (x) =>
         {
-            _playerManager.PlayerDodgeDuration = x;
+            _playerManager.DefaultPlayer.DodgeDuration = x;
         });
 
         SET_BASE_ENEMY_MOVESPEED = new DebugCommand<float>("set_base_enemy_movespeed", "Sets every Base Enemy's movespeed (Default = 2.5)", "set_base_enemy_movespeed <float>", (x) =>

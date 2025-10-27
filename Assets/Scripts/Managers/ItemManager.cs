@@ -60,15 +60,14 @@ public class ItemManager : MonoBehaviour
     {
         HermesSwitchSandalsCheck();
         ValkyriesWingedBootsCheck();
-        CursedSpursCheck();
+        //CursedSpursCheck();
     }
 
     void HermesSwitchSandalsCheck()
     {
         if (HermesSwitchSandals && _hermesSwitchSandals)
         {
-            _playerManager.PlayerMoveSpeed = _playerManager.PlayerMoveSpeed * HermesSwiftSandalsMultiplier;
-            _playerManager.DefaultPlayerMoveSpeed = _playerManager.PlayerMoveSpeed * HermesSwiftSandalsMultiplier;
+            _playerManager.DefaultPlayer.Speed = _playerManager.DefaultPlayer.Speed * HermesSwiftSandalsMultiplier;
             _hermesSwitchSandals = false;
         }
     }
@@ -77,12 +76,12 @@ public class ItemManager : MonoBehaviour
     {
         if (ValkyriesWingedBoots && _valkyriesWingedBoots)
         {
-            _playerManager.PlayerJump = _playerManager.PlayerJump + ValkyriesWingedBootsMultiplier;
+            _playerManager.DefaultPlayer.Jump = _playerManager.DefaultPlayer.Jump + ValkyriesWingedBootsMultiplier;
             _valkyriesWingedBoots = false;
         }
     }
 
-    void CursedSpursCheck()
+    /*void CursedSpursCheck()
     {
         if (CursedSpursBool)
         {
@@ -103,7 +102,7 @@ public class ItemManager : MonoBehaviour
                 _playerManager.PlayerMoveSpeed = _playerManager.DefaultPlayerMoveSpeed * 1.3f * CursedSpursMultiplier;
             }
         }
-    }
+    }*/
 
     public void SameItemCheck(string itemName)
     {

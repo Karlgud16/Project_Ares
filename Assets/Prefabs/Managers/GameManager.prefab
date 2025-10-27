@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4766545835993525893}
   - component: {fileID: 674837341750827088}
   - component: {fileID: 6309014952676926750}
-  - component: {fileID: 2724844485079790573}
   - component: {fileID: 8505317368106477983}
   - component: {fileID: 7655946817767089696}
+  - component: {fileID: 2724844485079790573}
   - component: {fileID: 3440840042919036195}
   m_Layer: 0
   m_Name: GameManager
@@ -155,6 +155,7 @@ MonoBehaviour:
   PlayerHeavyAttack: 30
   PlayerDodgeSpeed: 10
   PlayerDodgeDuration: 0.5
+  DefaultPlayer: {fileID: 11400000, guid: e08d5e4c380773348a3161052fdc14c8, type: 2}
   PlayerStamina: 100
   LightAttackStaminaDrain: 10
   HeavyAttackStaminaDrain: 15
@@ -166,6 +167,33 @@ MonoBehaviour:
   Player3StaminaSlider: {fileID: 0}
   Player4StaminaSlider: {fileID: 0}
   PlayerIsDead: 0
+--- !u!114 &8505317368106477983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c339eda2feaeb4f46ac964e32bf6a561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7655946817767089696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28a9c9b9ce12f8c4f9cf06cc68627d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ComboTimer: 0
+  _comboText: {fileID: 0}
+  ComboAmount: 0
 --- !u!114 &2724844485079790573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,33 +235,6 @@ MonoBehaviour:
   ProjectileSecondsUntilDelete: 2
   ListOfMages: []
   AmountOfEnemies: []
---- !u!114 &8505317368106477983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7846677911531760891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c339eda2feaeb4f46ac964e32bf6a561, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7655946817767089696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7846677911531760891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28a9c9b9ce12f8c4f9cf06cc68627d3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ComboTimer: 0
-  _comboText: {fileID: 0}
-  ComboAmount: 0
 --- !u!114 &3440840042919036195
 MonoBehaviour:
   m_ObjectHideFlags: 0
