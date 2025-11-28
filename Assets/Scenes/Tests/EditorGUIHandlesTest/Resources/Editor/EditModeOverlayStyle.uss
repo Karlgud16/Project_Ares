@@ -1,0 +1,3 @@
+.toolMainModeButton {
+    width: 60px;
+}

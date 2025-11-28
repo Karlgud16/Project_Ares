@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
+    <ui:VisualElement style="flex-grow: 1; align-items: center; justify-content: center; align-self: center;">
+        <ui:VisualElement style="flex-grow: 1; align-items: flex-end; justify-content: center; align-self: center;">
+            <ui:ToggleButtonGroup label="Tool mode&#10;" language-direction="LTR" name="ToolModesGroup" value="10" style="justify-content: center; align-items: center; align-self: center;">
+                <ui:Button text="Edit" name="Edit" class="toolMainModeButton" />
+                <ui:Button text="Paint" name="Paint" class="toolMainModeButton" />
+            </ui:ToggleButtonGroup>
+            <ui:ToggleButtonGroup name="EditModeSubtoolsGroup" enabled="false" value="10" style="flex-direction: row; justify-content: space-between; align-items: center; align-self: flex-end; position: relative; left: -8px;">
+                <ui:Button text="Move&#10;" name="Move" />
+                <ui:Button text="Config" name="Config" />
+            </ui:ToggleButtonGroup>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
