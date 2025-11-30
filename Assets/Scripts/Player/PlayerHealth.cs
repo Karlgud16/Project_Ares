@@ -20,12 +20,12 @@ public class PlayerHealth : MonoBehaviour
 
     void Awake()
     {
-        _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
         _animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
+        _healthSystem = GameManager.Instance.GetComponent<HealthSystem>();
         _itemManager = GameManager.Instance.GetComponent<ItemManager>();
         _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
         _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
@@ -44,13 +44,13 @@ public class PlayerHealth : MonoBehaviour
                 switch (other.transform.parent.name)
                 {
                     case string a when a.Contains("BaseEnemy"):
-                        _healthSystem.PlayerCurrentHealth -= _enemyManager.BaseEnemyAttack;
+                        _healthSystem.PlayerCurrentHealth -= _enemyManager.BaseEnemy.Attack;
                         break;
                     case string a when a.Contains("Brute"):
-                        _healthSystem.PlayerCurrentHealth -= _enemyManager.BruteBaseAttack;
+                        _healthSystem.PlayerCurrentHealth -= _enemyManager.Brute.Attack;
                         break;
                     case string a when a.Contains("Borrek"):
-                        _healthSystem.PlayerCurrentHealth -= _miniBossManager.BorrekAttack;
+                        _healthSystem.PlayerCurrentHealth -= _miniBossManager.Borrek.Attack;
                         break;
                 }
             }

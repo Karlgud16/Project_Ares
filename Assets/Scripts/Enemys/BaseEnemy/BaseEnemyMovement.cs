@@ -52,16 +52,22 @@ public class BaseEnemyMovement : MonoBehaviour
         switch (gameObject.name)
         {
             case string a when a.Contains("BaseEnemy"):
-                _enemyNav.speed = _enemyManager.BaseEnemyMoveSpeed;
+                _enemyManager.CurrentBaseEnemyMove = _enemyManager.BaseEnemy.Move;
+                _enemyManager.DefaultBaseEnemyMove = _enemyManager.BaseEnemy.Move;
+                _enemyNav.speed = _enemyManager.CurrentBaseEnemyMove;
                 break;
             case string a when a.Contains("Brute"):
-                _enemyNav.speed = _enemyManager.BruteMoveSpeed;
+                _enemyManager.CurrentBruteMove = _enemyManager.Brute.Move;
+                _enemyManager.DefaultBruteMove = _enemyManager.Brute.Move;
+                _enemyNav.speed = _enemyManager.CurrentBaseEnemyMove;
                 break;
             case string a when a.Contains("Mage"):
-                _enemyNav.speed = _enemyManager.MageMoveSpeed;
+                _enemyManager.CurrentMageMove = _enemyManager.Mage.Move;
+                _enemyNav.speed = _enemyManager.CurrentMageMove;
                 break;
             case string a when a.Contains("Borrek"):
-                _enemyNav.speed = _miniBossManager.BorrekMoveSpeed;
+                _miniBossManager.CurrentBorrekMove = _miniBossManager.Borrek.Move;
+                _enemyNav.speed = _miniBossManager.CurrentBorrekMove;
                 break;
         }
 
@@ -88,16 +94,16 @@ public class BaseEnemyMovement : MonoBehaviour
         switch (gameObject.name)
         {
             case string a when a.Contains("BaseEnemy"):
-                _enemyNav.speed = _enemyManager.BaseEnemyMoveSpeed;
+                _enemyNav.speed = _enemyManager.BaseEnemy.Move;
                 break;
             case string a when a.Contains("Brute"):
-                _enemyNav.speed = _enemyManager.BruteMoveSpeed;
+                _enemyNav.speed = _enemyManager.Brute.Move;
                 break;
             case string a when a.Contains("Mage"):
-                _enemyNav.speed = _enemyManager.MageMoveSpeed;
+                _enemyNav.speed = _enemyManager.Mage.Move;
                 break;
             case string a when a.Contains("Borrek"):
-                _enemyNav.speed = _miniBossManager.BorrekMoveSpeed;
+                _enemyNav.speed = _miniBossManager.Borrek.Move;
                 break;
         }
     }

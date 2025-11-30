@@ -19,13 +19,12 @@ public class ItemUI : MonoBehaviour
         _itemManager = GameManager.Instance.GetComponent<ItemManager>();
     }
 
-    public void AddToInventory(ItemScriptableObject item)
+    public void AddToInventory(Item item)
     {
         GameObject _itemUI = Instantiate(_itemManager.ItemUIPrefab, Background);
-        _itemManager.ItemHUDInventory.Add(_itemUI);
-        _itemUI.GetComponent<Image>().sprite = item.ItemSprite;
+        _itemUI.GetComponent<Image>().sprite = item.ItemSprite();
         _itemUI.GetComponent<Image>().color = Color.white;
-        _itemUI.name = item.ItemName;
+        _itemUI.name = item.GetName();
 
         if(_itemUI.transform.childCount > 0)
         {

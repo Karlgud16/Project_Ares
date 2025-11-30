@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 7655946817767089696}
   - component: {fileID: 2724844485079790573}
   - component: {fileID: 3440840042919036195}
+  - component: {fileID: 4204508046880573042}
+  - component: {fileID: 6016114832751092466}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -58,6 +60,7 @@ MonoBehaviour:
   FreeCam: 0
   GameStarted: 0
   GameWon: 0
+  HealthSet: 0
   ComboTimer: 5
   MenuManager: {fileID: 0}
 --- !u!114 &4766545835993525893
@@ -72,39 +75,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b28b1fa5adf03a4c823150ae32e89e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HermesSwitchSandals: 0
-  ValkyriesWingedBootsBool: 0
-  AnubisAnkhBool: 0
-  CursedSpursBool: 0
-  SlimeArmourBool: 0
-  ItemList:
-  - {fileID: 5736009134794394729, guid: 500757dd80cf98440aeddbcbc1536332, type: 3}
-  - {fileID: 3633786323413047474, guid: 9cf658f013c1ec94b943542492e600f8, type: 3}
-  - {fileID: 1659519766466754246, guid: b263937ece41e1e48a60925adaaf98c4, type: 3}
-  - {fileID: 3489065752007332059, guid: f40aa1e8d4feb4840b94282eb75d9775, type: 3}
-  - {fileID: 2369897063969431065, guid: b142a1b45021bec4caf5db6aa2d25112, type: 3}
-  ItemInventory: []
-  ItemHUDInventory: []
+  Items: []
   ItemUIPrefab: {fileID: 8685480405611341087, guid: f5b73bfc1cbb74040bce9f211860c268,
     type: 3}
   HealthPickupObject: {fileID: 4761922858116811519, guid: d39bf19dbd4ea324787461909c6446df,
     type: 3}
-  HermesSwiftSandals: {fileID: 11400000, guid: a8f7dbdb77c64a3429041cf9cb6069e1, type: 2}
-  ValkyriesWingedBoots: {fileID: 11400000, guid: 24ce32493d812454b9d14fba6ed2af98,
-    type: 2}
-  AnubisAnkh: {fileID: 11400000, guid: 3300d4e2b8547ac49ab280bf3cc73507, type: 2}
-  CursedSpurs: {fileID: 11400000, guid: a54aacbea9b079e42b068be0c2a92646, type: 2}
-  SlimeArmour: {fileID: 11400000, guid: 3f2536b961bc15a4c85715b5fd3340a7, type: 2}
+  ItemUIBackground: {fileID: 0}
+  ItemDrops:
+  - {fileID: 2369897063969431065, guid: b142a1b45021bec4caf5db6aa2d25112, type: 3}
+  - {fileID: 3489065752007332059, guid: f40aa1e8d4feb4840b94282eb75d9775, type: 3}
+  - {fileID: 1659519766466754246, guid: b263937ece41e1e48a60925adaaf98c4, type: 3}
+  - {fileID: 3633786323413047474, guid: 9cf658f013c1ec94b943542492e600f8, type: 3}
+  - {fileID: 5736009134794394729, guid: 500757dd80cf98440aeddbcbc1536332, type: 3}
   ItemSpawner: {fileID: 4118487631509276221, guid: c41b1552df45edb41ad160ee7dbefacf,
     type: 3}
   HealthPickup: 20
   HealthPickupMultiplier: 10
-  HermesSwiftSandalsMultiplier: 2
-  _hermesSameItemMultiplier: 1.2
-  ValkyriesWingedBootsMultiplier: 2
-  _ValkyriesSameItemMultiplier: 1
-  CursedSpursMultiplier: 1.2
-  _cursedSpursSameItemMultiplier: 1.5
   AnubisAnkhHealth: 0
   SlimeArmourMultiplier: 0.5
   _SlimeArmourSameItemMultiplier: 0.9
@@ -145,23 +131,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugPlayer: 0
   Players: []
-  PlayerMoveSpeed: 5
-  DefaultPlayerMoveSpeed: 0
-  PlayerJump: 5
   PlayerHealth: 150
   CurrentPlayerHealth: 0
   StartHealth: 0
-  PlayerLightAttack: 20
-  PlayerHeavyAttack: 30
-  PlayerDodgeSpeed: 10
-  PlayerDodgeDuration: 0.5
   DefaultPlayer: {fileID: 11400000, guid: e08d5e4c380773348a3161052fdc14c8, type: 2}
-  PlayerStamina: 100
-  LightAttackStaminaDrain: 10
-  HeavyAttackStaminaDrain: 15
-  DodgeStaminaDrain: 20
-  PlayerStaminaRegenWait: 1
-  PlayerStaminaRegenSpeed: 30
+  DefaultPlayerMoveSpeed: 0
   Player1StaminaSlider: {fileID: 0}
   Player2StaminaSlider: {fileID: 0}
   Player3StaminaSlider: {fileID: 0}
@@ -206,34 +180,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43380d3fe9dce724eb842489a90b9ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseEnemyMoveSpeed: 2.5
-  DefaultBaseEnemyMoveSpeed: 0
-  BaseEnemyHealth: 100
-  BaseEnemyAttack: 10
-  BaseEnemySecondsUntilDelete: 4
   BaseEnemyPrefab: {fileID: 3668777963716848008, guid: 5ef942a8c4d542d468ff0d5a332534a9,
     type: 3}
   AmountOfBaseEnemiesAtOnce: 10
   AmountOfBaseEnemies: 0
   ListOfBaseEnemies: []
-  SummonerHealth: 100
-  SummonerSecondsUntilDelete: 4
+  BaseEnemy: {fileID: 11400000, guid: 6ca5d6d0efbb7d044b768b0730bdb4e6, type: 2}
+  CurrentBaseEnemyMove: 0
+  DefaultBaseEnemyMove: 0
   ListOfSummoners: []
-  BruteMoveSpeed: 1.75
-  DefaultBruteMoveSpeed: 0
-  BruteHealth: 200
-  BruteBaseAttack: 20
-  BruteSecondsUntilDelete: 4
+  Summoner: {fileID: 11400000, guid: 1516dc56547204546be7b63e4b009eac, type: 2}
   ListOfBrutes: []
-  MageMoveSpeed: 1
-  MageHealth: 100
-  MageSecondsUntilDelete: 4
+  Brute: {fileID: 11400000, guid: cc900021d7d37464a91a0ee50d3f2599, type: 2}
+  CurrentBruteMove: 0
+  DefaultBruteMove: 0
   Projectile: {fileID: 4625592308439695052, guid: 226721afeb85bad4ea1843ed5e898a8a,
     type: 3}
   ProjectileSpeed: 1
   ProjectileAttack: 10
   ProjectileSecondsUntilDelete: 2
   ListOfMages: []
+  Mage: {fileID: 11400000, guid: eb8452abde0f5c14589af53d34848819, type: 2}
+  CurrentMageMove: 0
   AmountOfEnemies: []
 --- !u!114 &3440840042919036195
 MonoBehaviour:
@@ -247,8 +215,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c179331aa82ff514da583e542ca02156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BorrekHealth: 350
-  BorrekMoveSpeed: 1.5
-  DefaultBorrekMoveSpeed: 0
-  BorrekAttack: 30
-  BorrekSecondsUntilDelete: 4
+  Borrek: {fileID: 11400000, guid: e2007116a5a037347b7e97131aaea454, type: 2}
+  CurrentBorrekMove: 0
+--- !u!114 &4204508046880573042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8bcd665ab46ac2419db37d898a9c82a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Players: []
+  PlayerCurrentHealth: 0
+  CanTakeDamage: 0
+--- !u!114 &6016114832751092466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7846677911531760891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07a55f18997473042acee577d8341b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerSpawns: []
+  _playerPrefab: {fileID: 0}

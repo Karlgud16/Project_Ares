@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [ReadOnly] public bool FreeCam;
     [ReadOnly] public bool GameStarted;
     [ReadOnly] public bool GameWon;
+    [ReadOnly] public bool HealthSet;
     private bool _startWonScreen;
     public float ComboTimer;
 
@@ -51,7 +52,6 @@ public class GameManager : MonoBehaviour
         CurrentTimeScale = Time.timeScale;
         FreeCam = false;
         CanPause = true;
-        GameStarted = false;
         GameWon = false;
         _startWonScreen = false;
     }
@@ -61,8 +61,15 @@ public class GameManager : MonoBehaviour
         if(scene.name != "MainMenu")
         {
             MenuManager = GameObject.FindGameObjectWithTag("Menu").GetComponent<MenuManager>();
+            CurrentTimeScale = Time.timeScale;
+            FreeCam = false;
             CanPause = true;
-            GameStarted = false;
+            GameWon = false;
+            _startWonScreen = false;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -155,5 +162,15 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0f;
+    }
+
+    public void ResetBools()
+    {
+        PauseState = false;
+        CanPause = true;
+        FreeCam = false;
+        GameStarted = false;
+        GameWon = false;
+        HealthSet = false;
     }
 }

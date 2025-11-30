@@ -10,9 +10,11 @@ public class PlayerConfigManager : MonoBehaviour
 {
     private List<PlayerConfig> _playerConfigs;
 
-    [SerializeField] public GameObject BaseEnemy;
+    public GameObject BaseEnemy;
 
-    [SerializeField] public GameObject PlayerSetupMenu;
+    public GameObject PlayerSetupMenu;
+
+    [SerializeField] private GameObject _gameManager;
 
     public static PlayerConfigManager Instance { get; private set; }
 
@@ -57,6 +59,8 @@ public class PlayerConfigManager : MonoBehaviour
         _playerConfigs[index].IsReady = true;
         if(_playerConfigs.All(p => p.IsReady == true))
         {
+            var manager = Instantiate(_gameManager);
+            DontDestroyOnLoad(manager);
             SceneManager.LoadScene("LevelLookInspo 1");
         }
     }

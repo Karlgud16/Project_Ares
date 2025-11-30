@@ -1,8 +1,6 @@
 //Handles all of the Base Enemies Attacks
 
 using System.Collections;
-//Handles the Base Enemy Attack
-
 using UnityEngine;
 
 public class BaseEnemyAttack : MonoBehaviour
@@ -66,19 +64,9 @@ public class BaseEnemyAttack : MonoBehaviour
         _isAttacking = true;
         yield return new WaitForSeconds(_animator.GetCurrentAnimatorClipInfo(0).Length);
         _isAttacking = false;
-        if (GameManager.Instance.GetComponent<ItemManager>().SlimeArmour)
+        foreach (ItemList i in _itemManager.Items)
         {
-            StartCoroutine(SlimeArmour());
+            StartCoroutine(i.item.Coroutine(_itemManager, i.stacks));
         }
-    }
-
-    //Slows down the enemy when the player has the Slime Armour Item
-    IEnumerator SlimeArmour()
-    {
-        _enemyManager.BaseEnemyMoveSpeed = _enemyManager.DefaultBaseEnemyMoveSpeed * _itemManager.SlimeArmourMultiplier;
-        _enemyManager.BruteMoveSpeed = _enemyManager.DefaultBruteMoveSpeed * _itemManager.SlimeArmourMultiplier;
-        yield return new WaitForSeconds(_itemManager.SlimeArmourSecondsUntilNormalSpeed);
-        _enemyManager.BaseEnemyMoveSpeed = _enemyManager.DefaultBaseEnemyMoveSpeed;
-        _enemyManager.BruteMoveSpeed = _enemyManager.DefaultBruteMoveSpeed;
     }
 }

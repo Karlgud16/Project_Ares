@@ -42,14 +42,8 @@ public class SpawnItem : MonoBehaviour
 
     void SpawnRandomItem()
     {
-        if (_itemManager.ItemList.Count == 0)
-        {
-            Debug.LogWarning("There are no items to spawn in.");
-            return;
-        }
-
-        int randomItem = Random.Range(0, _itemManager.ItemList.Count);
-        _selectedItem = _itemManager.ItemList[randomItem];
+        int randomItem = Random.Range(0, _itemManager.ItemDrops.Count);
+        _selectedItem = _itemManager.ItemDrops[randomItem];
 
         Instantiate(_selectedItem, transform);
     }

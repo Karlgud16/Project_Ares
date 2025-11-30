@@ -15,6 +15,7 @@ public class PlayerManager : MonoBehaviour
     [ReadOnly] public float CurrentPlayerHealth;
     [ReadOnly] public float StartHealth;
     public PlayerScriptableObject DefaultPlayer;
+    [ReadOnly] public float DefaultPlayerMoveSpeed;
 
     [Header("Player UI Stamina")]
     [ReadOnly] public Slider Player1StaminaSlider;
@@ -28,6 +29,11 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+
+    private void Start()
+    {
+        DefaultPlayerMoveSpeed = DefaultPlayer.Speed;
     }
 
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode sceneMode)

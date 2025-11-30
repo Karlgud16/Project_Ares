@@ -11,7 +11,6 @@ public class MenuManager : MonoBehaviour
     [ReadOnly] public GameObject RestartButton;
     [ReadOnly] public GameObject WonMenu;
     [ReadOnly] public GameObject NextLevelButton;
-
     [ReadOnly] public GameObject Hud;
 
     void Awake()
@@ -53,14 +52,17 @@ public class MenuManager : MonoBehaviour
 
     public void Restart()
     {
-        GameManager.Instance.GetComponent<PlayerManager>().Players.Clear();
+        GameManager.Instance.GetComponent<ItemManager>().Items.Clear();
+        Time.timeScale = 1.0f;
+        GameManager.Instance.GetComponent<GameManager>().ResetBools();
+        GameManager.Instance.GetComponent<PlayerManager>().PlayerIsDead = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void NextLevel()
     {
-        GameManager.Instance.GetComponent<PlayerManager>().Players.Clear();
         DontDestroyOnLoad(PlayerConfigManager.Instance);
+        DontDestroyOnLoad(GameManager.Instance);
         GameManager.Instance.IsPaused = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }

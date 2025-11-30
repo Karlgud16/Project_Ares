@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b09c9b9fc11124b8c5bd763206465c, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: 
-  Move: 0
-  Health: 0
+  Move: 1.75
+  Health: 150
   Attack: 0
-  SecondsUntilDelete: 0
+  SecondsUntilDelete: 4

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8059601665795057769
 Transform:
   m_ObjectHideFlags: 0
@@ -48,6 +48,8 @@ MonoBehaviour:
   BaseEnemy: {fileID: 607569359483335486, guid: 2e48a02b0671c86409055f7fc0ee6348,
     type: 3}
   PlayerSetupMenu: {fileID: 3166493989642931830, guid: 47bf8fae60eaf99478f066284c4236e8,
+    type: 3}
+  _gameManager: {fileID: 7846677911531760891, guid: db05acafa7e577f4683439f5c9d62332,
     type: 3}
 --- !u!114 &2870053242217742724
 MonoBehaviour:
@@ -86,13 +88,29 @@ MonoBehaviour:
   m_JoinAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Join
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 868a2637-f5ef-44a6-96db-ddf749afee5f
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 4561b55e-da4a-47d5-b05c-c289a1de48a2
+        m_Path: <Mouse>/leftButton
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Join
+        m_Flags: 0
+      - m_Name: 
+        m_Id: 1d1ebd35-f3cf-446e-a336-a8d83bd8da89
+        m_Path: <Gamepad>/buttonSouth
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Join
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_PlayerPrefab: {fileID: 4607542942333322407, guid: b48980d6319b38e48b1695b01da2071e,

@@ -1,40 +1,24 @@
 //Handles all of the changes an item will make
 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ItemManager : MonoBehaviour
 {
-    [ReadOnly] public bool HermesSwitchSandals;
-    private bool _hermesSwitchSandals;
-    [ReadOnly] public bool ValkyriesWingedBootsBool;
-    private bool _valkyriesWingedBoots;
-    [ReadOnly] public bool AnubisAnkhBool;
-    [ReadOnly] public bool CursedSpursBool;
-    [ReadOnly] public bool SlimeArmourBool;
-
     [Header("Items")]
-    public List<GameObject> ItemList;
-    public List<ItemScriptableObject> ItemInventory;
-    public List<GameObject> ItemHUDInventory;
+    public List<ItemList> Items = new List<ItemList>();
     public GameObject ItemUIPrefab;
     public GameObject HealthPickupObject;
-    public ItemScriptableObject HermesSwiftSandals;
-    public ItemScriptableObject ValkyriesWingedBoots;
-    public ItemScriptableObject AnubisAnkh;
-    public ItemScriptableObject CursedSpurs;
-    public ItemScriptableObject SlimeArmour;
+    [ReadOnly] public Transform ItemUIBackground;
+    public List<GameObject> ItemDrops;
 
     [Header("ItemsStats")]
     public GameObject ItemSpawner;
     public float HealthPickup;
     public float HealthPickupMultiplier;
-    [Range(1, 2)] public float HermesSwiftSandalsMultiplier;
-    [Range(1, 2)] [SerializeField] private float _hermesSameItemMultiplier;
-    [Range(1, 2)] public float ValkyriesWingedBootsMultiplier;
-    [Range(1, 2)] [SerializeField]private float _ValkyriesSameItemMultiplier;
-    [Range(1, 2)] public float CursedSpursMultiplier;
-    [Range(1, 2)] [SerializeField]private float _cursedSpursSameItemMultiplier;
     public float AnubisAnkhHealth;
     [Range(0.01f, 0.99f)] public float SlimeArmourMultiplier;
     [Range(0, 1)][SerializeField] private float _SlimeArmourSameItemMultiplier;
@@ -42,90 +26,74 @@ public class ItemManager : MonoBehaviour
 
     private PlayerManager _playerManager;
 
+    private void Awake()
+    {
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
+    }
+
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode sceneMode)
+    {
+        ItemUIBackground = GameObject.FindGameObjectWithTag("HUD").transform.Find("OwnedItems").transform.GetChild(0);
+
+        if (Items.Count < 1)
+        {
+            return;
+        }
+        else
+        {
+            InstantiateItemUI();
+        }
+    }
+
     void Start()
     {
-        HermesSwitchSandals = false;
-        ValkyriesWingedBootsBool = false;
-        AnubisAnkhBool = false;
-        CursedSpursBool = false;
-        SlimeArmourBool = false;
-
-        _hermesSwitchSandals = true;
-        _valkyriesWingedBoots = true;
-
         _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+        StartCoroutine(CallItemUpdateOneSecond());
+        StartCoroutine(CallItemUpdateOneTick());
     }
 
-    private void Update()
+    IEnumerator CallItemUpdateOneSecond()
     {
-        HermesSwitchSandalsCheck();
-        ValkyriesWingedBootsCheck();
-        //CursedSpursCheck();
-    }
-
-    void HermesSwitchSandalsCheck()
-    {
-        if (HermesSwitchSandals && _hermesSwitchSandals)
+        foreach (ItemList i in Items)
         {
-            _playerManager.DefaultPlayer.Speed = _playerManager.DefaultPlayer.Speed * HermesSwiftSandalsMultiplier;
-            _hermesSwitchSandals = false;
+            i.item.UpdateOneSecond(this, i.stacks);
         }
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(CallItemUpdateOneSecond());
     }
 
-    void ValkyriesWingedBootsCheck()
+    IEnumerator CallItemUpdateOneTick()
     {
-        if (ValkyriesWingedBoots && _valkyriesWingedBoots)
+        foreach (ItemList i in Items)
         {
-            _playerManager.DefaultPlayer.Jump = _playerManager.DefaultPlayer.Jump + ValkyriesWingedBootsMultiplier;
-            _valkyriesWingedBoots = false;
+            i.item.UpdateOneTick(this, i.stacks);
         }
+        yield return new WaitForSeconds(0.1f);
     }
 
-    /*void CursedSpursCheck()
+    private void InstantiateItemUI()
     {
-        if (CursedSpursBool)
+        foreach (ItemList i in Items)
         {
-            if (_playerManager.CurrentPlayerHealth > _playerManager.PlayerHealth * 0.75)
-            {
-                _playerManager.PlayerMoveSpeed = _playerManager.DefaultPlayerMoveSpeed * 1f * CursedSpursMultiplier;
-            }
-            else if (_playerManager.CurrentPlayerHealth < _playerManager.PlayerHealth * 0.75 && _playerManager.CurrentPlayerHealth > _playerManager.PlayerHealth * 0.5)
-            {
-                _playerManager.PlayerMoveSpeed = _playerManager.DefaultPlayerMoveSpeed * 1.1f * CursedSpursMultiplier;
-            }
-            else if (_playerManager.CurrentPlayerHealth < _playerManager.PlayerHealth * 0.5 && _playerManager.CurrentPlayerHealth > _playerManager.PlayerHealth * 0.25)
-            {
-                _playerManager.PlayerMoveSpeed = _playerManager.DefaultPlayerMoveSpeed * 1.2f * CursedSpursMultiplier;
-            }
-            else if (_playerManager.CurrentPlayerHealth < _playerManager.PlayerHealth * 0.25)
-            {
-                _playerManager.PlayerMoveSpeed = _playerManager.DefaultPlayerMoveSpeed * 1.3f * CursedSpursMultiplier;
-            }
-        }
-    }*/
+            GameObject _itemUI = Instantiate(ItemUIPrefab, ItemUIBackground);
+            _itemUI.GetComponent<Image>().sprite = i.item.ItemSprite();
+            _itemUI.GetComponent<Image>().color = Color.white;
+            _itemUI.name = i.item.GetName();
 
-    public void SameItemCheck(string itemName)
-    {
-        switch (itemName)
-        {
-            case "Hermes' Swift Sandals":
-                HermesSwiftSandalsMultiplier = HermesSwiftSandalsMultiplier * _hermesSameItemMultiplier;
-                _hermesSwitchSandals = true;
-                break;
-            case "Valkyrie's Winged Boots":
-                ValkyriesWingedBootsMultiplier = ValkyriesWingedBootsMultiplier * _ValkyriesSameItemMultiplier;
-                _valkyriesWingedBoots = true;
-                break;
-            case "Anubis Ankh":
-                break;
-            case "Cursed Spurs":
-                CursedSpursMultiplier = CursedSpursMultiplier * _cursedSpursSameItemMultiplier;
-                break;
-            case "Slime Armour":
-                SlimeArmourMultiplier = SlimeArmourMultiplier * _SlimeArmourSameItemMultiplier;
-                break;
-            default:
-                break;
+            if (_itemUI.transform.childCount > 0)
+            {
+                foreach (Transform child in _itemUI.transform)
+                {
+                    if (child.gameObject.name.Contains("Multiplier"))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Destroy(child.gameObject);
+                    }
+                }
+            }
         }
     }
 }

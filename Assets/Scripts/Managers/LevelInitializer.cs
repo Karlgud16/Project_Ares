@@ -1,67 +1,83 @@
 //Handles the spawning of the players in each level
 
+using NUnit.Framework;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelInitializer : MonoBehaviour
 {
-    [SerializeField] private Transform[] _playerSpawns;
-    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField][ReadOnly] private List<Transform> _playerSpawns;
 
-    private HealthSystem _healthSystem;
+    [SerializeField] private GameObject _playerSpawnsObject;
 
-    private PlayerManager _playerManager;
-
-    private void Awake()
+    private void Start()
     {
-        _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
+        SceneManager.sceneLoaded += SceneManager_sceneLoaded;
     }
 
-    void Start()
+    private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
+        _playerSpawns.Clear();
 
-        if (_playerManager.debugPlayer == false)
+        _playerSpawnsObject = GameObject.FindGameObjectWithTag("PlayerSpawns");
+        foreach (Transform spawn in _playerSpawnsObject.transform)
         {
+            _playerSpawns.Add(spawn);
+        }
+        InitializeLevel();
+    }
+
+    public void InitializeLevel()
+    {
+        //Setting the players health if the user is not using the debug player
+        if (GetComponent<PlayerManager>().debugPlayer == false && GameManager.Instance.HealthSet == false)
+        {
+            GetComponent<HealthSystem>().Players.Clear();
+            GetComponent<PlayerManager>().Players.Clear();
+
             var playerConfigs = PlayerConfigManager.Instance.GetPlayerConfigs().ToArray();
             for (int i = 0; i < playerConfigs.Length; i++)
             {
-                var player = Instantiate(PlayerConfigManager.Instance.BaseEnemy, _playerSpawns[i].position, _playerSpawns[i].rotation, gameObject.transform);
+                var player = Instantiate(PlayerConfigManager.Instance.BaseEnemy, _playerSpawns[i].position, _playerSpawns[i].rotation);
                 player.GetComponent<PlayerInputHandler>().InitializePlayer(playerConfigs[i]);
                 player.GetComponent<PlayerMovement>().PlayerID = i;
-                _healthSystem.Players.Add(player);
-                _playerManager.Players.Add(player);
+                GetComponent<HealthSystem>().Players.Add(player);
+                GetComponent<PlayerManager>().Players.Add(player);
             }
 
-            //Set how much health the player/s should have
-            switch (_playerManager.Players.Count)
+            if (!GetComponent<GameManager>().HealthSet)
             {
-                case 1:
-                    _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
-                    _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
-                    GameManager.Instance.GameStarted = true;
-                    Debug.Log("There is 1 player in the game");
-                    break;
-                case 2:
-                    _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 2;
-                    _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
-                    GameManager.Instance.GameStarted = true;
-                    Debug.Log("There is 2 players in the game");
-                    break;
-                case 3:
-                    _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 3;
-                    _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
-                    GameManager.Instance.GameStarted = true;
-                    Debug.Log("There is 3 players in the game");
-                    break;
-                case 4:
-                    _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth * 4;
-                    _playerManager.StartHealth = _healthSystem.PlayerCurrentHealth;
-                    GameManager.Instance.GameStarted = true;
-                    Debug.Log("There is 4 players in the game");
-                    break;
-                case 0:
-                    Debug.Log("There is 0 players in the game");
-                    break;
+                //Set how much health the player/s should have
+                switch (GetComponent<PlayerManager>().Players.Count)
+                {
+                    case 1:
+                        GetComponent<HealthSystem>().PlayerCurrentHealth = GetComponent<PlayerManager>().PlayerHealth;
+                        Debug.Log("There is 1 player in the game");
+                        break;
+                    case 2:
+                        GetComponent<HealthSystem>().PlayerCurrentHealth = GetComponent<PlayerManager>().PlayerHealth * 2;
+                        GetComponent<PlayerManager>().CurrentPlayerHealth = GetComponent<PlayerManager>().PlayerHealth * 2;
+                        Debug.Log("There is 2 players in the game");
+                        break;
+                    case 3:
+                        GetComponent<HealthSystem>().PlayerCurrentHealth = GetComponent<PlayerManager>().PlayerHealth * 3;
+                        GetComponent<PlayerManager>().CurrentPlayerHealth = GetComponent<PlayerManager>().PlayerHealth * 3;
+                        Debug.Log("There is 3 players in the game");
+                        break;
+                    case 4:
+                        GetComponent<HealthSystem>().PlayerCurrentHealth = GetComponent<PlayerManager>().PlayerHealth * 4;
+                        GetComponent<PlayerManager>().CurrentPlayerHealth = GetComponent<PlayerManager>().PlayerHealth * 4;
+                        Debug.Log("There is 4 players in the game");
+                        break;
+                    case 0:
+                        Debug.Log("There is 0 players in the game");
+                        break;
+                }
+
+                GetComponent<PlayerManager>().StartHealth = GetComponent<HealthSystem>().PlayerCurrentHealth;
+                GameManager.Instance.GameStarted = true;
+                GameManager.Instance.HealthSet = true;
             }
         }
     }

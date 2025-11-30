@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d20c2d44de3f6834098fbbec370fe78c, type: 3}
   m_Name: DefaultPlayer
   m_EditorClassIdentifier: 
-  Speed: 5
+  Speed: 8
   Jump: 5
   LightAttack: 20
   HeavyAttack: 30

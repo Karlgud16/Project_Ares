@@ -1,21 +1,21 @@
 //Handles when the item is picked up
-
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PickUpItem : MonoBehaviour
 {
-    [SerializeField] [ReadOnly] ItemScriptableObject scriptItem;
-
     private ItemUI _itemUI;
 
     [ReadOnly][SerializeField] private ItemSpawner _spawner;
 
     private ItemManager _itemManager;
 
+    private Item _item;
+    [SerializeField] private ItemsNameList _itemDrop;
+
     private void Awake()
     {
-        _itemUI = GameObject.FindGameObjectWithTag("HUD").transform.Find("OwnedItems").GetComponent<ItemUI>();
-
         if (transform.root.name.Contains("ItemSpawner"))
         {
             _spawner = transform.root.GetComponent<ItemSpawner>();
@@ -30,74 +30,108 @@ public class PickUpItem : MonoBehaviour
     {
         _itemManager = GameManager.Instance.GetComponent<ItemManager>();
 
-        if (gameObject.name.Contains("Hermes' Swift Sandals"))
-        {
-            scriptItem = _itemManager.HermesSwiftSandals;
-        }
-        else if (gameObject.name.Contains("Valkyrie's Winged Boots"))
-        {
-            scriptItem = _itemManager.ValkyriesWingedBoots;
-        }
-        else if (gameObject.name.Contains("Anubis Ankh"))
-        {
-            scriptItem = _itemManager.AnubisAnkh;
-        }
-        else if (gameObject.name.Contains("Cursed Spurs"))
-        {
-            scriptItem = _itemManager.CursedSpurs;
-        }
-        else if (gameObject.name.Contains("Slime Armour"))
-        {
-            scriptItem = _itemManager.SlimeArmour;
-        }
+        _item = AssignItem(_itemDrop);
     }
 
     private void OnTriggerStay(Collider other)
     {
         if(other.tag == "Player" && other.GetComponent<PlayerMovement>().CanInteract)
         {
-            foreach (Transform child in _itemUI.Background)
-            {
-                if (child.gameObject.name == scriptItem.ItemName)
-                {
-                    GameObject text = child.GetChild(0).gameObject;
-                    text.GetComponent<DisplayMultiplier>().Multiplier++;
-                    //_itemManager.SameItemCheck(scriptItem.ItemName);
-                    Destroy(gameObject);
-                    return;
-                }
-            }
-            Debug.Log(scriptItem.ItemName);
-            _itemUI.AddToInventory(scriptItem);
-            _itemManager.ItemInventory.Add(scriptItem);
-            switch (scriptItem.ItemName) 
-            {
-                case "Hermes' Swift Sandals":
-                    _itemManager.HermesSwitchSandals = true;
-                    break;
-                case "Valkyrie's Winged Boots":
-                    _itemManager.ValkyriesWingedBootsBool = true;
-                    break;
-                case "Anubis Ankh":
-                    _itemManager.AnubisAnkhBool = true;
-                    break;
-                case "Cursed Spurs":
-                    _itemManager.CursedSpursBool = true;
-                    break;
-                case "Slime Armour":
-                    _itemManager.SlimeArmourBool = true;
-                    break;
-                default:
-                    Debug.LogError("Item does not exist in script manager :( ( Make sure the case in PickUpItem is the same as the ItemScriptableObject.ItemName :) )");
-                    break;
-            }
-
             if(_spawner != null)
             {
                 _spawner.itemPicked = true;
             }
-
+            
+            Debug.Log(_item.GetName());
+            AddItem(_itemManager);
             Destroy(gameObject);
         }
     }
+
+    private void AddItem(ItemManager item)
+    {
+        foreach (ItemList i in item.Items)
+        {
+            if(i.name == _item.GetName())
+            {
+                i.stacks++;
+
+                if(_item is IInstantiableItem instantiable)
+                {
+                    instantiable.OnInstantiated(_itemManager, i.stacks);
+                }
+
+                UpdateTextMultiplier(i.stacks);
+                return;
+            }
+        }
+        if (_item is IInstantiableItem instantiableNew)
+        {
+            instantiableNew.OnInstantiated(_itemManager, 1);
+        }
+        item.Items.Add(new ItemList(_item, _item.GetName(), 1));
+        AddToUIInventory();
+    }
+
+    private Item AssignItem(ItemsNameList itemToAssign)
+    {
+        switch (itemToAssign) 
+        {
+            case ItemsNameList.HermesSwiftSandals:
+                return new HermesSwiftSandals();
+            case ItemsNameList.ValkyriesWingedBoots:
+                return new ValkyriesWingedBoots();
+            case ItemsNameList.CursedSpurs:
+                return new CursedSpurs();
+            case ItemsNameList.SlimeArmour:
+                return new SlimeArmour();
+            case ItemsNameList.AnubisAnkh:
+                return new AnubisAnkh();
+            default:
+                return new HermesSwiftSandals();
+        }
+    }
+
+    public void AddToUIInventory()
+    {
+        GameObject _itemUI = Instantiate(_itemManager.ItemUIPrefab, _itemManager.ItemUIBackground);
+        _itemUI.GetComponent<Image>().sprite = _item.ItemSprite();
+        _itemUI.GetComponent<Image>().color = Color.white;
+        _itemUI.name = _item.GetName();
+
+        if (_itemUI.transform.childCount > 0)
+        {
+            foreach (Transform child in _itemUI.transform)
+            {
+                if (child.gameObject.name.Contains("Multiplier"))
+                {
+                    return;
+                }
+                else
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+        }
+    }
+
+    public void UpdateTextMultiplier(int stacks)
+    {
+        foreach(Transform child in _itemManager.ItemUIBackground)
+        {
+            if(child.name == _item.GetName())
+            {
+                child.GetChild(0).GetComponent<TextMeshProUGUI>().text = "x" + stacks;
+            }
+        }
+    }
+}
+
+public enum ItemsNameList
+{
+    HermesSwiftSandals,
+    ValkyriesWingedBoots,
+    CursedSpurs,
+    SlimeArmour,
+    AnubisAnkh
 }

@@ -43,7 +43,6 @@ public class BaseEnemyHealth : MonoBehaviour
         _animator = GetComponent<Animator>();
         _healthBar = gameObject.transform.GetChild(0).GetChild(0).GetComponent<Slider>();
         _enemyFlip = GetComponent<BaseEnemyFlip>();
-        _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
 
         if (gameObject.tag == "Summoner")
         {
@@ -53,6 +52,7 @@ public class BaseEnemyHealth : MonoBehaviour
 
     void Start()
     {
+        _healthSystem = GameManager.Instance.GetComponent<HealthSystem>();
         _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
         _enemyManager.AmountOfEnemies.Add(gameObject);
 
@@ -65,20 +65,20 @@ public class BaseEnemyHealth : MonoBehaviour
         switch (gameObject.name)
         {
             case string a when a.Contains("BaseEnemy"):
-                CurrentHealth = _enemyManager.BaseEnemyHealth;
+                CurrentHealth = _enemyManager.BaseEnemy.Health;
                 _enemyManager.ListOfBaseEnemies.Add(gameObject);
                 break;
             case string a when a.Contains("Summoner"):
-                CurrentHealth = _enemyManager.SummonerHealth;
+                CurrentHealth = _enemyManager.Summoner.Health;
                 break;
             case string a when a.Contains("Brute"):
-                CurrentHealth = _enemyManager.BruteHealth;
+                CurrentHealth = _enemyManager.Brute.Health;
                 break;
             case string a when a.Contains("Mage"):
-                CurrentHealth = _enemyManager.MageHealth;
+                CurrentHealth = _enemyManager.Mage.Health;
                 break;
             case string a when a.Contains("Borrek"):
-                CurrentHealth = _miniBossManager.BorrekHealth;
+                CurrentHealth = _miniBossManager.Borrek.Health;
                 break;
         }
 
@@ -129,32 +129,27 @@ public class BaseEnemyHealth : MonoBehaviour
         _enemyFlip.canFlip = false;
         CanMove = false;
         IsDead = true;
-        if(_enemyManager.GetComponent<ItemManager>().AnubisAnkh == true && !_playerManager.PlayerIsDead && _toggleAnubisAnkh)
+        foreach (ItemList i in _itemManager.Items)
         {
-            _healthSystem.PlayerCurrentHealth += _playerManager.PlayerHealth / 10f;
-            if(_healthSystem.PlayerCurrentHealth > _playerManager.PlayerHealth)
-            {
-                _healthSystem.PlayerCurrentHealth = _playerManager.PlayerHealth;
-            }
-            _toggleAnubisAnkh = false;
+            i.item.OnEnemyDeath(_itemManager, this, i.stacks);
         }
 
         switch (gameObject.name)
         {
             case string a when a.Contains("BaseEnemy"):
-                yield return new WaitForSeconds(_enemyManager.BaseEnemySecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.BaseEnemy.SecondsUntilDelete);
                 break;
             case string a when a.Contains("Summoner"):
-                yield return new WaitForSeconds(_enemyManager.SummonerSecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.Summoner.SecondsUntilDelete);
                 break;
             case string a when a.Contains("Brute"):
-                yield return new WaitForSeconds(_enemyManager.BruteSecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.Brute.SecondsUntilDelete);
                 break;
             case string a when a.Contains("Mage"):
-                yield return new WaitForSeconds(_enemyManager.MageSecondsUntilDelete);
+                yield return new WaitForSeconds(_enemyManager.Mage.SecondsUntilDelete);
                 break;
             case string a when a.Contains("Borrek"):
-                yield return new WaitForSeconds(_miniBossManager.BorrekSecondsUntilDelete);
+                yield return new WaitForSeconds(_miniBossManager.Borrek.SecondsUntilDelete);
                 break;
         }
         Instantiate(_itemManager.HealthPickupObject, transform.position, Quaternion.identity);
@@ -243,20 +238,20 @@ public class BaseEnemyHealth : MonoBehaviour
         switch (gameObject.tag)
         {
             case "BaseEnemy":
-                CurrentHealth = _enemyManager.BaseEnemyHealth;
-                _healthBar.maxValue = _enemyManager.BaseEnemyHealth;
+                CurrentHealth = _enemyManager.BaseEnemy.Health;
+                _healthBar.maxValue = _enemyManager.BaseEnemy.Health;
                 break;
             case "Summoner":
-                CurrentHealth = _enemyManager.SummonerHealth;
-                _healthBar.maxValue = _enemyManager.SummonerHealth;
+                CurrentHealth = _enemyManager.Summoner.Health;
+                _healthBar.maxValue = _enemyManager.Summoner.Health;
                 break;
             case "Brute":
-                CurrentHealth = _enemyManager.BruteHealth;
-                _healthBar.maxValue = _enemyManager.BruteHealth;
+                CurrentHealth = _enemyManager.Brute.Health;
+                _healthBar.maxValue = _enemyManager.Brute.Health;
                 break;
             case "Mage":
-                CurrentHealth = _enemyManager.MageHealth;
-                _healthBar.maxValue = _enemyManager.MageHealth;
+                CurrentHealth = _enemyManager.Mage.Health;
+                _healthBar.maxValue = _enemyManager.Mage.Health;
                 break;
         }
     }

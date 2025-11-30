@@ -4860,70 +4860,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinBehavior
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_UseReference
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_Name
-      value: Join
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_SingletonActionBindings.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Id
-      value: 4561b55e-da4a-47d5-b05c-c289a1de48a2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_SingletonActionBindings.Array.data[1].m_Id
-      value: 1d1ebd35-f3cf-446e-a336-a8d83bd8da89
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Path
-      value: <Mouse>/leftButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_SingletonActionBindings.Array.data[1].m_Path
-      value: <Gamepad>/buttonSouth
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Join
-      objectReference: {fileID: 0}
-    - target: {fileID: 2870053242217742724, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_JoinAction.m_Action.m_SingletonActionBindings.Array.data[1].m_Action
-      value: Join
-      objectReference: {fileID: 0}
-    - target: {fileID: 2943285058003367481, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2971879068838645567, guid: f1e3f1488025b6b459a22293565c32dd,
         type: 3}
       propertyPath: m_Name
       value: PlayerConfigManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 2971879068838645567, guid: f1e3f1488025b6b459a22293565c32dd,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8059601665795057769, guid: f1e3f1488025b6b459a22293565c32dd,
         type: 3}

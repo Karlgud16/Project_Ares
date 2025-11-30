@@ -53,15 +53,11 @@ public class DebugController : MonoBehaviour
 
     private EnemyManager _enemyManager;
 
-    void Awake()
-    {
-        _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
-    }
-
     void Start()
     {
         _playerManager = GameManager.Instance.GetComponent<PlayerManager>();
         _enemyManager = GameManager.Instance.GetComponent<EnemyManager>();
+        _healthSystem = GameManager.Instance.GetComponent<HealthSystem>();
 
         HELP = new DebugCommand("help", "Shows full list of commands", "help", () =>
         {
@@ -132,7 +128,7 @@ public class DebugController : MonoBehaviour
 
         SET_BASE_ENEMY_MOVESPEED = new DebugCommand<float>("set_base_enemy_movespeed", "Sets every Base Enemy's movespeed (Default = 2.5)", "set_base_enemy_movespeed <float>", (x) =>
         {
-            _enemyManager.BaseEnemyMoveSpeed = x;
+            _enemyManager.BaseEnemy.Move = x;
             foreach (GameObject enemy in _enemyManager.ListOfBaseEnemies)
             {
                 enemy.GetComponent<BaseEnemyMovement>().DebugMoveSpeed();
@@ -141,7 +137,7 @@ public class DebugController : MonoBehaviour
 
         SET_BASE_ENEMY_HEALTH = new DebugCommand<float>("set_base_enemy_health", "Sets every Base Enemy's health (Default = 100)", "set_base_enemy_health <float>", (x) =>
         {
-            _enemyManager.BaseEnemyHealth = x;
+            _enemyManager.BaseEnemy.Health = x;
             foreach(GameObject enemy in _enemyManager.ListOfBaseEnemies)
             {
                 enemy.GetComponent<BaseEnemyHealth>().DebugChangeHealth();
@@ -150,7 +146,7 @@ public class DebugController : MonoBehaviour
 
         SET_BASE_ENEMY_ATTACK = new DebugCommand<float>("set_base_enemy_attack", "Sets every Base Enemys attack (Default = 10)", "set_base_enemy_attack <float>", (x) =>
         {
-            _enemyManager.BaseEnemyAttack = x;
+            _enemyManager.BaseEnemy.Attack = x;
         });
 
 

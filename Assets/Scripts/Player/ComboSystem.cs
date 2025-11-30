@@ -19,16 +19,13 @@ public class ComboSystem : MonoBehaviour
 
     private void SceneManager_sceneLoaded(Scene scene, LoadSceneMode sceneMode)
     {
-        if(scene.name != "MainMenu")
-        {
-            _comboText = GameObject.FindGameObjectWithTag("HUD").transform.GetChild(5).GetComponent<TextMeshProUGUI>();
-        }
+       _comboText = GameObject.FindGameObjectWithTag("HUD").transform.GetChild(5).GetComponent<TextMeshProUGUI>();
+       _comboText.enabled = false;
     }
 
     void Start()
     {
         ComboTimer = 0;
-        _comboText.enabled = false;
     }
 
     void Update()

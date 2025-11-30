@@ -41,9 +41,6 @@ public class PlayerMovement : MonoBehaviour
     [ReadOnly] public float Stamina;
     private bool _staminaSet;
 
-    private HealthSystem _healthSystem;
-    private bool _toggleCursedSpurs;
-
     private CameraManager _cameraManager;
 
     private PlayerManager _playerManager;
@@ -54,7 +51,6 @@ public class PlayerMovement : MonoBehaviour
         _sR = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
         _groundCheck = gameObject.transform.GetChild(0).GetComponent<GroundCheck>();
-        _healthSystem = GameObject.FindGameObjectWithTag("healthSystem").GetComponent<HealthSystem>();
         _playerAttack = GetComponent<PlayerAttack>();
     }
 
@@ -144,7 +140,7 @@ public class PlayerMovement : MonoBehaviour
     void PlayerMove()
     {
         //Apply the playerInput to the Rigidbody
-        _moveVector = transform.TransformDirection(_playerInput) * _playerManager.DefaultPlayer.Speed;
+        _moveVector = transform.TransformDirection(_playerInput) * _playerManager.DefaultPlayerMoveSpeed;
         _rb.linearVelocity = new Vector3(_moveVector.x, _rb.linearVelocity.y, _moveVector.z);
 
         //If the player if going Diagonally,
