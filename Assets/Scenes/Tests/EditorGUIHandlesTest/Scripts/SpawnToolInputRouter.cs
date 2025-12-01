@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.EditorTools;
-using UnityEditor.Overlays;
 using UnityEngine;
 
+#if UNITY_EDITOR
 public sealed class SpawnToolInputRouter
 {
     public List<IInputHandler> inputHandlers = new List<IInputHandler>();
@@ -39,4 +37,4 @@ public interface IInputHandler
 {
     bool CheckInputDesired(Event evt);
 }
-
+#endif
