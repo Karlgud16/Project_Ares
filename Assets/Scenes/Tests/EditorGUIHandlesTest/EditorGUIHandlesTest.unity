@@ -229,87 +229,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &526253013
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 526253015}
-  - component: {fileID: 526253014}
-  m_Layer: 0
-  m_Name: Manager (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &526253014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 526253013}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ffd1d530de6f9b458b788ee6d594fee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spawnPoints:
-  - center: {x: -4.7007284, y: 2.4867845e-17, z: -3.3598444}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 4.926603, y: 1.3898596e-17, z: -1.8778114}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -Infinity, y: Infinity, z: -Infinity}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -2039.1976, y: 3.724662e-15, z: -503.22995}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -Infinity, y: Infinity, z: -Infinity}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 0.78663695, y: -1.6019648e-17, z: 2.1643825}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 9.124426, y: -2.4904818e-17, z: 3.3648393}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 0.27771837, y: 6.391057e-17, z: -8.634828}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -369.7846, y: 4.3482468e-16, z: -58.74822}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 7.3780127, y: 7.2320097e-17, z: -9.771023}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 1.9808719, y: 2.7399792e-17, z: -3.7019305}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 7.9999075, y: 3.3772183e-17, z: -4.562891}
-    hasRadius: 0
-    radius: 1
---- !u!4 &526253015
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 526253013}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.1533732, y: 20.85, z: -2.0682542}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &857946924
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,42 +274,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints:
-  - center: {x: -4.7007284, y: 2.4867845e-17, z: -3.3598444}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 4.926603, y: 1.3898596e-17, z: -1.8778114}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -Infinity, y: Infinity, z: -Infinity}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -2039.1976, y: 3.724662e-15, z: -503.22995}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -Infinity, y: Infinity, z: -Infinity}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 0.78663695, y: -1.6019648e-17, z: 2.1643825}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 9.124426, y: -2.4904818e-17, z: 3.3648393}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 0.27771837, y: 6.391057e-17, z: -8.634828}
-    hasRadius: 0
-    radius: 1
-  - center: {x: -369.7846, y: 4.3482468e-16, z: -58.74822}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 7.3780127, y: 7.2320097e-17, z: -9.771023}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 1.9808719, y: 2.7399792e-17, z: -3.7019305}
-    hasRadius: 0
-    radius: 1
-  - center: {x: 7.9999075, y: 3.3772183e-17, z: -4.562891}
-    hasRadius: 0
-    radius: 1
+  - center: {x: 8.125745, y: -2.5158639e-17, z: 3.3991332}
+    hasRadius: 1
+    areaRadius: 0.78
+  - center: {x: 11.621021, y: -6.241093e-17, z: 8.432215}
+    hasRadius: 1
+    areaRadius: 0.78
 --- !u!1 &978065117
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,4 +546,3 @@ SceneRoots:
   - {fileID: 1605402171}
   - {fileID: 144619498}
   - {fileID: 857946926}
-  - {fileID: 526253015}

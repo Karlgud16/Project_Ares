@@ -47,6 +47,7 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
 
     public sealed override void OnActivated()
     {
+        EnemySpawnPointManagerEditor.toolActive = true;
         OnToolActivated();
 
         currentSceneView.ShowNotification(new GUIContent(GetType().Name.Replace("Mode", " ") + "Mode"), 0.2f);
@@ -59,6 +60,8 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
 
     public sealed override void OnWillBeDeactivated()
     {
+        EnemySpawnPointManagerEditor.toolActive = false;
+
         OnToolDeactivated();
         inputRouter.DeregisterInputs();
     }
@@ -116,7 +119,7 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
 
     }
 
-    private void RebuildHandleList()
+    protected void RebuildHandleList()
     {
         toolHandles.Clear();
         for (int i = 0; i < manager.SpawnPoints.Count; i++)

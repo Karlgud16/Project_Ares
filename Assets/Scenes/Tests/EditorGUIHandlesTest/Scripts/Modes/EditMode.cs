@@ -12,16 +12,56 @@ public class ConfigMode : SpawnPointToolMode
 
     private PointConfigOverlay overlay;
 
+    private PointHandle selectedHandle;
+
     public override void OnToolActivated()
     {
+        CreateListener<LeftClickDownListener>(SelectPointForEditing);
+
         overlay = new PointConfigOverlay();
-        currentSceneView.overlayCanvas.Add(overlay);
-        overlay.displayed = true;
+
+    }
+
+    private void SelectPointForEditing()
+    {
+        if (selectedHandle != null)
+        {
+            selectedHandle.isSelectedForEditing = false;
+        }
+
+        selectedHandle = toolHandles.Find(h => h.controlID == HandleUtility.nearestControl);
+
+        if (selectedHandle != null)
+        {
+
+            selectedHandle.isSelectedForEditing = true;
+
+            currentSceneView.overlayCanvas.Add(overlay);
+            overlay.PopulateOverlayContents(selectedHandle.pointObject, MarkValueChanged);
+            overlay.displayed = true;
+        }
+        else
+        {
+            EditorUtility.SetDirty(manager);
+            currentSceneView.overlayCanvas.Remove(overlay);
+        }
+    }
+
+    private void MarkValueChanged()
+    {
+        EditorUtility.SetDirty(manager);
     }
 
     public override void OnToolDeactivated()
     {
-        currentSceneView.overlayCanvas.Remove(overlay);
+        EditorUtility.SetDirty(manager);
+
+        if (selectedHandle != null)
+        {
+            selectedHandle.isSelectedForEditing = false;
+            selectedHandle = null;
+            currentSceneView.overlayCanvas.Remove(overlay);
+        }
     }
 
     public override void ToolGUI(EditorWindow window)

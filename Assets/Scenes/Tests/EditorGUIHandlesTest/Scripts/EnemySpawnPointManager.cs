@@ -30,6 +30,9 @@ public class EnemySpawnPointManager : MonoBehaviour
 public class EnemySpawnPointManagerEditor : Editor
 {
     EnemySpawnPointManager manager;
+
+    public static bool toolActive;
+
     private void OnEnable()
     {
         manager = target as EnemySpawnPointManager;
@@ -48,18 +51,29 @@ public class EnemySpawnPointManagerEditor : Editor
     }
 }
 
-[System.Serializable]
-public class SpawnPoint
+[Serializable]
+public struct SpawnPoint
 {
+    [SerializeField]
     public Vector3 center;
     public bool hasRadius;
-    public float radius;
+    public float areaRadius;
 
 
-    public SpawnPoint(Vector3 position)
+    public SpawnPoint(Vector3 position, float radius)
     {
         center = position;
-        radius = 1;
+
+        if (radius > 0)
+        {
+            areaRadius = radius;
+            hasRadius = true;
+        }
+        else
+        {
+            areaRadius = 0;
+            hasRadius = false;
+        }
     }
 }
 

@@ -255,6 +255,7 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -402,6 +403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7025ad43c69356849a071911af58cd5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isAttacking: 0
 --- !u!1 &5323633493869919475
 GameObject:
   m_ObjectHideFlags: 0

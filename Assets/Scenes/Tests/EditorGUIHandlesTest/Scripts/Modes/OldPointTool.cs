@@ -224,7 +224,7 @@ public class OldSpawnTool : EditorTool, IDrawSelectedHandles, ISupportsOverlays
                 {
                     if (isHoveringPlacement)
                     {
-                        SpawnPoint newPoint = new SpawnPoint(mouseHit.point);
+                        SpawnPoint newPoint = new SpawnPoint(mouseHit.point, 1);
 
                         Debug.Log(newPoint.center - mouseHit.point);
 

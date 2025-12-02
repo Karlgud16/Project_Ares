@@ -22,8 +22,11 @@ public class MoveMode : SpawnPointToolMode
 
     public override void OnToolDeactivated()
     {
-        GUIUtility.hotControl = 0;
-        selectedHandle = null;
+        if (selectedHandle != null)
+        {
+            GUIUtility.hotControl = 0;
+            selectedHandle = null;
+        }
     }
 
     protected override void DrawToolHandles()
