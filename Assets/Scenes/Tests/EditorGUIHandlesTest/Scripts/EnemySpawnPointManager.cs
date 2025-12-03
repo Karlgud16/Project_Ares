@@ -52,12 +52,13 @@ public class EnemySpawnPointManagerEditor : Editor
 }
 
 [Serializable]
-public struct SpawnPoint
+public class SpawnPoint
 {
-    [SerializeField]
     public Vector3 center;
     public bool hasRadius;
     public float areaRadius;
+
+    public int pointGroup = 0;
 
 
     public SpawnPoint(Vector3 position, float radius)

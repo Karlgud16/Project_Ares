@@ -1,6 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="True">
     <ui:VisualElement name="RadiusControl" style="flex-grow: 1; flex-direction: column; align-items: center; align-self: center; justify-content: flex-start; width: auto;">
         <ui:Button text="Delete all points" name="ClearPointsButton" style="width: 173px;" />
-        <ui:FloatField label="Spawn Area Radius&#10;" value="0" password="false" enabled="true" data-source-type="SpawnPoint, Assembly-CSharp" name="RadiusField" style="align-items: stretch; align-self: center; justify-content: space-around; margin-left: 3px; width: 159px;" />
+        <ui:VisualElement style="flex-grow: 1;">
+            <ui:Toggle label="Spawn point has &#10;area" name="HasRadiusToggle" style="align-items: center; align-self: stretch; justify-content: space-between; flex-direction: row;" />
+            <ui:FloatField label="Spawn Area Radius&#10;" value="1" password="false" enabled="false" data-source-type="SpawnPoint, Assembly-CSharp" name="RadiusField" style="align-items: stretch; align-self: center; justify-content: space-around; margin-left: 3px; width: 159px;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

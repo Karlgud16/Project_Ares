@@ -22,11 +22,26 @@ public class ConfigMode : SpawnPointToolMode
 
     }
 
+    protected override void DrawToolHandles()
+    {
+        if (overlay.ShowMarkers)
+        {
+            foreach (PointHandle point in toolHandles)
+            {
+                Handles.BeginGUI();
+
+                Handles.Label(point.pointObject.center + Vector3.one, point.pointObject.pointGroup.ToString( ));
+
+            }
+        }
+    }
+
     private void SelectPointForEditing()
     {
         if (selectedHandle != null)
         {
             selectedHandle.isSelectedForEditing = false;
+            overlay.ClearOverlayContent();
         }
 
         selectedHandle = toolHandles.Find(h => h.controlID == HandleUtility.nearestControl);
@@ -37,20 +52,15 @@ public class ConfigMode : SpawnPointToolMode
             selectedHandle.isSelectedForEditing = true;
 
             currentSceneView.overlayCanvas.Add(overlay);
-            overlay.PopulateOverlayContents(selectedHandle.pointObject, MarkValueChanged);
+            overlay.PopulateOverlayContent(selectedHandle.pointObject, manager);
             overlay.displayed = true;
         }
         else
         {
-            EditorUtility.SetDirty(manager);
             currentSceneView.overlayCanvas.Remove(overlay);
         }
     }
 
-    private void MarkValueChanged()
-    {
-        EditorUtility.SetDirty(manager);
-    }
 
     public override void OnToolDeactivated()
     {

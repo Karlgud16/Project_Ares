@@ -5,4 +5,7 @@
             <ui:FloatField label="Spawn Area Radius&#10;" value="42.2" password="false" enabled="false" data-source-type="SpawnPoint, Assembly-CSharp" name="RadiusField" style="align-items: stretch; align-self: flex-start; justify-content: space-between; margin-left: 24px;" />
         </ui:VisualElement>
     </ui:VisualElement>
+    <ui:VisualElement style="flex-grow: 1;">
+        <ui:Toggle label="Show Point Groups" name="ShowPointGroupMarkers" style="margin-top: 18px;" />
+    </ui:VisualElement>
 </ui:UXML>

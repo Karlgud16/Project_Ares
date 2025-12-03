@@ -104,14 +104,6 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
         }
 
         DrawToolHandles();
-
-        if (MouseHitPos != Vector3.zero)
-        {
-            Handles.color = Color.yellow;
-            Handles.DrawWireDisc(MouseHitPos, new Vector3(0, 1), 0.5f);
-            Handles.DrawLine(MouseHitPos, new Vector3(MouseHitPos.x, MouseHitPos.y + 0.5f, MouseHitPos.z));
-        }
-
     }
 
     protected virtual void DrawToolHandles()

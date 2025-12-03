@@ -274,12 +274,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints:
-  - center: {x: 8.125745, y: -2.5158639e-17, z: 3.3991332}
+  - center: {x: 5.616938, y: 4.7045398e-17, z: -6.356209}
     hasRadius: 1
-    areaRadius: 0.78
-  - center: {x: 11.621021, y: -6.241093e-17, z: 8.432215}
+    areaRadius: 2.07
+    pointGroup: 0
+  - center: {x: -2.019125, y: -1.7413164e-17, z: 2.3526576}
     hasRadius: 1
-    areaRadius: 0.78
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: -5.141503, y: 6.236138e-17, z: -8.425521}
+    hasRadius: 1
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: 5.8513474, y: -2.1552666e-18, z: 0.29119372}
+    hasRadius: 1
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: -10.810162, y: 2.3291687e-17, z: -3.1468928}
+    hasRadius: 1
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: -8.063339, y: -8.7008985e-17, z: 11.755609}
+    hasRadius: 1
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: -6.637107, y: 2.4737832e-17, z: -3.3422785}
+    hasRadius: 1
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: 3.1749187, y: -4.4732894e-21, z: 0.00060389936}
+    hasRadius: 1
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: 10.036159, y: 6.980969e-17, z: -9.431848}
+    hasRadius: 1
+    areaRadius: 1
+    pointGroup: 0
+  - center: {x: 6.7699175, y: 7.804834e-17, z: -10.544952}
+    hasRadius: 1
+    areaRadius: 1.56
+    pointGroup: 0
+  - center: {x: 9.933182, y: 1.0158453e-17, z: -1.3724881}
+    hasRadius: 1
+    areaRadius: 2.11
+    pointGroup: 0
+  - center: {x: -9.099811, y: -4.7379757e-17, z: 6.401383}
+    hasRadius: 0
+    areaRadius: 0
+    pointGroup: 0
+  - center: {x: -5.219242, y: -5.598411e-17, z: 7.563901}
+    hasRadius: 0
+    areaRadius: 0
+    pointGroup: 0
+  - center: {x: -0.4041484, y: -6.8076475e-17, z: 9.197676}
+    hasRadius: 0
+    areaRadius: 0
+    pointGroup: 0
+  - center: {x: 5.4359035, y: -4.3296086e-17, z: 5.8496466}
+    hasRadius: 1
+    areaRadius: 2.25
+    pointGroup: 0
 --- !u!1 &978065117
 GameObject:
   m_ObjectHideFlags: 0
