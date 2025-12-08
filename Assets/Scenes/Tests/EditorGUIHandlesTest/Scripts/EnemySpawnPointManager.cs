@@ -7,11 +7,42 @@ using UnityEngine;
 
 public class EnemySpawnPointManager : MonoBehaviour
 {
-    [SerializeField]
-    [HideInInspector]
-    private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
+#if UNITY_EDITOR
+    public List<SpawnPoint> SpawnPoints => _spawnPoints;
 
-    public List<SpawnPoint> SpawnPoints => spawnPoints;
+    // Total list of all points modified by tools.
+    [SerializeField, HideInInspector]
+    private List<SpawnPoint> _spawnPoints = new List<SpawnPoint>();
+
+    private int _spawnPointsCount = 0;
+#endif
+
+
+
+    private SpawnPoint[][] savedSpawnPoints = new SpawnPoint[0][];
+
+    private SpawnPoint[] this[int groupID] => groupID < savedSpawnPoints.Length ? savedSpawnPoints[groupID] : null;
+    private int groupCount => savedSpawnPoints.Length;
+
+    public void ValidatePointList()
+    {
+        if (_spawnPoints.Count == 0) return;
+
+        int[] sizes = new int[_spawnPoints.Count];
+
+        for (int i = 0; i < _spawnPoints.Count; i++)
+        {
+
+        }
+
+    }
+
+    private void Awake()
+    {
+        if (_spawnPoints.Count > 0)
+        {
+        }
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,6 +64,8 @@ public class EnemySpawnPointManagerEditor : Editor
 
     public static bool toolActive;
 
+    private List<SpawnPoint> editorSpawnPoints = new List<SpawnPoint>();
+
     private void OnEnable()
     {
         manager = target as EnemySpawnPointManager;
@@ -48,6 +81,12 @@ public class EnemySpawnPointManagerEditor : Editor
 
             handle.DrawHandle();
         }
+
+    }
+
+    private void OnValidate()
+    {
+        
     }
 }
 
@@ -59,7 +98,6 @@ public class SpawnPoint
     public float areaRadius;
 
     public int pointGroup = 0;
-
 
     public SpawnPoint(Vector3 position, float radius)
     {

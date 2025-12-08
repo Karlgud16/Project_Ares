@@ -36,17 +36,11 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
         inputRouter = new SpawnToolInputRouter();
         
         RebuildHandleList();
-
-        Undo.undoRedoPerformed += RebuildHandleList;
-    }
-
-    public void OnDisable()
-    {
-        Undo.undoRedoPerformed -= RebuildHandleList;
     }
 
     public sealed override void OnActivated()
     {
+        Undo.undoRedoPerformed += RebuildHandleList;
         EnemySpawnPointManagerEditor.toolActive = true;
         OnToolActivated();
 
@@ -60,10 +54,13 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
 
     public sealed override void OnWillBeDeactivated()
     {
+        Undo.undoRedoPerformed -= RebuildHandleList;
         EnemySpawnPointManagerEditor.toolActive = false;
 
         OnToolDeactivated();
         inputRouter.DeregisterInputs();
+        
+        manager.ValidatePointList();
     }
 
     public virtual void OnToolDeactivated()
