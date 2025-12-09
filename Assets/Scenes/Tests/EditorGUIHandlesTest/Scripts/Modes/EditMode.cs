@@ -19,7 +19,6 @@ public class ConfigMode : SpawnPointToolMode
         CreateListener<LeftClickDownListener>(SelectPointForEditing);
 
         overlay = new PointConfigOverlay();
-
     }
 
     protected override void DrawToolHandles()
@@ -30,7 +29,9 @@ public class ConfigMode : SpawnPointToolMode
             {
                 Handles.BeginGUI();
 
-                Handles.Label(point.pointObject.center + Vector3.one, point.pointObject.pointGroup.ToString( ));
+                GUIStyle style = new GUIStyle();
+                style.normal.textColor = Color.red;
+                Handles.Label(point.pointObject.center + Vector3.one, point.pointObject.pointGroup.ToString(), style);
 
             }
         }
@@ -70,6 +71,10 @@ public class ConfigMode : SpawnPointToolMode
         {
             selectedHandle.isSelectedForEditing = false;
             selectedHandle = null;
+        }
+
+        if (overlay != null)
+        {
             currentSceneView.overlayCanvas.Remove(overlay);
         }
     }

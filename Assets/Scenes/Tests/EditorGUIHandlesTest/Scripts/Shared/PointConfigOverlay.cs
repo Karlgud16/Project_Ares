@@ -1,9 +1,5 @@
-using System;
-using System.Drawing;
 using UnityEditor;
-using UnityEditor.EditorTools;
 using UnityEditor.Overlays;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +10,7 @@ public class PointConfigOverlay : Overlay
     private Toggle hasRadiusToggle;
     private FloatField radiusField;
     private Toggle showMarkersToggle;
+    private IntegerField pointGroupField;
 
     private bool showMarkers;
     public bool ShowMarkers => showMarkers;
@@ -26,6 +23,8 @@ public class PointConfigOverlay : Overlay
         displayName = "Configure Point Data";
 
         VisualTreeAsset tree = (VisualTreeAsset)AssetDatabase.LoadAssetAtPath("Assets/Scenes/Tests/EditorGUIHandlesTest/Resources/Editor/PointsEditModeOverlay.uxml", typeof(VisualTreeAsset));
+
+        Debug.Log(tree);
         overlayElement = tree.CloneTree();
 
 
@@ -34,16 +33,16 @@ public class PointConfigOverlay : Overlay
 
     public void PopulateOverlayContent(SpawnPoint point, EnemySpawnPointManager manager)
     {
-
         hasRadiusToggle = overlayElement.Q<Toggle>("HasRadiusToggle");
         radiusField = overlayElement.Q<FloatField>("RadiusField");
         showMarkersToggle = overlayElement.Q<Toggle>("ShowPointGroupMarkers");
-
+        pointGroupField = overlayElement.Q<IntegerField>("PointGroupField");
 
         showMarkersToggle.value = showMarkers;
         hasRadiusToggle.value = point.hasRadius;
         radiusField.value = point.areaRadius;
         radiusField.enabledSelf = point.hasRadius;
+        pointGroupField.value = point.pointGroup;
 
         _point = point;
         _manager = manager;
@@ -53,7 +52,21 @@ public class PointConfigOverlay : Overlay
         radiusField.RegisterCallback<ChangeEvent<float>>(evt => ChangeRadiusValue());
 
         showMarkersToggle.RegisterCallback<MouseUpEvent>(evt => ChangeMarkersToggleValue());
+
+        pointGroupField.RegisterCallback<ChangeEvent<int>>(evt => ChangeGroupValue());
     }
+
+    public void ClearOverlayContent()
+    {
+        hasRadiusToggle.UnregisterCallback<MouseUpEvent>(evt => ChangeRadiusToggleValue());
+        radiusField.UnregisterCallback<ChangeEvent<float>>(evt => ChangeRadiusValue());
+    }
+
+    public override void OnCreated()
+    {
+        displayName = "Point Config";
+    }
+
 
     private void ChangeMarkersToggleValue()
     {
@@ -78,14 +91,15 @@ public class PointConfigOverlay : Overlay
         EditorUtility.SetDirty(_manager);
     }
 
-    public void ClearOverlayContent()
+    private void ChangeGroupValue()
     {
-        hasRadiusToggle.UnregisterCallback<MouseUpEvent>(evt => ChangeRadiusToggleValue());
-        radiusField.UnregisterCallback<ChangeEvent<float>>(evt => ChangeRadiusValue());
+        Debug.Log(pointGroupField.value);
+        Undo.RecordObject(_manager, "Changed point group");
+
+        _point.pointGroup = pointGroupField.value = Mathf.Clamp(pointGroupField.value, 1, 30);
+
+        EditorUtility.SetDirty(_manager);
     }
 
-    public override void OnCreated()
-    {
-        displayName = "Point Config";
-    }
+
 }

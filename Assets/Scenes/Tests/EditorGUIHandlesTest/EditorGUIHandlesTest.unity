@@ -229,50 +229,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &716759287
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 716759289}
-  - component: {fileID: 716759288}
-  m_Layer: 0
-  m_Name: P_Enemy
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &716759288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716759287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18c30ebf12fed5947804b8d264f8abc4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &716759289
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 716759287}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.4394709, y: -0.044505484, z: 0.21479663}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &725068985
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,22 +307,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ffd1d530de6f9b458b788ee6d594fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPoints:
-  - center: {x: 1.2733924, y: 3.063874e-17, z: -4.1395383}
-    hasRadius: 0
-    areaRadius: 1
+  _spawnPointsList:
+  - center: {x: 4.1763415, y: 3.29568e-17, z: -4.452727}
+    hasRadius: 1
+    areaRadius: 1.17
     pointGroup: 0
-  - center: {x: -4.268631, y: 5.3740293e-17, z: -7.2607427}
-    hasRadius: 0
-    areaRadius: 0
+  - center: {x: -1.9425125, y: -3.0316682e-17, z: 4.0960255}
+    hasRadius: 1
+    areaRadius: 1.17
     pointGroup: 0
-  - center: {x: -4.7680883, y: -1.7233656e-17, z: 2.3284044}
-    hasRadius: 0
-    areaRadius: 0
+  - center: {x: 5.343926, y: -3.8843717e-17, z: 5.2480965}
+    hasRadius: 1
+    areaRadius: 1.17
     pointGroup: 0
-  - center: {x: 4.9350233, y: 5.84496e-17, z: -7.8970084}
-    hasRadius: 0
-    areaRadius: 0
+  - center: {x: -5.9636316, y: 6.492312e-17, z: -8.771631}
+    hasRadius: 1
+    areaRadius: 1.17
     pointGroup: 0
 --- !u!1 &909411531
 GameObject:
@@ -430,19 +386,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ffd1d530de6f9b458b788ee6d594fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawnPoints:
-  - center: {x: 1.2733924, y: 3.063874e-17, z: -4.1395383}
+  _spawnPointsList:
+  - center: {x: 6.681583, y: 6.4316068e-18, z: -0.86896145}
+    hasRadius: 0
+    areaRadius: 0
+    pointGroup: 1
+  - center: {x: 4.3064933, y: -4.003358e-17, z: 5.4088564}
     hasRadius: 0
     areaRadius: 1
-    pointGroup: 0
-  - center: {x: -4.268631, y: 5.3740293e-17, z: -7.2607427}
+    pointGroup: 1
+  - center: {x: -3.3768046, y: -4.4455376e-17, z: 6.006276}
     hasRadius: 0
     areaRadius: 0
-    pointGroup: 0
-  - center: {x: -4.7680883, y: -1.7233656e-17, z: 2.3284044}
-    hasRadius: 0
-    areaRadius: 0
-    pointGroup: 0
+    pointGroup: 1
 --- !u!4 &932996946
 Transform:
   m_ObjectHideFlags: 0
@@ -20594,4 +20550,3 @@ SceneRoots:
   - {fileID: 857946926}
   - {fileID: 932996946}
   - {fileID: 144619498}
-  - {fileID: 716759289}

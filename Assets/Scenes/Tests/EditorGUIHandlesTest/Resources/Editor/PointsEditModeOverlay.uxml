@@ -3,6 +3,7 @@
         <ui:VisualElement name="RadiusControl" style="flex-grow: 1; flex-direction: column; align-items: center; align-self: stretch; justify-content: flex-start;">
             <ui:Toggle label="Spawn in Area" name="HasRadiusToggle" style="align-items: center; align-self: stretch; justify-content: space-between; flex-direction: row;" />
             <ui:FloatField label="Spawn Area Radius&#10;" value="42.2" password="false" enabled="false" data-source-type="SpawnPoint, Assembly-CSharp" name="RadiusField" style="align-items: stretch; align-self: flex-start; justify-content: space-between; margin-left: 24px;" />
+            <ui:IntegerField label="Point Group" value="1" name="PointGroupField" style="align-items: center; justify-content: flex-start; align-self: flex-start;" />
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:VisualElement style="flex-grow: 1;">

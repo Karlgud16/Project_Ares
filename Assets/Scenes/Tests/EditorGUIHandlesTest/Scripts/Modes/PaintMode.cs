@@ -44,7 +44,7 @@ public class PaintMode : SpawnPointToolMode
     private void ClearAllExistingPoints()
     {
         Undo.RecordObject(manager, "Deleted all points");
-        manager.SpawnPoints.Clear();
+        manager.SpawnPointsList.Clear();
         Debug.Log("Cleared all existing points");
         RebuildHandleList();
     }
@@ -66,11 +66,19 @@ public class PaintMode : SpawnPointToolMode
 
     public override void OnToolDeactivated()
     {
-        overlay.radiusField.UnregisterCallback<ChangeEvent<float>>(evt => AdjustNewPointRadius());
-        overlay.clearPointsButton.UnregisterCallback<MouseUpEvent>(evt => ClearAllExistingPoints());
-        overlay.hasRadiusToggle.UnregisterCallback<MouseUpEvent>(evt => ToggleNewPointHasRadius());
 
-        currentSceneView.overlayCanvas.Remove(overlay);
+        var timingWatch = System.Diagnostics.Stopwatch.StartNew();
+        if (overlay != null)
+        {
+            overlay.radiusField.UnregisterCallback<ChangeEvent<float>>(evt => AdjustNewPointRadius());
+            overlay.clearPointsButton.UnregisterCallback<MouseUpEvent>(evt => ClearAllExistingPoints());
+            overlay.hasRadiusToggle.UnregisterCallback<MouseUpEvent>(evt => ToggleNewPointHasRadius());
+
+            currentSceneView.overlayCanvas.Remove(overlay);
+        }
+
+        timingWatch.Stop();
+        Debug.Log(timingWatch.ElapsedMilliseconds);
     }
 
     public override void ToolGUI(EditorWindow window)
@@ -85,7 +93,7 @@ public class PaintMode : SpawnPointToolMode
         if (handle != null)
         {
             Undo.RecordObject(manager, "Deleted point");
-            manager.SpawnPoints.Remove(handle.pointObject);
+            manager.SpawnPointsList.Remove(handle.pointObject);
 
             toolHandles.Remove(handle);
         }
@@ -106,7 +114,7 @@ public class PaintMode : SpawnPointToolMode
 
         Undo.RecordObject(manager, "Created new point");
         PointHandle newHandle = new PointHandle(newPoint);
-        manager.SpawnPoints.Add(newPoint);
+        manager.SpawnPointsList.Add(newPoint);
         toolHandles.Add(newHandle);
 
         EditorUtility.SetDirty(manager);

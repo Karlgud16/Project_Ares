@@ -1,53 +1,79 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEditor;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class EnemySpawnPointManager : MonoBehaviour
 {
 #if UNITY_EDITOR
-    public List<SpawnPoint> SpawnPoints => _spawnPoints;
+    public List<SpawnPoint> SpawnPointsList => _spawnPointsList;
 
     // Total list of all points modified by tools.
     [SerializeField, HideInInspector]
-    private List<SpawnPoint> _spawnPoints = new List<SpawnPoint>();
-
-    private int _spawnPointsCount = 0;
+    private List<SpawnPoint> _spawnPointsList = new List<SpawnPoint>();
 #endif
+    [SerializeField]
+    private SpawnPoint[][] bakedSpawnPoints = new SpawnPoint[0][];
 
+    private SpawnPoint[] this[int groupID] => groupID < bakedSpawnPoints.Length ? bakedSpawnPoints[groupID] : null;
 
-
-    private SpawnPoint[][] savedSpawnPoints = new SpawnPoint[0][];
-
-    private SpawnPoint[] this[int groupID] => groupID < savedSpawnPoints.Length ? savedSpawnPoints[groupID] : null;
-    private int groupCount => savedSpawnPoints.Length;
-
-    public void ValidatePointList()
+    public void BakePoints()
     {
-        if (_spawnPoints.Count == 0) return;
-
-        int[] sizes = new int[_spawnPoints.Count];
-
-        for (int i = 0; i < _spawnPoints.Count; i++)
+        var timingWatch = System.Diagnostics.Stopwatch.StartNew();
+        if (_spawnPointsList.Count == 0)
         {
-
+            bakedSpawnPoints = new SpawnPoint[0][];
+            return;
         }
 
+        Dictionary<int, List<SpawnPoint>> groupedPoints = new Dictionary<int, List<SpawnPoint>>();
+
+        foreach (SpawnPoint point in _spawnPointsList)
+        {
+            if (!groupedPoints.TryGetValue(point.pointGroup, out var p))
+            {
+                groupedPoints[point.pointGroup] = p = new List<SpawnPoint>();
+            }
+            p.Add(point);
+        }
+
+        var sortedGroupedPoints = groupedPoints.OrderBy(kv  => kv.Key).ToArray();
+
+        bakedSpawnPoints = new SpawnPoint[sortedGroupedPoints.Length][];
+
+        for (int i = 0; i < sortedGroupedPoints.Length; i++)
+        {
+            bakedSpawnPoints[i] = sortedGroupedPoints[i].Value.ToArray();
+        }
+
+        Debug.Log("Baked points into " + bakedSpawnPoints.Length + " groups.");
+
+        if (bakedSpawnPoints.Length > 1)
+        {
+            for (int i = 0; i < bakedSpawnPoints.Length; i++)
+            {
+                Debug.Log($"Group {i} count: {bakedSpawnPoints[i].Length}");
+            }
+
+        }
     }
 
     private void Awake()
     {
-        if (_spawnPoints.Count > 0)
-        {
-        }
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        for (int i = 0; i < bakedSpawnPoints[0].Length; i++)
+        {
+            for(int j = 0; j < 10; j++)
+            {
 
+            }
+        }
     }
 
     // Update is called once per frame
@@ -73,7 +99,7 @@ public class EnemySpawnPointManagerEditor : Editor
 
     private void OnSceneGUI()
     {
-        for (int i = 0; i < manager.SpawnPoints.Count; i++)
+        for (int i = 0; i < manager.SpawnPointsList.Count; i++)
         {
             PointHandle handle = SpawnPointToolMode.toolHandles[i];
 
@@ -81,12 +107,20 @@ public class EnemySpawnPointManagerEditor : Editor
 
             handle.DrawHandle();
         }
-
     }
 
-    private void OnValidate()
+    public override void OnInspectorGUI()
     {
-        
+        base.OnInspectorGUI();
+
+        EditorGUI.BeginChangeCheck();
+
+        GUILayout.Button("Force bake points");
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            manager.BakePoints();
+        }
     }
 }
 
@@ -97,7 +131,7 @@ public class SpawnPoint
     public bool hasRadius;
     public float areaRadius;
 
-    public int pointGroup = 0;
+    public int pointGroup;
 
     public SpawnPoint(Vector3 position, float radius)
     {

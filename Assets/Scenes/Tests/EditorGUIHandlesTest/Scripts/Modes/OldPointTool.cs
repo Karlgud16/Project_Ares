@@ -34,9 +34,9 @@ public class OldSpawnTool : EditorTool, IDrawSelectedHandles, ISupportsOverlays
     {
         spawnManager = (EnemySpawnPointManager)target;
 
-        spawnManager.SpawnPoints.Clear();
+        spawnManager.SpawnPointsList.Clear();
 
-        if (spawnManager.SpawnPoints.Count <= 0)
+        if (spawnManager.SpawnPointsList.Count <= 0)
         {
             toolMode = ToolModes.paint;
         }
@@ -251,9 +251,9 @@ public class OldSpawnTool : EditorTool, IDrawSelectedHandles, ISupportsOverlays
             }
         }
 
-        int[] ids = new int[spawnManager.SpawnPoints.Count];
+        int[] ids = new int[spawnManager.SpawnPointsList.Count];
 
-        for (int i = 0; i < spawnManager.SpawnPoints.Count; i++)
+        for (int i = 0; i < spawnManager.SpawnPointsList.Count; i++)
         {
             PointHandle handle = toolHandles[i];
 
@@ -285,7 +285,7 @@ public class OldSpawnTool : EditorTool, IDrawSelectedHandles, ISupportsOverlays
     private void PaintRemovePoint(PointHandle handle)
     {
         Undo.RecordObject(spawnManager, "Deleted point");
-        spawnManager.SpawnPoints.Remove(handle.pointObject);
+        spawnManager.SpawnPointsList.Remove(handle.pointObject);
      
         toolHandles.Remove(handle);
     }
@@ -293,16 +293,16 @@ public class OldSpawnTool : EditorTool, IDrawSelectedHandles, ISupportsOverlays
     private void PaintAddPoint(PointHandle handle)
     {
         Undo.RecordObject(spawnManager, "Created new point");
-        spawnManager.SpawnPoints.Add(handle.pointObject);
+        spawnManager.SpawnPointsList.Add(handle.pointObject);
         toolHandles.Add(handle);
     }
 
     private void RebuildHandleList()
     {
         toolHandles.Clear();
-        for (int i = 0; i < spawnManager.SpawnPoints.Count; i++)
+        for (int i = 0; i < spawnManager.SpawnPointsList.Count; i++)
         {
-            toolHandles.Add(new PointHandle(spawnManager.SpawnPoints[i]));
+            toolHandles.Add(new PointHandle(spawnManager.SpawnPointsList[i]));
         }
     }
 

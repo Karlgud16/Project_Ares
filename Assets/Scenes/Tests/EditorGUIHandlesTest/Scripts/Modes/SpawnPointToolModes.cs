@@ -60,7 +60,7 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
         OnToolDeactivated();
         inputRouter.DeregisterInputs();
         
-        manager.ValidatePointList();
+        manager.BakePoints();
     }
 
     public virtual void OnToolDeactivated()
@@ -111,9 +111,9 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
     protected void RebuildHandleList()
     {
         toolHandles.Clear();
-        for (int i = 0; i < manager.SpawnPoints.Count; i++)
+        for (int i = 0; i < manager.SpawnPointsList.Count; i++)
         {
-            toolHandles.Add(new PointHandle(manager.SpawnPoints[i]));
+            toolHandles.Add(new PointHandle(manager.SpawnPointsList[i]));
         }
     }
 
