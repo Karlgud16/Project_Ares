@@ -14,16 +14,15 @@ public class EnemySpawnPointManager : MonoBehaviour
     private List<SpawnPoint> _spawnPointsList = new List<SpawnPoint>();
 #endif
     [SerializeField]
-    private SpawnPoint[][] bakedSpawnPoints = new SpawnPoint[0][];
+    private SpawnPointGroup[] bakedSpawnPoints = new SpawnPointGroup[0];
 
-    private SpawnPoint[] this[int groupID] => groupID < bakedSpawnPoints.Length ? bakedSpawnPoints[groupID] : null;
+    [SerializeField] private GameObject P_Enemy;
 
     public void BakePoints()
     {
-        var timingWatch = System.Diagnostics.Stopwatch.StartNew();
         if (_spawnPointsList.Count == 0)
         {
-            bakedSpawnPoints = new SpawnPoint[0][];
+            bakedSpawnPoints = new SpawnPointGroup[0];
             return;
         }
 
@@ -40,46 +39,78 @@ public class EnemySpawnPointManager : MonoBehaviour
 
         var sortedGroupedPoints = groupedPoints.OrderBy(kv  => kv.Key).ToArray();
 
-        bakedSpawnPoints = new SpawnPoint[sortedGroupedPoints.Length][];
+        bakedSpawnPoints = new SpawnPointGroup[sortedGroupedPoints.Length];
 
         for (int i = 0; i < sortedGroupedPoints.Length; i++)
         {
-            bakedSpawnPoints[i] = sortedGroupedPoints[i].Value.ToArray();
+            SpawnPointGroup serializedGroup = new SpawnPointGroup();
+            serializedGroup.group = sortedGroupedPoints[i].Value.ToArray();
+
+            bakedSpawnPoints[i] = serializedGroup;
         }
 
         Debug.Log("Baked points into " + bakedSpawnPoints.Length + " groups.");
 
-        if (bakedSpawnPoints.Length > 1)
+        if (true)
         {
             for (int i = 0; i < bakedSpawnPoints.Length; i++)
             {
-                Debug.Log($"Group {i} count: {bakedSpawnPoints[i].Length}");
+                Debug.Log($"Group {i} count: {bakedSpawnPoints[i].group.Length}");
             }
-
         }
+
+        EditorUtility.SetDirty(this);
     }
 
-    private void Awake()
+    [Serializable]
+    private class SpawnPointGroup
     {
+        public SpawnPoint[] group;
 
+        public SpawnPoint this[int index] => group.Length > 0 ? group[index] : null;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        for (int i = 0; i < bakedSpawnPoints[0].Length; i++)
-        {
-            for(int j = 0; j < 10; j++)
-            {
-
-            }
-        }
+        Debug.Log(bakedSpawnPoints.Length);
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    private void SpawnNextWave(int waveIndex)
+    {
+        int waveContentCount = 4;
+        SpawnPointGroup pointGroup = bakedSpawnPoints[0];
+
+        for (int i = 0; i < pointGroup.group.Length; i++)
+        {
+            for (int j = 0; j < waveContentCount; j++)
+            {
+                SpawnPoint p = pointGroup[i];
+                Instantiate(P_Enemy, p.center, Quaternion.identity);
+            }
+        }
+
+
+
+    }
+
+    private Vector3 GetOpenPosition(GameObject newObject)
+    {
+        Vector3 result = Vector3.zero;
+
+        int maxSearch = 10;
+
+        float newObjectSize;
+
+        float minTotalDist;
+
+        return result;
     }
 }
 
