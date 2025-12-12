@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -87,31 +88,84 @@ public class EnemySpawnPointManager : MonoBehaviour
         int waveContentCount = 4;
         SpawnPointGroup pointGroup = bakedSpawnPoints[0];
 
+        ObjectToSpawn[] enemiesToSpawn = new ObjectToSpawn[waveContentCount];
+
         for (int i = 0; i < pointGroup.group.Length; i++)
         {
-            for (int j = 0; j < waveContentCount; j++)
+            enemiesToSpawn[i] = new ObjectToSpawn(P_Enemy);
+        }
+    }
+
+    private void SetPoissonSpawnPositions(SpawnPoint point, ObjectToSpawn[] objectsToSpawn)
+    {
+        List<ObjectToSpawn> finalpoissionPositions = new List<ObjectToSpawn>();
+        int maxSearchAttempts = 10;
+
+        for (int i = 0; i < objectsToSpawn.Length; i++)
+        {
+            ObjectToSpawn newObject = objectsToSpawn[i];
+
+
+            for (int j = 0; j < maxSearchAttempts; j++)
             {
-                SpawnPoint p = pointGroup[i];
-                Instantiate(P_Enemy, p.center, Quaternion.identity);
+                newObject.spawnPosition = SelectNewRandomLocation(point);
+
+                float nearestDistance = Mathf.Infinity;
+
+                foreach (ObjectToSpawn existingObject in finalpoissionPositions)
+                {
+                    float minTotalDist = existingObject.boundSize + newObject.boundSize;
+                    float dist = Vector3.Distance(existingObject.spawnPosition, newObject.spawnPosition);
+
+
+
+                    if (dist < nearestDistance)
+                    {
+                        nearestDistance = dist;
+                    }
+
+                    while (checks < maxSearchAttempts)
+                    {
+
+                        checks++;
+                    }
+
+                }
             }
+
+            newObject.spawnPosition = randomLocation;
+            finalpoissionPositions.Add(newObject);
+        }
+    }
+
+    private Vector3 SelectNewRandomLocation(SpawnPoint point)
+    {
+        Vector3 offset = UnityEngine.Random.insideUnitCircle * point.areaRadius;
+        return point.center + offset;
+
+    }
+
+    private class ObjectToSpawn
+    {
+        public ObjectToSpawn(GameObject newObject)
+        {
+            obj = newObject;
+            Renderer r = obj.GetComponent<Renderer>();
+            boundSize = Mathf.Min(r.bounds.extents.x, r.bounds.extents.y);
+
+            obj.transform.localScale = obj.transform.localScale * UnityEngine.Random.Range(0.5f, 1.5f);
         }
 
+        public GameObject obj;
+        public float boundSize;
+        public Vector3 spawnPosition;
 
-
+        private void Spawn()
+        {
+            Instantiate(obj, spawnPosition, Quaternion.identity);
+        }
     }
 
-    private Vector3 GetOpenPosition(GameObject newObject)
-    {
-        Vector3 result = Vector3.zero;
-
-        int maxSearch = 10;
-
-        float newObjectSize;
-
-        float minTotalDist;
-
-        return result;
-    }
 }
 
 [CustomEditor(typeof(EnemySpawnPointManager))]
