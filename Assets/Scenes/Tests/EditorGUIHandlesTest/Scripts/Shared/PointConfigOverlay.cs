@@ -16,7 +16,7 @@ public class PointConfigOverlay : Overlay
     public bool ShowMarkers => showMarkers;
 
     private SpawnPoint _point;
-    private EnemySpawnPointManager _manager;
+    private EnemySpawnPointController _manager;
 
     public override VisualElement CreatePanelContent()
     {
@@ -31,7 +31,7 @@ public class PointConfigOverlay : Overlay
         return overlayElement;
     }
 
-    public void PopulateOverlayContent(SpawnPoint point, EnemySpawnPointManager manager)
+    public void PopulateOverlayContent(SpawnPoint point, EnemySpawnPointController manager)
     {
         hasRadiusToggle = overlayElement.Q<Toggle>("HasRadiusToggle");
         radiusField = overlayElement.Q<FloatField>("RadiusField");

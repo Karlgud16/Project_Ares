@@ -2,10 +2,12 @@ using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
-
+/// <summary>
+/// Allows the user to edit data values on currently existing points.
+/// </summary>
 #if UNITY_EDITOR
-[EditorTool("", typeof(EnemySpawnPointManager))]
-public class ConfigMode : SpawnPointToolMode
+[EditorTool("", typeof(EnemySpawnPointController), toolPriority = -1)]
+public sealed class ConfigMode : SpawnPointToolModeBase
 {
     protected override string IconName => "Wrench";
     protected override string Tooltip => "Configure Points";
@@ -14,29 +16,11 @@ public class ConfigMode : SpawnPointToolMode
 
     private PointHandle selectedHandle;
 
-    public override void OnToolActivated()
-    {
-        CreateListener<LeftClickDownListener>(SelectPointForEditing);
 
-        overlay = new PointConfigOverlay();
-    }
 
-    protected override void DrawToolHandles()
-    {
-        if (overlay.ShowMarkers)
-        {
-            foreach (PointHandle point in toolHandles)
-            {
-                Handles.BeginGUI();
-
-                GUIStyle style = new GUIStyle();
-                style.normal.textColor = Color.red;
-                Handles.Label(point.pointObject.center + Vector3.one, point.pointObject.pointGroup.ToString(), style);
-
-            }
-        }
-    }
-
+    /// <summary>
+    /// Selects a point when clicked and populates an overlay window with the point data for editing.
+    /// </summary>
     private void SelectPointForEditing()
     {
         if (selectedHandle != null)
@@ -49,11 +33,10 @@ public class ConfigMode : SpawnPointToolMode
 
         if (selectedHandle != null)
         {
-
             selectedHandle.isSelectedForEditing = true;
 
             currentSceneView.overlayCanvas.Add(overlay);
-            overlay.PopulateOverlayContent(selectedHandle.pointObject, manager);
+            overlay.PopulateOverlayContent(selectedHandle.pointObject, pointController);
             overlay.displayed = true;
         }
         else
@@ -63,9 +46,17 @@ public class ConfigMode : SpawnPointToolMode
     }
 
 
-    public override void OnToolDeactivated()
+
+    protected override void OnToolActivated()
     {
-        EditorUtility.SetDirty(manager);
+        CreateListener<LeftClickDownListener>(SelectPointForEditing);
+
+        overlay = new PointConfigOverlay();
+    }
+
+    protected override void OnToolDeactivated()
+    {
+        EditorUtility.SetDirty(pointController);
 
         if (selectedHandle != null)
         {
@@ -79,9 +70,20 @@ public class ConfigMode : SpawnPointToolMode
         }
     }
 
-    public override void ToolGUI(EditorWindow window)
+    protected override void DrawToolHandles()
     {
-        //throw new System.NotImplementedException();
+        if (overlay.ShowMarkers)
+        {
+            foreach (PointHandle point in toolHandles)
+            {
+                Handles.BeginGUI();
+
+                GUIStyle style = new GUIStyle();
+                style.normal.textColor = Color.red;
+                Handles.Label(point.pointObject.center + Vector3.one, point.pointObject.pointGroup.ToString(), style);
+            }
+        }
     }
-} 
+
+}
 #endif

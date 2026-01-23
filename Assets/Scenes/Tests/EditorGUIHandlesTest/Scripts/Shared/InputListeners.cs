@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 
+// This sucks big time, I need to find a better way to do this so no comments.
+
 #if UNITY_EDITOR
 public abstract class InputListener : IInputHandler
 {

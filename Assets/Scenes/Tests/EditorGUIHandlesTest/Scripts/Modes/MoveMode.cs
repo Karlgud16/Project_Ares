@@ -2,9 +2,12 @@ using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
+/// <summary>
+/// Allows the user to drag points to move them.
+/// </summary>
 #if UNITY_EDITOR
-[EditorTool("", typeof(EnemySpawnPointManager))]
-public class MoveMode : SpawnPointToolMode
+[EditorTool("", typeof(EnemySpawnPointController), toolPriority = -2)]
+public class MoveMode : SpawnPointToolModeBase
 {
     protected override string IconName => "Mover";
     protected override string Tooltip => "Move Points";
@@ -14,30 +17,9 @@ public class MoveMode : SpawnPointToolMode
 
 
 
-    public override void OnToolActivated()
-    {
-        CreateListener<LeftClickDownListener>(SelectPointForMoving);
-        CreateListener<LeftClickUpListener>(DeselectPointForMoving);
-    }
-
-    public override void OnToolDeactivated()
-    {
-        if (selectedHandle != null)
-        {
-            GUIUtility.hotControl = 0;
-            selectedHandle = null;
-        }
-    }
-
-    protected override void DrawToolHandles()
-    {
-        if (selectedHandle != null)
-        {
-            Undo.RecordObject(manager, "Moved point");
-            selectedHandle.pointObject.center = MouseHitPos + mouseGrabOffset;
-        }
-    }
-
+    /// <summary>
+    /// Allows the user to drag points to reposition while holding down left-click.
+    /// </summary>
     private void SelectPointForMoving()
     {
         selectedHandle = toolHandles.Find(h => h.controlID == HandleUtility.nearestControl);
@@ -50,18 +32,39 @@ public class MoveMode : SpawnPointToolMode
 
     }
 
+    /// <summary>
+    /// Releases the point the user is holding upon letting left-click go.
+    /// </summary>
     private void DeselectPointForMoving()
     {
         GUIUtility.hotControl = 0;
         selectedHandle = null;
     }
 
-    private struct PointMovementArrow
-    {
-        public int controlID;
-        public Vector3 oldPosition;
-        public Vector3 position;
 
+
+    protected sealed override void OnToolActivated()
+    {
+        CreateListener<LeftClickDownListener>(SelectPointForMoving);
+        CreateListener<LeftClickUpListener>(DeselectPointForMoving);
+    }
+
+    protected override void OnToolDeactivated()
+    {
+        if (selectedHandle != null)
+        {
+            GUIUtility.hotControl = 0;
+            selectedHandle = null;
+        }
+    }
+
+    protected override void DrawToolHandles()
+    {
+        if (selectedHandle != null)
+        {
+            Undo.RecordObject(pointController, "Moved point");
+            selectedHandle.pointObject.center = MouseHitPos + mouseGrabOffset;
+        }
     }
 }
 #endif

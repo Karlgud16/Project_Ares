@@ -4,10 +4,12 @@ using UnityEngine.UIElements;
 
 public class PointPaintOverlay : Overlay
 {
-    VisualElement overlayElement;
-    public Button clearPointsButton;
-    public Toggle hasRadiusToggle;
-    public FloatField radiusField;
+    public Button clearPointsButton {  get; private set; }
+    public Toggle hasRadiusToggle { get; private set; }
+    public FloatField radiusField { get; private set; }
+
+
+    private VisualElement overlayElement;
 
     public override VisualElement CreatePanelContent()
     {

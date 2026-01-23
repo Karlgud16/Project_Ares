@@ -4,17 +4,28 @@ using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
+/// <summary>
+/// Base class used to make the different spawn point tool modes.
+/// </summary>
 #if UNITY_EDITOR
-public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
+public abstract class SpawnPointToolModeBase : EditorTool, IDrawSelectedHandles
 {
-    protected EnemySpawnPointManager manager => target as EnemySpawnPointManager;
+    // Yikes. I really wish I commented earlier why I had to do this because it was something stupid,
+    // but now I'm not really sure how fucked it is :(
+    public readonly static List<PointHandle> toolHandles = new List<PointHandle>();
+
+    protected EnemySpawnPointController pointController => target as EnemySpawnPointController;
 
     protected SpawnToolInputRouter inputRouter;
 
     protected SceneView currentSceneView => SceneView.lastActiveSceneView;
 
+    protected Vector3 MouseHitPos { get => mouseHitPos; }
+
     protected abstract string IconName { get; }
     protected abstract string Tooltip { get; }
+
+
 
     private string IconFullPath => "Editor/Icons/" + IconName;
 
@@ -27,21 +38,85 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
     public sealed override GUIContent toolbarIcon => toolIcon;
 
     private Vector3 mouseHitPos;
-    protected Vector3 MouseHitPos { get => mouseHitPos; }
 
-    public readonly static List<PointHandle> toolHandles = new List<PointHandle>();
 
-    public void OnEnable()
+
+    /// <summary>
+    /// Called after tool selected for tool mode init.
+    /// </summary>
+    protected abstract void OnToolActivated();
+
+    /// <summary>
+    /// Called after tool deselected or selection changed for tool deinit.
+    /// </summary>
+    protected virtual void OnToolDeactivated()
     {
-        inputRouter = new SpawnToolInputRouter();
-        
-        RebuildHandleList();
+
+    }
+
+    /// <summary>
+    /// Called everytime the current scene view is focused and repainted.
+    /// </summary>
+    /// <param name="window">The current scene view.</param>
+    protected virtual void ToolGUI(EditorWindow window)
+    {
+
+    }
+
+    /// <summary>
+    /// Called everyime the handles are repainted for mode specific visual handles.
+    /// </summary>
+    protected virtual void DrawToolHandles()
+    {
+
+    }
+
+    /// <summary>
+    /// Updates the serialized list of points stored in the EnemySpawnPointController.
+    /// </summary>
+    protected void RebuildHandleList()
+    {
+        toolHandles.Clear();
+        for (int i = 0; i < pointController.SpawnPointsList.Count; i++)
+        {
+            toolHandles.Add(new PointHandle(pointController.SpawnPointsList[i]));
+        }
+    }
+
+    /// <summary>
+    /// Creates a new callback delegate that listens for the type of desired input. Listeners are automatically deregistered upon tool deselection.
+    /// </summary>
+    /// <typeparam name="T">Desired input type.</typeparam>
+    /// <param name="action">The callback method for when the desired input is seen.</param>
+    protected void CreateListener<T>(Action action) where T : InputListener, new()
+    {
+        InputListener input = new T();
+        input.ActionOnInput = action;
+        inputHandlers.Add(input);
+    }
+
+    public sealed override void OnToolGUI(EditorWindow window)
+    {
+        if (window is not SceneView)
+        {
+            return;
+        }
+
+        Physics.Raycast(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition), out RaycastHit hit, Mathf.Infinity, ~0, QueryTriggerInteraction.Ignore);
+
+        mouseHitPos = hit.point;
+
+        inputRouter.RouteInput(Event.current);
+
+        ToolGUI(window);
+
+        window.Repaint();
     }
 
     public sealed override void OnActivated()
     {
         Undo.undoRedoPerformed += RebuildHandleList;
-        EnemySpawnPointManagerEditor.toolActive = true;
+        EnemySpawnPointControllerEditor.toolActive = true;
         OnToolActivated();
 
         currentSceneView.ShowNotification(new GUIContent(GetType().Name.Replace("Mode", " ") + "Mode"), 0.2f);
@@ -55,42 +130,19 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
     public sealed override void OnWillBeDeactivated()
     {
         Undo.undoRedoPerformed -= RebuildHandleList;
-        EnemySpawnPointManagerEditor.toolActive = false;
+        EnemySpawnPointControllerEditor.toolActive = false;
 
         OnToolDeactivated();
         inputRouter.DeregisterInputs();
-        
-        manager.BakePoints();
+
+        pointController.BakePoints();
     }
 
-    public virtual void OnToolDeactivated()
+    public void OnEnable()
     {
+        inputRouter = new SpawnToolInputRouter();
 
-    }
-
-    public abstract void OnToolActivated();
-
-    public sealed override void OnToolGUI(EditorWindow window)
-    {
-        if (!(window is SceneView sceneView))
-        {
-            return;
-        }
-
-        Physics.Raycast(HandleUtility.GUIPointToWorldRay(Event.current.mousePosition), out RaycastHit hit);
-
-        mouseHitPos = hit.point;
-
-        inputRouter.RouteInput(Event.current);
-
-        ToolGUI(window);
-
-        window.Repaint();
-    }
-
-    public virtual void ToolGUI(EditorWindow window)
-    {
-
+        RebuildHandleList();
     }
 
     public void OnDrawHandles()
@@ -101,27 +153,6 @@ public abstract class SpawnPointToolMode : EditorTool, IDrawSelectedHandles
         }
 
         DrawToolHandles();
-    }
-
-    protected virtual void DrawToolHandles()
-    {
-
-    }
-
-    protected void RebuildHandleList()
-    {
-        toolHandles.Clear();
-        for (int i = 0; i < manager.SpawnPointsList.Count; i++)
-        {
-            toolHandles.Add(new PointHandle(manager.SpawnPointsList[i]));
-        }
-    }
-
-    protected void CreateListener<T>(Action action) where T : InputListener, new()
-    {
-        InputListener input = new T();
-        input.ActionOnInput = action;
-        inputHandlers.Add(input);
     }
 }
 #endif

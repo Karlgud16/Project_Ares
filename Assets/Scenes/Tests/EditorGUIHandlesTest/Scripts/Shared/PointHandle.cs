@@ -2,6 +2,9 @@ using UnityEditor;
 using UnityEditor.EditorTools;
 using UnityEngine;
 
+/// <summary>
+/// Editor side container class for point data.
+/// </summary>
 public class PointHandle
 {
     public int controlID;
@@ -26,7 +29,7 @@ public class PointHandle
 
     private Color HandleCenterColor()
     {
-        if (!EnemySpawnPointManagerEditor.toolActive)
+        if (!EnemySpawnPointControllerEditor.toolActive)
         {
             return Color.cyan;
         }
@@ -42,7 +45,7 @@ public class PointHandle
 
     private Color HandleRadiusColor()
     {
-        if (!EnemySpawnPointManagerEditor.toolActive)
+        if (!EnemySpawnPointControllerEditor.toolActive)
         {
             return Color.cyan;
         }
