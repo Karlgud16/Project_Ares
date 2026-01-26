@@ -10,10 +10,11 @@ public class SpawnZoneController : MonoBehaviour
     [HideInInspector]
     public UnityEvent<SpawnZoneController> playerEnterEvent;
 
-    public void TriggerSpawn()
+    private int currentWaveCount;
+
+    public void TriggerSpawn(GameObject[] waveContents)
     {
-        var testObject = new GameObject();
-        testObject.transform.position = transform.position;
+
     }
 
     private void OnTriggerEnter(Collider collision)

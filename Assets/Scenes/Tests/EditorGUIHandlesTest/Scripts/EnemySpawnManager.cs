@@ -29,6 +29,6 @@ public class EnemySpawnManager : MonoBehaviour
         activeZoneController = zoneController;
         Debug.Log("Zone entry", zoneController.gameObject);
 
-        zoneController.TriggerSpawn();
+        zoneController.TriggerSpawn(null);
     }
 }
