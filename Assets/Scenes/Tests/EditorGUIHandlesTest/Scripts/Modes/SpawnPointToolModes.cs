@@ -14,7 +14,7 @@ public abstract class SpawnPointToolModeBase : EditorTool, IDrawSelectedHandles
     // but now I'm not really sure how fucked it is :(
     public readonly static List<PointHandle> toolHandles = new List<PointHandle>();
 
-    protected EnemySpawnPointController pointController => target as EnemySpawnPointController;
+    protected SpawnPointPlacementController pointController => target as SpawnPointPlacementController;
 
     protected SpawnToolInputRouter inputRouter;
 

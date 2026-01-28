@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c37d509220f94ce45b4911eb3442caa2, type: 3}
-  m_Name: SmallRedGuy
+  m_Name: Small Blue
   m_EditorClassIdentifier: 
-  behaviour: {fileID: 0}
+  selectionWeighting: 10
   spawnCost: 10
-  enemyName: Red Guy
-  color: {r: 1, g: 0, b: 0, a: 1}
-  sizeMultiplier: 0.7
+  enemyName: Small Blue
+  color: {r: 0, g: 0.120423555, b: 1, a: 1}
+  sizeMultiplier: 0.5

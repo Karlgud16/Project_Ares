@@ -4,7 +4,7 @@ using UnityEngine.Events;
 /// <summary>
 /// Controls spawning behaviour inside the spawning zones.
 /// </summary>
-[RequireComponent(typeof(EnemySpawnPointController), typeof(BoxCollider))]
+[RequireComponent(typeof(SpawnPointPlacementController), typeof(BoxCollider))]
 public class SpawnZoneController : MonoBehaviour
 {
     [HideInInspector]

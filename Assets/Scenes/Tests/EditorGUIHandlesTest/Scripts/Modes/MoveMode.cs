@@ -6,7 +6,7 @@ using UnityEngine;
 /// Allows the user to drag points to move them.
 /// </summary>
 #if UNITY_EDITOR
-[EditorTool("", typeof(EnemySpawnPointController), toolPriority = -2)]
+[EditorTool("", typeof(SpawnPointPlacementController), toolPriority = -2)]
 public class MoveMode : SpawnPointToolModeBase
 {
     protected override string IconName => "Mover";

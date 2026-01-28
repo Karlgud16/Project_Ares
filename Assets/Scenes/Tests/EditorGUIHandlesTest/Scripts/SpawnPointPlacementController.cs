@@ -8,7 +8,7 @@ using UnityEngine;
 /// Controls all point placement and serialization.
 /// </summary>
 [RequireComponent(typeof(BoxCollider))]
-public class EnemySpawnPointController : MonoBehaviour
+public class SpawnPointPlacementController : MonoBehaviour
 {
     #if UNITY_EDITOR
     public List<SpawnPoint> SpawnPointsList => _spawnPointsList;
@@ -83,10 +83,10 @@ public class EnemySpawnPointController : MonoBehaviour
 
 
 
-[CustomEditor(typeof(EnemySpawnPointController))]
+[CustomEditor(typeof(SpawnPointPlacementController))]
 public class EnemySpawnPointControllerEditor : Editor
 {
-    private EnemySpawnPointController controller;
+    private SpawnPointPlacementController controller;
 
     // Used to control 'active' vs 'inactive but selected' point handle rendering. Unity's ToolManager doesn't
     // do polymorphism apparently. This whole class needs a new coat of paint at some point I think.
@@ -127,7 +127,7 @@ public class EnemySpawnPointControllerEditor : Editor
 
     private void OnEnable()
     {
-        controller = target as EnemySpawnPointController;
+        controller = target as SpawnPointPlacementController;
     }
 
 }

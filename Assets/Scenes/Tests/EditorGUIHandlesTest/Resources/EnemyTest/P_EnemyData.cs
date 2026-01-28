@@ -1,11 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "P_EnemyData", menuName = "Scriptable Objects/P_EnemyData")]
+[CreateAssetMenu(fileName ="EnemyData")]
 public class P_EnemyData : ScriptableObject
 {
-    public P_EnemyBehaviour behaviour;
-
-    public int spawnCost;
+    public int selectionWeighting = 10;
+    public int spawnCost = 10;
 
     [Space(10), Header("Prefab Controls")]
     public string enemyName;
@@ -21,3 +20,5 @@ public class P_EnemyData : ScriptableObject
         return enemyObject;
     }
 }
+
+

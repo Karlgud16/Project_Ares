@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 /// Allows the user to place and remove points in a spawn zone.
 /// </summary>
 #if UNITY_EDITOR
-[EditorTool("", typeof(EnemySpawnPointController), toolPriority = -3)]
+[EditorTool("", typeof(SpawnPointPlacementController), toolPriority = -3)]
 public sealed class PaintMode : SpawnPointToolModeBase
 {
     protected override string IconName => "Brush";

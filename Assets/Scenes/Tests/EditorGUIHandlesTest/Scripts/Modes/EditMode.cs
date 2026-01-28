@@ -6,7 +6,7 @@ using UnityEngine;
 /// Allows the user to edit data values on currently existing points.
 /// </summary>
 #if UNITY_EDITOR
-[EditorTool("", typeof(EnemySpawnPointController), toolPriority = -1)]
+[EditorTool("", typeof(SpawnPointPlacementController), toolPriority = -1)]
 public sealed class ConfigMode : SpawnPointToolModeBase
 {
     protected override string IconName => "Wrench";
