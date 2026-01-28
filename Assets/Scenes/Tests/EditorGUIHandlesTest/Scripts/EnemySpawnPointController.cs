@@ -38,9 +38,9 @@ public class EnemySpawnPointController : MonoBehaviour
 
         foreach (SpawnPoint point in _spawnPointsList)
         {
-            if (!groupedPoints.TryGetValue(point.pointGroup, out var p))
+            if (!groupedPoints.TryGetValue(point.groupIndex, out var p))
             {
-                groupedPoints[point.pointGroup] = p = new List<SpawnPoint>();
+                groupedPoints[point.groupIndex] = p = new List<SpawnPoint>();
             }
             p.Add(point);
         }
@@ -142,7 +142,7 @@ public class SpawnPoint
     public bool hasRadius;
     public float areaRadius;
 
-    public int pointGroup;
+    public int groupIndex;
 
     public SpawnPoint(Vector3 position, float radius)
     {

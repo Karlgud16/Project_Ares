@@ -80,7 +80,7 @@ public sealed class ConfigMode : SpawnPointToolModeBase
 
                 GUIStyle style = new GUIStyle();
                 style.normal.textColor = Color.red;
-                Handles.Label(point.pointObject.center + Vector3.one, point.pointObject.pointGroup.ToString(), style);
+                Handles.Label(point.pointObject.center + Vector3.one, point.pointObject.groupIndex.ToString(), style);
             }
         }
     }

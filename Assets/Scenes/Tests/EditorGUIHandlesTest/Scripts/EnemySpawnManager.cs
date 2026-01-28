@@ -10,6 +10,8 @@ public class EnemySpawnManager : MonoBehaviour
 
     [SerializeField] private SpawnZoneController activeZoneController;
 
+    private EnemySpawnDirector director;
+
     private void Awake()
     {
         if (instance == null)
@@ -21,7 +23,7 @@ public class EnemySpawnManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-
+        director = new EnemySpawnDirector();
     }
 
     public void RegisterZoneEntry(SpawnZoneController zoneController)

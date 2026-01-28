@@ -42,7 +42,7 @@ public class PointConfigOverlay : Overlay
         hasRadiusToggle.value = point.hasRadius;
         radiusField.value = point.areaRadius;
         radiusField.enabledSelf = point.hasRadius;
-        pointGroupField.value = point.pointGroup;
+        pointGroupField.value = point.groupIndex;
 
         _point = point;
         _manager = manager;
@@ -96,7 +96,7 @@ public class PointConfigOverlay : Overlay
         Debug.Log(pointGroupField.value);
         Undo.RecordObject(_manager, "Changed point group");
 
-        _point.pointGroup = pointGroupField.value = Mathf.Clamp(pointGroupField.value, 1, 30);
+        _point.groupIndex = pointGroupField.value = Mathf.Clamp(pointGroupField.value, 1, 30);
 
         EditorUtility.SetDirty(_manager);
     }
