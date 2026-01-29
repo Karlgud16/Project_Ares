@@ -11,7 +11,7 @@ public class P_EnemyData : ScriptableObject
     public Color color;
     [Range(0.1f, 3)] public float sizeMultiplier;
 
-    private GameObject ApplyObjectChanges(GameObject enemyObject)
+    public GameObject ApplyObjectChanges(GameObject enemyObject)
     {
         enemyObject.transform.localScale *= sizeMultiplier;
         enemyObject.GetComponent<Renderer>().material.color = color;

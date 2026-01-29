@@ -92,7 +92,6 @@ public class EnemySpawnPointControllerEditor : Editor
     // do polymorphism apparently. This whole class needs a new coat of paint at some point I think.
     public static bool toolActive;
 
-
     /// <summary>
     /// Controls renderering of existing point handles. This is tied to a custom inspector because it's easier 
     /// and more reliable for me to control it's state by just riding off the inspector.

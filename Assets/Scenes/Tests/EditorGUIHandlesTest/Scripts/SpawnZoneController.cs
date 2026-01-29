@@ -14,7 +14,24 @@ public class SpawnZoneController : MonoBehaviour
 
     public void TriggerSpawn(GameObject[] waveContents)
     {
+        if (waveContents == null)
+        {
+            return;
+        }
 
+        BoxCollider collider = GetComponent<BoxCollider>();
+
+        float boundsX = collider.bounds.max.x;
+        float boundsZ = collider.bounds.max.z;
+
+        foreach (var enemy in waveContents)
+        {
+            float randomX = Random.Range(-boundsX, boundsX);
+            float randomZ = Random.Range(-boundsZ, boundsZ);
+            float minY = enemy.GetComponent<BoxCollider>().bounds.extents.y * enemy.transform.localScale.x;
+
+            enemy.transform.position = new Vector3(randomX, minY, randomZ);
+        }
     }
 
     private void OnTriggerEnter(Collider collision)
@@ -30,12 +47,11 @@ public class SpawnZoneController : MonoBehaviour
 #if UNITY_EDITOR
             Debug.LogWarning("No Spawn Manager in Scene!", this);
 #endif
-
             gameObject.SetActive(false);
             return;
         }
+
         playerEnterEvent = new UnityEvent<SpawnZoneController>();
         playerEnterEvent.AddListener(manager.RegisterZoneEntry);
     }
-
 }

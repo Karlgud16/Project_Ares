@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c37d509220f94ce45b4911eb3442caa2, type: 3}
   m_Name: Big Red
   m_EditorClassIdentifier: 
-  selectionWeighting: 20
-  spawnCost: 20
+  selectionWeighting: 5
+  spawnCost: 40
   enemyName: Big Red
   color: {r: 1, g: 0, b: 0, a: 1}
   sizeMultiplier: 2

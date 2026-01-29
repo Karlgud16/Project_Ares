@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionWeighting: 10
   spawnCost: 5
-  enemyName: 
+  enemyName: Small Red
   color: {r: 1, g: 0, b: 0, a: 1}
   sizeMultiplier: 0.8
